@@ -1,11 +1,9 @@
-package com.yh.filesmanage;
+package com.yh.filesmanage.view;
 
+import com.yh.filesmanage.R;
+import com.yh.filesmanage.base.BaseFragmentActivity;
 
-import android.os.Bundle;
-
-import com.yh.filesmanage.base.BaseAcitivity;
-
-public class MainActivity extends BaseAcitivity {
+public class MainActivity extends BaseFragmentActivity {
 
     @Override
     protected int getLayoutId() {
