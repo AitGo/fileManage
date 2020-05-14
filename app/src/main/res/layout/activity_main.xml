@@ -71,6 +71,11 @@
 
     </RelativeLayout>
 
+    <com.yh.filesmanage.widget.HorizontalSelectedView
+        android:id="@+id/hsv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <FrameLayout
         android:id="@+id/fl_view"
         android:layout_width="match_parent"
