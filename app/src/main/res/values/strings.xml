@@ -1,4 +1,6 @@
 <resources>
     <string name="app_name">智能回转档案柜</string>
-
+    <string name="prompt">提示</string>
+    <string name="confirm">确定</string>
+    <string name="cancel">取消</string>
 </resources>

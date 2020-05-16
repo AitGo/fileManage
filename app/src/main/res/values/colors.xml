@@ -6,6 +6,13 @@
 
     <color name="black">#000000</color>
     <color name="white">#FFFFFF</color>
-    <color name="blue_dark">#4070c0</color>
+    <color name="blue_dark">#66b9d8</color>
+    <color name="blue">#37b2df</color>
     <color name="yellow_dark">#ddb822</color>
+    <color name="yellow">#ffbb31</color>
+    <color name="red">#fd4545</color>
+    <color name="green">#9acb02</color>
+    <color name="green_dark">#00aaaa</color>
+    <color name="pink">#e7477c</color>
+    <color name="purple">#583168</color>
 </resources>
