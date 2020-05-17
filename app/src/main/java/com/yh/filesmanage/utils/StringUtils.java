@@ -188,4 +188,17 @@ public class StringUtils {
     public static String getCompareZipFileName(long createDate) {
         return "A" + createDate + getRamdom(5) + ".zip";
     }
+
+    public static String dateToWeek(Date datetime) {
+//        SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd");
+        String[] weekDays = { "星期日", "星期一", "星期二", "星期三", "星期四", "星期五", "星期六" };
+        Calendar cal = Calendar.getInstance(); // 获得一个日历
+//        Date datet = null;
+        //            datet = f.parse(datetime);
+        cal.setTime(datetime);
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1; // 指示一个星期中的某天。
+        if (w < 0)
+            w = 0;
+        return weekDays[w];
+    }
 }
