@@ -1,38 +1,38 @@
 {
   "stringTable": {
-    "0": "E:/studioworkspace/FilesManage/app/.cxx/cmake/release/armeabi-v7a",
-    "1": "--target=armv7-none-linux-androideabi21 --gcc-toolchain=D:/application/androidsdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=D:/application/androidsdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dnative_lib_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -Oz -DNDEBUG -fPIC"
+    "0": "D:/androidProgream/fileManage/app/.cxx/cmake/release/armeabi-v7a",
+    "1": "--target=armv7-none-linux-androideabi21 --gcc-toolchain=C:/Users/mayn/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=C:/Users/mayn/AppData/Local/Android/Sdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dnative_lib_EXPORTS -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -march=armv7-a -mthumb -Wformat -Werror=format-security -Oz -DNDEBUG -fPIC"
   },
   "buildFiles": [
-    "D:\\application\\androidsdk\\ndk\\21.1.6352462\\build\\cmake\\platforms.cmake",
-    "D:\\application\\androidsdk\\ndk\\21.1.6352462\\build\\cmake\\android.toolchain.cmake",
-    "E:\\studioworkspace\\FilesManage\\app\\src\\main\\cpp\\CMakeLists.txt"
+    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\21.1.6352462\\build\\cmake\\android.toolchain.cmake",
+    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\21.1.6352462\\build\\cmake\\platforms.cmake",
+    "D:\\androidProgream\\fileManage\\app\\src\\main\\cpp\\CMakeLists.txt"
   ],
   "cleanCommands": [
-    "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\release\\armeabi-v7a\" clean"
+    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\release\\armeabi-v7a\" clean"
   ],
-  "buildTargetsCommand": "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\release\\armeabi-v7a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "buildTargetsCommand": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\release\\armeabi-v7a\" {LIST_OF_TARGETS_TO_BUILD}",
   "libraries": {
     "native-lib-Release-armeabi-v7a": {
-      "buildCommand": "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\release\\armeabi-v7a\" native-lib",
+      "buildCommand": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\release\\armeabi-v7a\" native-lib",
       "buildType": "release",
-      "toolchain": "2639118505",
+      "toolchain": "3551808541",
       "abi": "armeabi-v7a",
       "artifactName": "native-lib",
       "files": [
         {
-          "src": "E:\\studioworkspace\\FilesManage\\app\\src\\main\\cpp\\native-lib.cpp",
+          "src": "D:\\androidProgream\\fileManage\\app\\src\\main\\cpp\\native-lib.cpp",
           "flagsOrdinal": 1,
           "workingDirectoryOrdinal": 0
         }
       ],
       "headers": [],
-      "output": "E:\\studioworkspace\\FilesManage\\app\\build\\intermediates\\cmake\\release\\obj\\armeabi-v7a\\libnative-lib.so"
+      "output": "D:\\androidProgream\\fileManage\\app\\build\\intermediates\\cmake\\release\\obj\\armeabi-v7a\\libnative-lib.so"
     }
   },
   "toolchains": {
-    "2639118505": {
-      "cppCompilerExecutable": "D:\\application\\androidsdk\\ndk\\21.1.6352462\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    "3551808541": {
+      "cppCompilerExecutable": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\21.1.6352462\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
     }
   },
   "cFileExtensions": [],

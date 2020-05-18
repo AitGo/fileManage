@@ -113,4 +113,6 @@ dependencies {
     implementation 'com.tencent.bugly:nativecrashreport:3.1.0'
     //gson
     implementation 'com.google.code.gson:gson:2.8.6'
+    //qmui
+    implementation 'com.qmuiteam:qmui:2.0.0-alpha08'
 }

@@ -1,19 +1,19 @@
 {
   "buildFiles": [
-    "D:\\application\\androidsdk\\ndk\\21.1.6352462\\build\\cmake\\platforms.cmake",
-    "D:\\application\\androidsdk\\ndk\\21.1.6352462\\build\\cmake\\android.toolchain.cmake",
-    "E:\\studioworkspace\\FilesManage\\app\\src\\main\\cpp\\CMakeLists.txt"
+    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\21.1.6352462\\build\\cmake\\android.toolchain.cmake",
+    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\21.1.6352462\\build\\cmake\\platforms.cmake",
+    "D:\\androidProgream\\fileManage\\app\\src\\main\\cpp\\CMakeLists.txt"
   ],
   "cleanCommands": [
-    "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\release\\x86\" clean"
+    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\release\\x86\" clean"
   ],
-  "buildTargetsCommand": "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\release\\x86\" {LIST_OF_TARGETS_TO_BUILD}",
+  "buildTargetsCommand": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\release\\x86\" {LIST_OF_TARGETS_TO_BUILD}",
   "libraries": {
     "native-lib-Release-x86": {
       "artifactName": "native-lib",
-      "buildCommand": "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\release\\x86\" native-lib",
+      "buildCommand": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\release\\x86\" native-lib",
       "abi": "x86",
-      "output": "E:\\studioworkspace\\FilesManage\\app\\build\\intermediates\\cmake\\release\\obj\\x86\\libnative-lib.so"
+      "output": "D:\\androidProgream\\fileManage\\app\\build\\intermediates\\cmake\\release\\obj\\x86\\libnative-lib.so"
     }
   }
 }

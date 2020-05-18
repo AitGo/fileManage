@@ -1,4 +1,4 @@
-# Install script for directory: E:/studioworkspace/FilesManage/app/src/main/cpp
+# Install script for directory: D:/androidProgream/fileManage/app/src/main/cpp
 
 # Set the install prefix
 if(NOT DEFINED CMAKE_INSTALL_PREFIX)
@@ -45,5 +45,5 @@ endif()
 
 string(REPLACE ";" "\n" CMAKE_INSTALL_MANIFEST_CONTENT
        "${CMAKE_INSTALL_MANIFEST_FILES}")
-file(WRITE "E:/studioworkspace/FilesManage/app/.cxx/cmake/release/armeabi-v7a/${CMAKE_INSTALL_MANIFEST}"
+file(WRITE "D:/androidProgream/fileManage/app/.cxx/cmake/release/armeabi-v7a/${CMAKE_INSTALL_MANIFEST}"
      "${CMAKE_INSTALL_MANIFEST_CONTENT}")

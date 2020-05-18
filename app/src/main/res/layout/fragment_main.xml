@@ -96,17 +96,11 @@
             android:orientation="vertical"
             android:background="@color/blue_dark">
 
-            <TextView
+            <com.qmuiteam.qmui.widget.QMUIVerticalTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 style="@style/mainTextStyle"
-                android:text="设"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                style="@style/mainTextStyle"
-                android:text="置"/>
+                android:text="设 置"/>
 
         </LinearLayout>
 
