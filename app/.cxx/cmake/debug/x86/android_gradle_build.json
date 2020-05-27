@@ -1,41 +1,42 @@
 {
   "stringTable": {
-    "0": "D:/androidProgream/fileManage/app/.cxx/cmake/debug/x86",
-    "1": "--target=i686-none-linux-android --gcc-toolchain=C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/toolchains/x86-4.9/prebuilt/windows-x86_64 --sysroot=C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/sysroot -Dnative_lib_EXPORTS -isystem C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/include -isystem C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/libs/x86/include -isystem C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/sources/cxx-stl/gnu-libstdc++/4.9/include/backward -isystem C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/sysroot/usr/include/i686-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -Wa,--noexecstack -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC"
+    "0": "E:/studioworkspace/FilesManage/app/.cxx/cmake/debug/x86",
+    "1": "--target=i686-none-linux-android21 --gcc-toolchain=D:/application/androidsdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=D:/application/androidsdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dserial_port_EXPORTS -IE:/studioworkspace/FilesManage/app/src/main/cpp/src/main/cpp -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -mstackrealign -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC"
   },
   "buildFiles": [
-    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\16.1.4479499\\build\\cmake\\android.toolchain.cmake",
-    "D:\\androidProgream\\fileManage\\app\\src\\main\\cpp\\CMakeLists.txt"
+    "D:\\application\\androidsdk\\ndk\\21.1.6352462\\build\\cmake\\platforms.cmake",
+    "D:\\application\\androidsdk\\ndk\\21.1.6352462\\build\\cmake\\android.toolchain.cmake",
+    "E:\\studioworkspace\\FilesManage\\app\\src\\main\\cpp\\CMakeLists.txt"
   ],
   "cleanCommands": [
-    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\debug\\x86\" clean"
+    "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\debug\\x86\" clean"
   ],
-  "buildTargetsCommand": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\debug\\x86\" {LIST_OF_TARGETS_TO_BUILD}",
+  "buildTargetsCommand": "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\debug\\x86\" {LIST_OF_TARGETS_TO_BUILD}",
   "libraries": {
-    "native-lib-Debug-x86": {
-      "buildCommand": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\debug\\x86\" native-lib",
+    "serial_port-Debug-x86": {
+      "buildCommand": "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\debug\\x86\" serial_port",
       "buildType": "debug",
-      "toolchain": "900166107",
+      "toolchain": "3116469687",
       "abi": "x86",
-      "artifactName": "native-lib",
+      "artifactName": "serial_port",
       "files": [
         {
-          "src": "D:\\androidProgream\\fileManage\\app\\src\\main\\cpp\\native-lib.cpp",
+          "src": "E:\\studioworkspace\\FilesManage\\app\\src\\main\\cpp\\SerialPort.c",
           "flagsOrdinal": 1,
           "workingDirectoryOrdinal": 0
         }
       ],
       "headers": [],
-      "output": "D:\\androidProgream\\fileManage\\app\\build\\intermediates\\cmake\\debug\\obj\\x86\\libnative-lib.so"
+      "output": "E:\\studioworkspace\\FilesManage\\app\\build\\intermediates\\cmake\\debug\\obj\\x86\\libserial_port.so"
     }
   },
   "toolchains": {
-    "900166107": {
-      "cppCompilerExecutable": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\16.1.4479499\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang++.exe"
+    "3116469687": {
+      "cCompilerExecutable": "D:\\application\\androidsdk\\ndk\\21.1.6352462\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe"
     }
   },
-  "cFileExtensions": [],
-  "cppFileExtensions": [
-    "cpp"
-  ]
+  "cFileExtensions": [
+    "c"
+  ],
+  "cppFileExtensions": []
 }
