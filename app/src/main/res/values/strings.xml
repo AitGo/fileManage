@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">智能回转档案柜</string>
+    <string name="title">RFID智能选层柜</string>
     <string name="prompt">提示</string>
     <string name="confirm">确定</string>
     <string name="cancel">取消</string>
+
+    //main
+    <string name="state">状态统计</string>
+    <string name="select">档案查询</string>
+    <string name="task">批量任务</string>
+    <string name="setting">参数设置</string>
+
+    <string name="icon_state">&#xe654;</string>
+    <string name="icon_select">&#xe728;</string>
+    <string name="icon_task">&#xe622;</string>
+    <string name="icon_setting">&#xe607;</string>
 </resources>

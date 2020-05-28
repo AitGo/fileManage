@@ -3,77 +3,134 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/blue_bg">
+
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:orientation="horizontal">
-
-        <RelativeLayout
-            android:layout_width="wrap_content"
+        android:layout_weight="3"
+        android:layout_marginTop="10dp">
+        <com.qmuiteam.qmui.layout.QMUILinearLayout
+            android:id="@+id/ll_state_save_left"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="match_parent"
-            android:background="@color/red">
-
-            <TextView
-                android:id="@+id/tv_main_time"
+            android:layout_marginLeft="20dp"
+            android:background="@color/blue_bg_dark">
+            <com.qmuiteam.qmui.widget.QMUIVerticalTextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="21:30"
-                style="@style/mainTextStyle"/>
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="存放状态"
+                style="@style/mainTextStyle" />
 
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_main_week"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="周三"
-                    style="@style/mainTextSubStyle"/>
-
-                <TextView
-                    android:id="@+id/tv_main_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="2020/5/14"
-                    style="@style/mainTextSubStyle"/>
-            </LinearLayout>
-
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="5dp"
-            android:background="@color/green">
-
-            <com.yh.filesmanage.widget.WheelView
-                android:id="@+id/wv_main"
+            <com.qmuiteam.qmui.layout.QMUILinearLayout
+                android:id="@+id/ll_state_save_right"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="40dp"
-                android:layout_marginRight="40dp"
-                app:lwvCenterMarkTextSize="18sp"
-                app:lwvCursorSize="10dp"
-                app:lwvMarkTextSize="15sp"/>
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:background="@color/blue_bg_white">
 
-            <Button
-                android:id="@+id/btn_main_confirm"
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="本柜可放置："
+                        style="@style/mainTextSubStyle"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="360"
+                        style="@style/mainTextSubStyle"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="本柜已用："
+                        style="@style/mainTextSubStyle"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        style="@style/mainTextSubStyle"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginTop="10dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="本柜可用："
+                        style="@style/mainTextSubStyle"/>
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="360"
+                        style="@style/mainTextSubStyle"/>
+
+                </LinearLayout>
+
+
+            </com.qmuiteam.qmui.layout.QMUILinearLayout>
+        </com.qmuiteam.qmui.layout.QMUILinearLayout>
+
+        <com.qmuiteam.qmui.layout.QMUILinearLayout
+            android:id="@+id/ll_state_error_left"
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_marginLeft="40dp"
+            android:layout_marginRight="20dp"
+            android:layout_height="match_parent"
+            android:background="@color/blue_bg_dark">
+            <com.qmuiteam.qmui.widget.QMUIVerticalTextView
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/wv_main"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="20dp"
-                android:text="@string/confirm"
-                android:background="@null"
-                style="@style/mainTextStyle"/>
-        </RelativeLayout>
+                android:layout_height="match_parent"
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:text="异常状态"
+                style="@style/mainTextStyle" />
+
+            <com.qmuiteam.qmui.layout.QMUILinearLayout
+                android:id="@+id/ll_state_error_right"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/blue_bg_white">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:text="正常"
+                    android:textSize="30sp"
+                    android:textColor="@color/green"/>
+
+
+            </com.qmuiteam.qmui.layout.QMUILinearLayout>
+        </com.qmuiteam.qmui.layout.QMUILinearLayout>
 
     </LinearLayout>
 
@@ -81,241 +138,45 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:weightSum="15"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+        android:layout_marginTop="20dp">
 
-        <LinearLayout
-            android:id="@+id/ll_main_setting"
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="6"
+        android:layout_marginTop="20dp">
+
+        <com.qmuiteam.qmui.layout.QMUILinearLayout
+            android:id="@+id/ll_state_time_left"
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:background="@color/blue_dark">
-
+            android:layout_marginLeft="20dp"
+            android:background="@color/blue_bg_dark">
             <com.qmuiteam.qmui.widget.QMUIVerticalTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                style="@style/mainTextStyle"
-                android:text="设 置"/>
+                android:layout_marginLeft="5dp"
+                android:layout_marginRight="5dp"
+                android:layout_gravity="center"
+                android:text="实时状态"
+                style="@style/mainTextStyle" />
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_main_server_address"
+            <com.qmuiteam.qmui.layout.QMUILinearLayout
+                android:id="@+id/ll_state_time_right"
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:background="@color/blue"
-                android:text="服务器地址"
-                style="@style/mainTextStyle"/>
-
-            <TextView
-                android:id="@+id/tv_main_files_setting"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_marginTop="5dp"
-                android:background="@color/blue"
-                android:text="档案柜设置"
-                style="@style/mainTextStyle"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_main_serial_setting"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:background="@color/blue"
-                android:text="串口设置"
-                style="@style/mainTextStyle"/>
-
-            <TextView
-                android:id="@+id/tv_main_order_setting"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_marginTop="5dp"
-                android:background="@color/blue"
-                android:text="指令设置"
-                style="@style/mainTextStyle"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_weight="2"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:id="@+id/tv_main_db_address"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:background="@color/blue"
-                android:text="数据库地址"
-                style="@style/mainTextStyle"/>
-
-            <TextView
-                android:id="@+id/tv_main_param_setting"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:layout_marginTop="5dp"
-                android:background="@color/blue"
-                android:text="参数设置"
-                style="@style/mainTextStyle"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_main_open"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical"
-            android:background="@color/pink">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="开门"
-                style="@style/mainTextStyle"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_main_check"
-            android:layout_width="0dp"
-            android:layout_weight="4"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical"
-            android:background="@color/green_dark">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="盘库"
-                style="@style/mainTextStyle"/>
-
-        </LinearLayout>
-
-    </LinearLayout>
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:background="@color/blue_bg_white">
 
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="1"
-        android:layout_marginTop="10dp"
-        android:orientation="horizontal">
+            </com.qmuiteam.qmui.layout.QMUILinearLayout>
 
-        <LinearLayout
-            android:id="@+id/ll_main_select"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:background="@color/green_dark">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="查询"
-                style="@style/mainTextStyle"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_main_statis"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical"
-            android:background="@color/purple">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="统计"
-                style="@style/mainTextStyle"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_main_info"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical"
-            android:background="@color/blue">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="信息"
-                style="@style/mainTextStyle"/>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/ll_main_manage"
-            android:layout_width="0dp"
-            android:layout_weight="1"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="10dp"
-            android:orientation="vertical"
-            android:background="@color/yellow">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:text="档案管理"
-                style="@style/mainTextStyle"/>
-
-        </LinearLayout>
+        </com.qmuiteam.qmui.layout.QMUILinearLayout>
 
     </LinearLayout>
 

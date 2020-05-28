@@ -3,6 +3,8 @@ package com.yh.filesmanage.view;
 import android.os.Bundle;
 import android.widget.FrameLayout;
 
+import com.qmuiteam.qmui.layout.IQMUILayout;
+import com.qmuiteam.qmui.layout.QMUILinearLayout;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseFragmentActivity;
 import com.yh.filesmanage.view.fragment.MainFragment;
@@ -18,6 +20,8 @@ public class MainActivity extends BaseFragmentActivity {
 
     @BindView(R.id.fl_view)
     FrameLayout flView;
+    @BindView(R.id.ll_title)
+    QMUILinearLayout llTitle;
 
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
@@ -31,6 +35,7 @@ public class MainActivity extends BaseFragmentActivity {
 
     @Override
     protected void initView() {
+        llTitle.setRadiusAndShadow(20, IQMUILayout.HIDE_RADIUS_SIDE_BOTTOM,0,0);
         addFragment();
         hideFragment();
         showFragment(mMainFragment);

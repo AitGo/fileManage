@@ -1,20 +1,20 @@
-Executable : C:\Users\mayn\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\cmake.exe
+Executable : D:\application\androidsdk\cmake\3.10.2.4988404\bin\cmake.exe
 arguments : 
--HD:\androidProgream\fileManage\app\src\main\cpp
--BD:\androidProgream\fileManage\app\.cxx\cmake\release\x86
+-HE:\studioworkspace\FilesManage\app\src\main\cpp
+-BE:\studioworkspace\FilesManage\app\.cxx\cmake\release\x86
 -DANDROID_ABI=x86
 -DANDROID_PLATFORM=android-21
--DCMAKE_LIBRARY_OUTPUT_DIRECTORY=D:\androidProgream\fileManage\app\build\intermediates\cmake\release\obj\x86
+-DCMAKE_LIBRARY_OUTPUT_DIRECTORY=E:\studioworkspace\FilesManage\app\build\intermediates\cmake\release\obj\x86
 -DCMAKE_BUILD_TYPE=Release
--DANDROID_NDK=C:\Users\mayn\AppData\Local\Android\Sdk\ndk\21.1.6352462
+-DANDROID_NDK=D:\application\androidsdk\ndk\21.1.6352462
 -DCMAKE_CXX_FLAGS=
 -DCMAKE_SYSTEM_NAME=Android
 -DCMAKE_ANDROID_ARCH_ABI=x86
 -DCMAKE_SYSTEM_VERSION=21
 -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
--DCMAKE_ANDROID_NDK=C:\Users\mayn\AppData\Local\Android\Sdk\ndk\21.1.6352462
--DCMAKE_TOOLCHAIN_FILE=C:\Users\mayn\AppData\Local\Android\Sdk\ndk\21.1.6352462\build\cmake\android.toolchain.cmake
+-DCMAKE_ANDROID_NDK=D:\application\androidsdk\ndk\21.1.6352462
+-DCMAKE_TOOLCHAIN_FILE=D:\application\androidsdk\ndk\21.1.6352462\build\cmake\android.toolchain.cmake
 -G Ninja
--DCMAKE_MAKE_PROGRAM=C:\Users\mayn\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe
+-DCMAKE_MAKE_PROGRAM=D:\application\androidsdk\cmake\3.10.2.4988404\bin\ninja.exe
 jvmArgs : 
 
