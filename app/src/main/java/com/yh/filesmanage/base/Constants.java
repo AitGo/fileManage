@@ -23,4 +23,5 @@ public class Constants {
     public static String SP_FILE_NAME = "fileManageSP";
     public static String LOG_NAME = "manage***";
 
+    public static final String settingDir = MyApplication.getContext().getExternalFilesDir("Setting").getAbsolutePath();
 }

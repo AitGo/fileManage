@@ -8,6 +8,7 @@ import com.tencent.bugly.crashreport.CrashReport;
 import com.yh.filesmanage.database.greenDao.db.DBHelper;
 import com.yh.filesmanage.database.greenDao.db.DaoMaster;
 import com.yh.filesmanage.database.greenDao.db.DaoSession;
+import com.yh.filesmanage.utils.CrashHandler;
 
 /**
  * @创建者 liuyang
@@ -29,6 +30,7 @@ public class MyApplication extends Application {
         mContext = getApplicationContext();
         initBugly();
         initGreenDao();
+        initCrash();
     }
 
 
@@ -54,4 +56,17 @@ public class MyApplication extends Application {
     }
 
     private DaoSession daoSession;
+
+    private void initCrash() {
+        //捕获错误日志
+        new Thread(){
+            @Override
+            public void run() {
+                //把异常处理的handler设置到主线程里面
+                CrashHandler ch = CrashHandler.getInstance();
+                ch.init(getApplicationContext());
+            }
+        }.start();
+
+    }
 }
