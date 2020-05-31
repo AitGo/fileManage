@@ -1,9 +1,6 @@
 package com.yh.filesmanage.view;
 
 import android.Manifest;
-import android.annotation.SuppressLint;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -14,7 +11,7 @@ import com.qmuiteam.qmui.layout.IQMUILayout;
 import com.qmuiteam.qmui.layout.QMUILinearLayout;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseFragmentActivity;
-import com.yh.filesmanage.view.fragment.MainFragment;
+import com.yh.filesmanage.view.fragment.StateFragment;
 import com.yh.filesmanage.view.fragment.SelectFragment;
 import com.yh.filesmanage.view.fragment.SettingFragment;
 import com.yh.filesmanage.view.fragment.TaskFragment;
@@ -23,7 +20,6 @@ import com.yh.filesmanage.widget.FontIconView;
 import java.util.List;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -82,7 +78,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
-    private MainFragment mMainFragment;
+    private StateFragment mStateFragment;
     private SelectFragment mSelectFragment;
     private TaskFragment mTaskFragment;
     private SettingFragment mSettingFragment;
@@ -102,7 +98,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         addFragment();
         hideFragment();
         selectButtonBg(0);
-        showFragment(mMainFragment);
+        showFragment(mStateFragment);
     }
 
     @Override
@@ -127,7 +123,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             case R.id.ll_main_main:
                 hideFragment();
                 selectButtonBg(0);
-                showFragment(mMainFragment);
+                showFragment(mStateFragment);
                 break;
             case R.id.ll_main_select:
                 hideFragment();
@@ -155,9 +151,9 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     public void addFragment() {
         transaction = fragmentManager.beginTransaction();
-        if (mMainFragment == null) {
-            mMainFragment = new MainFragment();
-            transaction.add(R.id.fl_view, mMainFragment);
+        if (mStateFragment == null) {
+            mStateFragment = new StateFragment();
+            transaction.add(R.id.fl_view, mStateFragment);
         }
         if(mSelectFragment == null) {
             mSelectFragment = new SelectFragment();
@@ -177,8 +173,8 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     public void hideFragment() {
         transaction = fragmentManager.beginTransaction();
-        if (mMainFragment != null) {
-            transaction.hide(mMainFragment);
+        if (mStateFragment != null) {
+            transaction.hide(mStateFragment);
         }
         if (mSelectFragment != null) {
             transaction.hide(mSelectFragment);

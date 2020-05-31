@@ -104,8 +104,6 @@ dependencies {
     //butterknife
     implementation 'com.jakewharton:butterknife:10.0.0'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.0.0'
-    //xpopup
-    implementation 'com.lxj:xpopup:1.8.10-x'
     //easypermissions
     implementation 'pub.devrel:easypermissions:3.0.0'
     //bugly
@@ -115,4 +113,11 @@ dependencies {
     implementation 'com.google.code.gson:gson:2.8.6'
     //qmui
     implementation 'com.qmuiteam:qmui:2.0.0-alpha08'
+    //recycleview
+    implementation 'androidx.recyclerview:recyclerview:1.0.0'
+    //brvah
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:2.9.45-androidx'
+    //glide
+    implementation 'com.github.bumptech.glide:glide:4.10.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
 }

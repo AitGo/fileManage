@@ -15,4 +15,7 @@
     <string name="icon_select">&#xe728;</string>
     <string name="icon_task">&#xe622;</string>
     <string name="icon_setting">&#xe607;</string>
+
+    //state
+    <string name="icon_more">&#xe611;</string>
 </resources>
