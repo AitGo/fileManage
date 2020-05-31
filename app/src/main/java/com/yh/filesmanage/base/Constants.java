@@ -21,7 +21,7 @@ public class Constants {
     public static final boolean Bugly_isDebug = true;
     public static int DEBUGLEVEL = LogUtils.LEVEL_ALL; //打开日志开关
     public static String SP_FILE_NAME = "fileManageSP";
-    public static String LOG_NAME = "manage***";
+    public static String LOG_NAME = "manage";
 
     public static final String settingDir = MyApplication.getContext().getExternalFilesDir("Setting").getAbsolutePath();
 }

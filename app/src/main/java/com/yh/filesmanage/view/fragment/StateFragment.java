@@ -8,6 +8,7 @@ import com.yh.filesmanage.R;
 import com.yh.filesmanage.adapter.LayerAdapter;
 import com.yh.filesmanage.base.BaseFragment;
 import com.yh.filesmanage.diagnose.LayerEntity;
+import com.yh.filesmanage.widget.LayerView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,12 +56,13 @@ public class StateFragment extends BaseFragment {
         llStateTimeRight.setRadiusAndShadow(40, IQMUILayout.HIDE_RADIUS_SIDE_LEFT, 0, 10);
 
         rvStateLayer.setLayoutManager(new LinearLayoutManager(getContext()));
-        adapter = new LayerAdapter(layers,getContext());
+        adapter = new LayerAdapter(layers, getContext());
         rvStateLayer.setAdapter(adapter);
         //添加Android自带的分割线
-        DividerItemDecoration divider = new DividerItemDecoration(getContext(),DividerItemDecoration.VERTICAL);
-        divider.setDrawable(ContextCompat.getDrawable(getContext(),R.drawable.bg_custom_layer));
+        DividerItemDecoration divider = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
+        divider.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.bg_custom_layer));
         rvStateLayer.addItemDecoration(divider);
+//        LayerView layerView = new LayerView(getContext());
 
     }
 
@@ -68,14 +70,14 @@ public class StateFragment extends BaseFragment {
     protected void initData() {
 
         Random rand = new Random();
-        for(int i = 0; i < 20; i++) {
+        for (int i = 0; i < 20; i++) {
             LayerEntity entity = new LayerEntity();
             entity.setIndex(i + 1);
             entity.setState(0);
             List<LayerEntity.Item> items = new ArrayList<>();
-            for(int j = 0; j < 15; j++) {
+            for (int j = 0; j < 15; j++) {
                 LayerEntity.Item item = new LayerEntity.Item();
-                item.setIndex(j+1);
+                item.setIndex(j + 1);
                 int randNum = rand.nextInt(4);
                 item.setState(randNum);
                 items.add(item);
