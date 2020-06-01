@@ -24,6 +24,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:layout_gravity="center"
                 android:text="存放状态"
                 style="@style/mainTextStyle" />
 
@@ -114,6 +115,7 @@
                 android:layout_height="match_parent"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
+                android:layout_gravity="center"
                 android:text="异常状态"
                 style="@style/mainTextStyle" />
 
@@ -261,7 +263,8 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="1">
+                    android:layout_marginTop="5dp"
+                    android:layout_weight="2">
 
                     <LinearLayout
                         android:layout_width="wrap_content"
@@ -295,6 +298,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="20dp"
+                        android:layout_centerInParent="true"
                         android:background="@color/white"
                         android:layout_alignParentRight="true">
 
@@ -309,6 +313,7 @@
                         <com.yh.filesmanage.widget.FontIconView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
+                            android:paddingRight="5dp"
                             android:textColor="@color/black"
                             android:text="@string/icon_more"/>
                     </LinearLayout>
@@ -318,7 +323,7 @@
                 <RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="0dp"
-                    android:layout_weight="7">
+                    android:layout_weight="8">
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_state_layer"
@@ -328,9 +333,137 @@
                         android:background="@color/white" />
                 </RelativeLayout>
 
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="center_horizontal">
+                    <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="已放置:   "
+                    style="@style/mainTextSubStyle"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0"
+                        style="@style/mainTextSubStyle"/>
+
+                </LinearLayout>
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_horizontal">
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="22dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/bg_state_gray"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="空位"
+                            style="@style/mainTextSubStyle"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="22dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/bg_state_green"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="在位"
+                            style="@style/mainTextSubStyle"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="22dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/bg_state_red"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="缺失"
+                            style="@style/mainTextSubStyle"/>
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="22dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/bg_state_yellow"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="错位"
+                            style="@style/mainTextSubStyle"/>
+
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true">
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="  剩   余:    "
+                            style="@style/mainTextSubStyle"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="30"
+                            style="@style/mainTextSubStyle"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="10dp"
+                        android:layout_alignParentRight="true">
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="22dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/bg_state_gray_light"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="待盘点"
+                            style="@style/mainTextSubStyle"/>
+
+                        <ImageView
+                            android:layout_width="70dp"
+                            android:layout_height="22dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/bg_state_yellow_position"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="当前层"
+                            style="@style/mainTextSubStyle"/>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+
             </com.qmuiteam.qmui.layout.QMUILinearLayout>
 
         </com.qmuiteam.qmui.layout.QMUILinearLayout>
+
 
     </LinearLayout>
 

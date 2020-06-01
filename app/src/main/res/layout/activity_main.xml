@@ -8,46 +8,56 @@
     android:orientation="vertical"
     android:background="@drawable/bg_main">
 
-    <com.qmuiteam.qmui.layout.QMUILinearLayout
-        android:id="@+id/ll_title"
+    <com.qmuiteam.qmui.layout.QMUIRelativeLayout
+        android:id="@+id/rl_title"
         android:layout_width="match_parent"
         android:layout_height="60dp"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginTop="10dp"
-        android:gravity="center"
         android:background="@drawable/bg_sub">
 
         <TextView
+            android:id="@+id/tv_main_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="10dp"
+            android:layout_marginLeft="30dp"
             android:layout_centerVertical="true"
             android:layout_marginRight="10dp"
             android:text="@string/title"
             style="@style/mainTextStyle"/>
 
-        <TextView
-            android:id="@+id/tv_main_area"
+        <LinearLayout
+            android:id="@+id/ll_main_area"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginLeft="10dp"
-            android:text="01"
-            android:textSize="24sp"
-            android:textColor="@color/red"/>
+            android:layout_toRightOf="@id/tv_main_title">
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="区"
-            style="@style/mainTextStyle" />
+            <TextView
+                android:id="@+id/tv_main_area"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:text="01"
+                android:textSize="24sp"
+                android:textColor="@color/red"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="区"
+                style="@style/mainTextStyle" />
+        </LinearLayout>
+
 
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="20dp"
+            android:layout_centerInParent="true"
+            android:layout_marginLeft="30dp"
             android:orientation="vertical">
 
             <LinearLayout
@@ -98,11 +108,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="20dp"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
             android:orientation="horizontal">
 
             <LinearLayout
                 android:id="@+id/ll_main_main"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
 
@@ -125,9 +137,9 @@
 
             <LinearLayout
                 android:id="@+id/ll_main_select"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
 
                 <com.yh.filesmanage.widget.FontIconView
@@ -149,9 +161,9 @@
 
             <LinearLayout
                 android:id="@+id/ll_main_task"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
                 android:orientation="vertical">
 
                 <com.yh.filesmanage.widget.FontIconView
@@ -173,9 +185,10 @@
 
             <LinearLayout
                 android:id="@+id/ll_main_setting"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="20dp"
                 android:orientation="vertical">
 
                 <com.yh.filesmanage.widget.FontIconView
@@ -197,7 +210,7 @@
 
         </LinearLayout>
 
-    </com.qmuiteam.qmui.layout.QMUILinearLayout>
+    </com.qmuiteam.qmui.layout.QMUIRelativeLayout>
 
     <FrameLayout
         android:id="@+id/fl_view"
@@ -206,6 +219,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:layout_marginBottom="20dp"
+        android:padding="5dp"
         android:background="@drawable/bg_fl"/>
 
 </LinearLayout>

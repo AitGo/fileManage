@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import com.qmuiteam.qmui.layout.IQMUILayout;
 import com.qmuiteam.qmui.layout.QMUILinearLayout;
+import com.qmuiteam.qmui.layout.QMUIRelativeLayout;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseFragmentActivity;
 import com.yh.filesmanage.utils.TempTool;
@@ -34,8 +35,8 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     @BindView(R.id.fl_view)
     FrameLayout flView;
-    @BindView(R.id.ll_title)
-    QMUILinearLayout llTitle;
+    @BindView(R.id.rl_title)
+    QMUIRelativeLayout rlTitle;
     @BindView(R.id.tv_main_area)
     TextView tvMainArea;
     @BindView(R.id.tv_main_temperature)
@@ -95,7 +96,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     @Override
     protected void initView() {
-        llTitle.setRadiusAndShadow(20, IQMUILayout.HIDE_RADIUS_SIDE_BOTTOM, 0, 0);
+        rlTitle.setRadiusAndShadow(20, IQMUILayout.HIDE_RADIUS_SIDE_BOTTOM, 0, 0);
         addFragment();
         hideFragment();
         selectButtonBg(0);
