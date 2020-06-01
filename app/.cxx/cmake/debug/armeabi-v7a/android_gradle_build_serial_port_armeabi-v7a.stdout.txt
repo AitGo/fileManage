@@ -1,2 +1,2 @@
-ninja: Entering directory `E:\studioworkspace\FilesManage\app\.cxx\cmake\debug\armeabi-v7a'
+ninja: Entering directory `D:\androidProgream\fileManage\app\.cxx\cmake\debug\armeabi-v7a'
 ninja: no work to do.

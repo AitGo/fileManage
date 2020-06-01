@@ -1,3 +1,3 @@
 # ninja log v5
-2	345	612374332	CMakeFiles/serial_port.dir/SerialPort.c.o	b4621cff59e58174
-347	557	612374333	E:/studioworkspace/FilesManage/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libserial_port.so	216b2e394e616d81
+0	209	612675073	CMakeFiles/serial_port.dir/SerialPort.c.o	e318e58438378a75
+210	431	612675073	D:/androidProgream/fileManage/app/build/intermediates/cmake/debug/obj/armeabi-v7a/libserial_port.so	64fc41762d324680

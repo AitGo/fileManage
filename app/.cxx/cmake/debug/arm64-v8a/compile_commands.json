@@ -1,7 +1,7 @@
 [
 {
-  "directory": "E:/studioworkspace/FilesManage/app/.cxx/cmake/debug/arm64-v8a",
-  "command": "D:\\application\\androidsdk\\ndk\\21.1.6352462\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android21 --gcc-toolchain=D:/application/androidsdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=D:/application/androidsdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dserial_port_EXPORTS -IE:/studioworkspace/FilesManage/app/src/main/cpp/src/main/cpp  -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles\\serial_port.dir\\SerialPort.c.o   -c E:\\studioworkspace\\FilesManage\\app\\src\\main\\cpp\\SerialPort.c",
-  "file": "E:\\studioworkspace\\FilesManage\\app\\src\\main\\cpp\\SerialPort.c"
+  "directory": "D:/androidProgream/fileManage/app/.cxx/cmake/debug/arm64-v8a",
+  "command": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\16.1.4479499\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe --target=aarch64-none-linux-android --gcc-toolchain=C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/toolchains/aarch64-linux-android-4.9/prebuilt/windows-x86_64 --sysroot=C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/sysroot -Dserial_port_EXPORTS -ID:/androidProgream/fileManage/app/src/main/cpp/src/main/cpp  -isystem C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/sysroot/usr/include/aarch64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security  -O0 -fno-limit-debug-info  -fPIC   -o CMakeFiles\\serial_port.dir\\SerialPort.c.o   -c D:\\androidProgream\\fileManage\\app\\src\\main\\cpp\\SerialPort.c",
+  "file": "D:\\androidProgream\\fileManage\\app\\src\\main\\cpp\\SerialPort.c"
 }
 ]

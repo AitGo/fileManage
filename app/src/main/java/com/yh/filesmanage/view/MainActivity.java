@@ -11,6 +11,7 @@ import com.qmuiteam.qmui.layout.IQMUILayout;
 import com.qmuiteam.qmui.layout.QMUILinearLayout;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseFragmentActivity;
+import com.yh.filesmanage.utils.TempTool;
 import com.yh.filesmanage.view.fragment.StateFragment;
 import com.yh.filesmanage.view.fragment.SelectFragment;
 import com.yh.filesmanage.view.fragment.SettingFragment;
@@ -136,9 +137,12 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 showFragment(mTaskFragment);
                 break;
             case R.id.ll_main_setting:
-                hideFragment();
-                selectButtonBg(3);
-                showFragment(mSettingFragment);
+//                hideFragment();
+//                selectButtonBg(3);
+//                showFragment(mSettingFragment);
+
+                TempTool tempTool = new TempTool(this);
+                tempTool.openGetSSSerial();
                 break;
         }
     }

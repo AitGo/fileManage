@@ -1,19 +1,18 @@
 {
   "buildFiles": [
-    "D:\\application\\androidsdk\\ndk\\21.1.6352462\\build\\cmake\\platforms.cmake",
-    "D:\\application\\androidsdk\\ndk\\21.1.6352462\\build\\cmake\\android.toolchain.cmake",
-    "E:\\studioworkspace\\FilesManage\\app\\src\\main\\cpp\\CMakeLists.txt"
+    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\16.1.4479499\\build\\cmake\\android.toolchain.cmake",
+    "D:\\androidProgream\\fileManage\\app\\src\\main\\cpp\\CMakeLists.txt"
   ],
   "cleanCommands": [
-    "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\debug\\arm64-v8a\" clean"
+    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\debug\\arm64-v8a\" clean"
   ],
-  "buildTargetsCommand": "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\debug\\arm64-v8a\" {LIST_OF_TARGETS_TO_BUILD}",
+  "buildTargetsCommand": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\debug\\arm64-v8a\" {LIST_OF_TARGETS_TO_BUILD}",
   "libraries": {
     "serial_port-Debug-arm64-v8a": {
       "artifactName": "serial_port",
-      "buildCommand": "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\debug\\arm64-v8a\" serial_port",
+      "buildCommand": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\debug\\arm64-v8a\" serial_port",
       "abi": "arm64-v8a",
-      "output": "E:\\studioworkspace\\FilesManage\\app\\build\\intermediates\\cmake\\debug\\obj\\arm64-v8a\\libserial_port.so"
+      "output": "D:\\androidProgream\\fileManage\\app\\build\\intermediates\\cmake\\debug\\obj\\arm64-v8a\\libserial_port.so"
     }
   }
 }

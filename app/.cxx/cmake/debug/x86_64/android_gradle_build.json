@@ -1,38 +1,37 @@
 {
   "stringTable": {
-    "0": "E:/studioworkspace/FilesManage/app/.cxx/cmake/debug/x86_64",
-    "1": "--target=x86_64-none-linux-android21 --gcc-toolchain=D:/application/androidsdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64 --sysroot=D:/application/androidsdk/ndk/21.1.6352462/toolchains/llvm/prebuilt/windows-x86_64/sysroot -Dserial_port_EXPORTS -IE:/studioworkspace/FilesManage/app/src/main/cpp/src/main/cpp -g -DANDROID -fdata-sections -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -D_FORTIFY_SOURCE=2 -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC"
+    "0": "D:/androidProgream/fileManage/app/.cxx/cmake/debug/x86_64",
+    "1": "--target=x86_64-none-linux-android --gcc-toolchain=C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/toolchains/x86_64-4.9/prebuilt/windows-x86_64 --sysroot=C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/sysroot -Dserial_port_EXPORTS -ID:/androidProgream/fileManage/app/src/main/cpp/src/main/cpp -isystem C:/Users/mayn/AppData/Local/Android/Sdk/ndk/16.1.4479499/sysroot/usr/include/x86_64-linux-android -D__ANDROID_API__=21 -g -DANDROID -ffunction-sections -funwind-tables -fstack-protector-strong -no-canonical-prefixes -Wa,--noexecstack -Wformat -Werror=format-security -O0 -fno-limit-debug-info -fPIC"
   },
   "buildFiles": [
-    "D:\\application\\androidsdk\\ndk\\21.1.6352462\\build\\cmake\\platforms.cmake",
-    "D:\\application\\androidsdk\\ndk\\21.1.6352462\\build\\cmake\\android.toolchain.cmake",
-    "E:\\studioworkspace\\FilesManage\\app\\src\\main\\cpp\\CMakeLists.txt"
+    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\16.1.4479499\\build\\cmake\\android.toolchain.cmake",
+    "D:\\androidProgream\\fileManage\\app\\src\\main\\cpp\\CMakeLists.txt"
   ],
   "cleanCommands": [
-    "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\debug\\x86_64\" clean"
+    "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\debug\\x86_64\" clean"
   ],
-  "buildTargetsCommand": "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\debug\\x86_64\" {LIST_OF_TARGETS_TO_BUILD}",
+  "buildTargetsCommand": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\debug\\x86_64\" {LIST_OF_TARGETS_TO_BUILD}",
   "libraries": {
     "serial_port-Debug-x86_64": {
-      "buildCommand": "D:\\application\\androidsdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"E:\\studioworkspace\\FilesManage\\app\\.cxx\\cmake\\debug\\x86_64\" serial_port",
+      "buildCommand": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\cmake\\3.10.2.4988404\\bin\\ninja.exe -C \"D:\\androidProgream\\fileManage\\app\\.cxx\\cmake\\debug\\x86_64\" serial_port",
       "buildType": "debug",
-      "toolchain": "3116469687",
+      "toolchain": "3461265861",
       "abi": "x86_64",
       "artifactName": "serial_port",
       "files": [
         {
-          "src": "E:\\studioworkspace\\FilesManage\\app\\src\\main\\cpp\\SerialPort.c",
+          "src": "D:\\androidProgream\\fileManage\\app\\src\\main\\cpp\\SerialPort.c",
           "flagsOrdinal": 1,
           "workingDirectoryOrdinal": 0
         }
       ],
       "headers": [],
-      "output": "E:\\studioworkspace\\FilesManage\\app\\build\\intermediates\\cmake\\debug\\obj\\x86_64\\libserial_port.so"
+      "output": "D:\\androidProgream\\fileManage\\app\\build\\intermediates\\cmake\\debug\\obj\\x86_64\\libserial_port.so"
     }
   },
   "toolchains": {
-    "3116469687": {
-      "cCompilerExecutable": "D:\\application\\androidsdk\\ndk\\21.1.6352462\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe"
+    "3461265861": {
+      "cCompilerExecutable": "C:\\Users\\mayn\\AppData\\Local\\Android\\Sdk\\ndk\\16.1.4479499\\toolchains\\llvm\\prebuilt\\windows-x86_64\\bin\\clang.exe"
     }
   },
   "cFileExtensions": [

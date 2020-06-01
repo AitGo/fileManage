@@ -1,0 +1,7 @@
+Executable : C:\Users\mayn\AppData\Local\Android\Sdk\cmake\3.10.2.4988404\bin\ninja.exe
+arguments : 
+-C
+D:\androidProgream\fileManage\app\.cxx\cmake\debug\x86_64
+serial_port
+jvmArgs : 
+
