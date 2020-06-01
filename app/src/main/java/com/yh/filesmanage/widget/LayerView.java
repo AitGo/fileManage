@@ -19,8 +19,8 @@ import androidx.annotation.Nullable;
 public class LayerView extends View {
 
     private Context mContext;
-    private int itemSize = 30;
-    private int itemBgWidth = 5;
+    private int itemSize = 15;
+    private int itemBgWidth = 2;
     private int itemHeight;
     private int itemWidth;
     Paint paint;
@@ -65,7 +65,7 @@ public class LayerView extends View {
         for(int i = 0; i < items.size(); i++) {
             switch (items.get(i).getState()) {
                 case 0:
-                    paint.setColor(mContext.getResources().getColor(R.color.gray));
+                    paint.setColor(mContext.getResources().getColor(R.color.gray_dark));
                     break;
                 case 1:
                     paint.setColor(mContext.getResources().getColor(R.color.green));
@@ -78,7 +78,7 @@ public class LayerView extends View {
                     break;
             }
 
-            canvas.drawRect(DensityUtils.dip2px(mContext,itemBgWidth + i*itemSize), DensityUtils.dip2px(mContext,5),
+            canvas.drawRect(DensityUtils.dip2px(mContext,itemBgWidth + i*itemSize), DensityUtils.dip2px(mContext,itemBgWidth),
                     DensityUtils.dip2px(mContext,itemSize - itemBgWidth + i*itemSize), DensityUtils.dip2px(mContext,95), paint);
 
             canvas.drawRect(DensityUtils.dip2px(mContext,0), DensityUtils.dip2px(mContext,0),
