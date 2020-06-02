@@ -12,13 +12,16 @@
         android:layout_height="0dp"
         android:layout_weight="2.5"
         android:layout_marginTop="10dp">
-        <com.qmuiteam.qmui.layout.QMUILinearLayout
-            android:id="@+id/ll_state_save_left"
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
-            android:background="@color/blue_bg_dark">
+            app:qmui_radiusTopLeft="10dp"
+            app:qmui_radiusBottomLeft="10dp"
+            app:qmui_radiusBottomRight="10dp"
+            app:qmui_radiusTopRight="10dp"
+            app:qmui_backgroundColor="@color/blue_bg_dark">
             <com.qmuiteam.qmui.widget.QMUIVerticalTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -28,13 +31,14 @@
                 android:text="存放状态"
                 style="@style/mainTextStyle" />
 
-            <com.qmuiteam.qmui.layout.QMUILinearLayout
-                android:id="@+id/ll_state_save_right"
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
                 android:orientation="vertical"
-                android:background="@color/blue_bg_white">
+                app:qmui_radiusBottomRight="10dp"
+                app:qmui_radiusTopRight="10dp"
+                app:qmui_backgroundColor="@color/blue_bg_white">
 
                 <LinearLayout
                     android:layout_width="match_parent"
@@ -102,17 +106,20 @@
                 </LinearLayout>
 
 
-            </com.qmuiteam.qmui.layout.QMUILinearLayout>
-        </com.qmuiteam.qmui.layout.QMUILinearLayout>
+            </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
+        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
-        <com.qmuiteam.qmui.layout.QMUILinearLayout
-            android:id="@+id/ll_state_error_left"
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_marginLeft="40dp"
             android:layout_marginRight="20dp"
             android:layout_height="match_parent"
-            android:background="@color/blue_bg_dark">
+            app:qmui_radiusTopLeft="10dp"
+            app:qmui_radiusBottomLeft="10dp"
+            app:qmui_radiusBottomRight="10dp"
+            app:qmui_radiusTopRight="10dp"
+            app:qmui_backgroundColor="@color/blue_bg_dark">
             <com.qmuiteam.qmui.widget.QMUIVerticalTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -122,12 +129,13 @@
                 android:text="异常状态"
                 style="@style/mainTextStyle" />
 
-            <com.qmuiteam.qmui.layout.QMUILinearLayout
-                android:id="@+id/ll_state_error_right"
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical"
-                android:background="@color/blue_bg_white">
+                app:qmui_radiusTopRight="10dp"
+                app:qmui_radiusBottomRight="10dp"
+                app:qmui_backgroundColor="@color/blue_bg_white">
 
                 <TextView
                     android:id="@+id/tv_state_error"
@@ -138,8 +146,8 @@
                     android:textSize="30sp"
                     android:textColor="@color/green"/>
 
-            </com.qmuiteam.qmui.layout.QMUILinearLayout>
-        </com.qmuiteam.qmui.layout.QMUILinearLayout>
+            </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
+        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
     </LinearLayout>
 
@@ -238,14 +246,17 @@
         android:layout_weight="6.5"
         android:layout_marginTop="10dp">
 
-        <com.qmuiteam.qmui.layout.QMUILinearLayout
-            android:id="@+id/ll_state_time_left"
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
             android:layout_width="0dp"
             android:layout_weight="1"
             android:layout_height="match_parent"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/blue_bg_dark">
+            app:qmui_radiusTopLeft="10dp"
+            app:qmui_radiusBottomLeft="10dp"
+            app:qmui_radiusBottomRight="10dp"
+            app:qmui_radiusTopRight="10dp"
+            app:qmui_backgroundColor="@color/blue_bg_dark">
             <com.qmuiteam.qmui.widget.QMUIVerticalTextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -255,13 +266,14 @@
                 android:text="实时状态"
                 style="@style/mainTextStyle" />
 
-            <com.qmuiteam.qmui.layout.QMUILinearLayout
-                android:id="@+id/ll_state_time_right"
+            <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:weightSum="10"
                 android:orientation="vertical"
-                android:background="@color/blue_bg_white">
+                app:qmui_radiusTopRight="10dp"
+                app:qmui_radiusBottomRight="10dp"
+                app:qmui_backgroundColor="@color/blue_bg_white">
 
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -465,9 +477,9 @@
                 </RelativeLayout>
 
 
-            </com.qmuiteam.qmui.layout.QMUILinearLayout>
+            </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
-        </com.qmuiteam.qmui.layout.QMUILinearLayout>
+        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
 
     </LinearLayout>

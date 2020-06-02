@@ -139,21 +139,21 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 showFragment(mTaskFragment);
                 break;
             case R.id.ll_main_setting:
-//                hideFragment();
-//                selectButtonBg(3);
-//                showFragment(mSettingFragment);
+                hideFragment();
+                selectButtonBg(3);
+                showFragment(mSettingFragment);
 
 //                TempTool tempTool = new TempTool(this);
 //                tempTool.openGetSSSerial();
 
                 //测试数据
-                byte[] data = {(byte)0xAA,0x0C,0x01,0x00,0x01,0x00,0x00,0x04,0x05,0x17,0x05,0x01,(byte)0xA0,(byte)0x86,0x01,0x00};
-                byte[] crcData = CrcUtil.setParamCRC(data);
-                if(CrcUtil.isPassCRC(crcData, 2)){
-                    System.out.println("验证通过");
-                }else{
-                    System.out.println("验证失败");
-                }
+//                byte[] data = {(byte)0xAA,0x0C,0x01,0x00,0x01,0x00,0x00,0x04,0x05,0x17,0x05,0x01,(byte)0xA0,(byte)0x86,0x01,0x00};
+//                byte[] crcData = CrcUtil.setParamCRC(data);
+//                if(CrcUtil.isPassCRC(crcData, 2)){
+//                    System.out.println("验证通过");
+//                }else{
+//                    System.out.println("验证失败");
+//                }
 
                 break;
         }

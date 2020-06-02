@@ -33,19 +33,6 @@ import butterknife.OnClick;
 
 public class StateFragment extends BaseFragment {
 
-
-    @BindView(R.id.ll_state_save_right)
-    QMUILinearLayout llStateSaveRight;
-    @BindView(R.id.ll_state_save_left)
-    QMUILinearLayout llStateSaveLeft;
-    @BindView(R.id.ll_state_error_right)
-    QMUILinearLayout llStateErrorRight;
-    @BindView(R.id.ll_state_error_left)
-    QMUILinearLayout llStateErrorLeft;
-    @BindView(R.id.ll_state_time_right)
-    QMUILinearLayout llStateTimeRight;
-    @BindView(R.id.ll_state_time_left)
-    QMUILinearLayout llStateTimeLeft;
     @BindView(R.id.rv_state_layer)
     RecyclerView rvStateLayer;
     @BindView(R.id.tv_state_place_num)
@@ -87,13 +74,6 @@ public class StateFragment extends BaseFragment {
 
     @Override
     protected void initView(View inflate) {
-        llStateSaveLeft.setRadiusAndShadow(40, 0, 10);
-        llStateSaveRight.setRadiusAndShadow(100, IQMUILayout.HIDE_RADIUS_SIDE_LEFT, 0, 10);
-        llStateErrorLeft.setRadiusAndShadow(40, 0, 10);
-        llStateErrorRight.setRadiusAndShadow(40, IQMUILayout.HIDE_RADIUS_SIDE_LEFT, 0, 10);
-        llStateTimeLeft.setRadiusAndShadow(40, 0, 10);
-        llStateTimeRight.setRadiusAndShadow(40, IQMUILayout.HIDE_RADIUS_SIDE_LEFT, 0, 10);
-
         rvStateLayer.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter = new LayerAdapter(layers, getContext());
         rvStateLayer.setAdapter(adapter);
@@ -176,8 +156,7 @@ public class StateFragment extends BaseFragment {
                         .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
                         .shadow(true)
                         .arrow(true)
-                        .radius(4)
-                        .animStyle(QMUIPopup.ANIM_GROW_FROM_CENTER)
+                        .animStyle(QMUIPopup.ANIM_AUTO)
                         .show(llStateChooseLayer);
                 break;
         }
