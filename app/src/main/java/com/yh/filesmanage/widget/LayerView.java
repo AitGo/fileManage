@@ -7,6 +7,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 
+import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.diagnose.LayerEntity;
 import com.yh.filesmanage.utils.DensityUtils;
@@ -20,11 +21,13 @@ public class LayerView extends View {
 
     private Context mContext;
     private int itemSize = 15;
-    private int itemBgWidth = 2;
+    private int itemBgWidth = 4;
     private int itemHeight;
-    private int itemWidth;
+    private int itemWidth = 0;
     Paint paint;
     Paint bg;
+    Paint positionBg;
+    private boolean isDrawBg = false;
 
     private LayerEntity item;
 
@@ -48,8 +51,13 @@ public class LayerView extends View {
         bg = new Paint();
         bg.setColor(mContext.getResources().getColor(R.color.blue_bg));
         bg.setStyle(Paint.Style.STROKE);
-        bg.setStrokeWidth(10.0f);
+        bg.setStrokeWidth(5.0f);
         bg.setAlpha(180);
+        positionBg = new Paint();
+        positionBg.setColor(mContext.getResources().getColor(R.color.yellow));
+        positionBg.setStyle(Paint.Style.STROKE);
+        positionBg.setStrokeWidth(5.0f);
+        positionBg.setAlpha(180);
     }
 
     @Override
@@ -78,11 +86,15 @@ public class LayerView extends View {
                     break;
             }
 
-            canvas.drawRect(DensityUtils.dip2px(mContext,itemBgWidth + i*itemSize), DensityUtils.dip2px(mContext,itemBgWidth),
-                    DensityUtils.dip2px(mContext,itemSize - itemBgWidth + i*itemSize), DensityUtils.dip2px(mContext,95), paint);
+            canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,itemBgWidth + i*itemSize), QMUIDisplayHelper.dp2px(mContext,itemBgWidth),
+                    QMUIDisplayHelper.dp2px(mContext,itemSize - itemBgWidth + i*itemSize), QMUIDisplayHelper.dp2px(mContext,95), paint);
 
-            canvas.drawRect(DensityUtils.dip2px(mContext,0), DensityUtils.dip2px(mContext,0),
-                    DensityUtils.dip2px(mContext,itemSize+ i*itemSize), DensityUtils.dip2px(mContext,100), bg);
+            canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,2), QMUIDisplayHelper.dp2px(mContext,2),
+                    QMUIDisplayHelper.dp2px(mContext,itemSize+ i*itemSize), QMUIDisplayHelper.dp2px(mContext,98), bg);
+            if(isDrawBg) {
+                canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,0), QMUIDisplayHelper.dp2px(mContext,0),
+                        QMUIDisplayHelper.dp2px(mContext,itemWidth), QMUIDisplayHelper.dp2px(mContext,100), positionBg);
+            }
         }
     }
 
@@ -90,4 +102,9 @@ public class LayerView extends View {
         this.item = item;
     }
 
+    public void setPositionBg() {
+        int size = item.getItems().size();
+        itemWidth = itemSize + (size - 1) * itemSize;
+        isDrawBg = true;
+    }
 }

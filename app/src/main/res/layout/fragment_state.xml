@@ -21,7 +21,7 @@
             android:background="@color/blue_bg_dark">
             <com.qmuiteam.qmui.widget.QMUIVerticalTextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_gravity="center"
@@ -39,6 +39,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:layout_marginLeft="5dp">
 
                     <TextView
@@ -59,6 +60,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp">
 
@@ -80,6 +82,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_horizontal"
                     android:layout_marginLeft="5dp"
                     android:layout_marginTop="10dp">
 
@@ -112,7 +115,7 @@
             android:background="@color/blue_bg_dark">
             <com.qmuiteam.qmui.widget.QMUIVerticalTextView
                 android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_gravity="center"
@@ -295,25 +298,26 @@
                     </LinearLayout>
 
                     <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:id="@+id/ll_state_choose_layer"
+                        android:layout_width="100dp"
+                        android:layout_height="40dp"
                         android:layout_marginRight="20dp"
                         android:layout_centerInParent="true"
+                        android:gravity="center"
                         android:background="@color/white"
                         android:layout_alignParentRight="true">
 
-                        <Button
-                            android:id="@+id/btn_state_choose_layer"
+                        <TextView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="第一层"
+                            android:text="第1层"
                             android:textColor="@color/blue_bg"
                             style="@style/mainTextSubStyle"
                             android:background="@null"/>
                         <com.yh.filesmanage.widget.FontIconView
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:paddingRight="5dp"
+                            android:layout_marginLeft="5dp"
                             android:textColor="@color/black"
                             android:text="@string/icon_more"/>
                     </LinearLayout>
@@ -342,11 +346,12 @@
                     android:layout_height="wrap_content"
                     android:text="已放置:   "
                     style="@style/mainTextSubStyle"/>
+
                     <TextView
+                        style="@style/mainTextSubStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0"
-                        style="@style/mainTextSubStyle"/>
+                        android:text="0" />
 
                 </LinearLayout>
 

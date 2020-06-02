@@ -15,6 +15,7 @@ import androidx.annotation.Nullable;
 public class LayerAdapter extends BaseQuickAdapter<LayerEntity,BaseViewHolder> {
 
     private Context mContext;
+    private LayerEntity entity;
 
     public LayerAdapter(@Nullable List<LayerEntity> data,Context mContext) {
         super(R.layout.item_adapter_state_layer, data);
@@ -26,6 +27,12 @@ public class LayerAdapter extends BaseQuickAdapter<LayerEntity,BaseViewHolder> {
         helper.setText(R.id.tv_index,item.getIndex() + "");
         LayerView view = helper.getView(R.id.iv_item);
         view.setLayer(item);
+        if(entity != null && item.getIndex() == entity.getIndex()) {
+            view.setPositionBg();
+        }
     }
 
+    public void setPositionBg(LayerEntity entity) {
+        this.entity = entity;
+    }
 }
