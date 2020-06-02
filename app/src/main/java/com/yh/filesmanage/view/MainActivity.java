@@ -12,7 +12,9 @@ import com.qmuiteam.qmui.layout.QMUILinearLayout;
 import com.qmuiteam.qmui.layout.QMUIRelativeLayout;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseFragmentActivity;
+import com.yh.filesmanage.utils.CRC16;
 import com.yh.filesmanage.utils.CrcUtil;
+import com.yh.filesmanage.utils.LogUtils;
 import com.yh.filesmanage.utils.TempTool;
 import com.yh.filesmanage.view.fragment.StateFragment;
 import com.yh.filesmanage.view.fragment.SelectFragment;
@@ -145,16 +147,6 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
 //                TempTool tempTool = new TempTool(this);
 //                tempTool.openGetSSSerial();
-
-                //测试数据
-//                byte[] data = {(byte)0xAA,0x0C,0x01,0x00,0x01,0x00,0x00,0x04,0x05,0x17,0x05,0x01,(byte)0xA0,(byte)0x86,0x01,0x00};
-//                byte[] crcData = CrcUtil.setParamCRC(data);
-//                if(CrcUtil.isPassCRC(crcData, 2)){
-//                    System.out.println("验证通过");
-//                }else{
-//                    System.out.println("验证失败");
-//                }
-
                 break;
         }
     }
