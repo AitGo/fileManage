@@ -34,8 +34,8 @@ public class CRC16 {
 
     public static void main(String args[]) {
         //测试数据
-        int ii = 0x21;
-        byte[] bytes = new byte[]{new Integer(ii).byteValue()};
+        int ii = 0x11;
+        byte[] bytes = new byte[]{new Integer(0x11).byteValue(),new Integer(0x21).byteValue()};
         int i1 = CRC16.CRC16_CCITT(bytes);
         //将其转换为十六进制并输出
         String strHex = Integer.toHexString(i1);

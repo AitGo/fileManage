@@ -10,11 +10,20 @@ import android.widget.TextView;
 import com.qmuiteam.qmui.layout.IQMUILayout;
 import com.qmuiteam.qmui.layout.QMUILinearLayout;
 import com.qmuiteam.qmui.layout.QMUIRelativeLayout;
+import com.xuhao.didi.core.protocol.IReaderProtocol;
+import com.xuhao.didi.socket.client.sdk.OkSocket;
+import com.xuhao.didi.socket.client.sdk.client.ConnectionInfo;
+import com.xuhao.didi.socket.client.sdk.client.OkSocketOptions;
+import com.xuhao.didi.socket.client.sdk.client.action.SocketActionAdapter;
+import com.xuhao.didi.socket.client.sdk.client.connection.IConnectionManager;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseFragmentActivity;
+import com.yh.filesmanage.diagnose.RFIDEntity;
+import com.yh.filesmanage.utils.ByteUtil;
 import com.yh.filesmanage.utils.CRC16;
 import com.yh.filesmanage.utils.CrcUtil;
 import com.yh.filesmanage.utils.LogUtils;
+import com.yh.filesmanage.utils.SocketTest;
 import com.yh.filesmanage.utils.TempTool;
 import com.yh.filesmanage.view.fragment.StateFragment;
 import com.yh.filesmanage.view.fragment.SelectFragment;
@@ -22,6 +31,7 @@ import com.yh.filesmanage.view.fragment.SettingFragment;
 import com.yh.filesmanage.view.fragment.TaskFragment;
 import com.yh.filesmanage.widget.FontIconView;
 
+import java.nio.ByteOrder;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -147,6 +157,16 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
 //                TempTool tempTool = new TempTool(this);
 //                tempTool.openGetSSSerial();
+                RFIDEntity entity = new RFIDEntity();
+                entity.setHead(Integer.valueOf(0x11).byteValue());
+                entity.setAddress(new byte[]{Integer.valueOf(0x11).byteValue(),Integer.valueOf(0x32).byteValue()});
+                entity.setControllerCode(new byte[]{Integer.valueOf(0x11).byteValue(),Integer.valueOf(0x32).byteValue()});
+                entity.setOrderNo(new byte[]{Integer.valueOf(0x32).byteValue()});
+                entity.setData(new byte[]{});
+                entity.setLength();
+                entity.setCrcCode();
+                entity.getCrcCode();
+
                 break;
         }
     }
