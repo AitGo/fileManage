@@ -2,36 +2,28 @@ package com.yh.filesmanage.view;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.qmuiteam.qmui.layout.IQMUILayout;
-import com.qmuiteam.qmui.layout.QMUILinearLayout;
 import com.qmuiteam.qmui.layout.QMUIRelativeLayout;
-import com.xuhao.didi.core.protocol.IReaderProtocol;
-import com.xuhao.didi.socket.client.sdk.OkSocket;
-import com.xuhao.didi.socket.client.sdk.client.ConnectionInfo;
-import com.xuhao.didi.socket.client.sdk.client.OkSocketOptions;
-import com.xuhao.didi.socket.client.sdk.client.action.SocketActionAdapter;
-import com.xuhao.didi.socket.client.sdk.client.connection.IConnectionManager;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseFragmentActivity;
+import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.diagnose.RFIDEntity;
-import com.yh.filesmanage.utils.ByteUtil;
-import com.yh.filesmanage.utils.CRC16;
-import com.yh.filesmanage.utils.CrcUtil;
-import com.yh.filesmanage.utils.LogUtils;
-import com.yh.filesmanage.utils.SocketTest;
-import com.yh.filesmanage.utils.TempTool;
+import com.yh.filesmanage.socket.FastSocketClient;
+import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
+import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.view.fragment.StateFragment;
 import com.yh.filesmanage.view.fragment.SelectFragment;
 import com.yh.filesmanage.view.fragment.SettingFragment;
 import com.yh.filesmanage.view.fragment.TaskFragment;
 import com.yh.filesmanage.widget.FontIconView;
 
-import java.nio.ByteOrder;
 import java.util.List;
 
 import androidx.annotation.NonNull;
@@ -101,6 +93,8 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     private FontIconView[] tabIvs;
     private TextView[] tabTvs;
 
+    private FastSocketClient fastSocketClient;
+    private boolean isPulse;
 
     @Override
     protected int getLayoutId() {
@@ -123,6 +117,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         tabTvs = new TextView[]{tvMainState,tvMainSelect,tvMainTask,tvMainSetting};
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
+        fastSocketClient = FastSocketClient.getInstance();
     }
 
     @Override
@@ -166,10 +161,49 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 entity.setLength();
                 entity.setCrcCode();
                 entity.getCrcCode();
+                fastSocketClient.send(entity.parse());
+                fastSocketClient.setOnSocketClientCallBackList(new OnSocketClientCallBackList() {
+                    @Override
+                    public void onSocketConnectionSuccess(String msg) {
 
+                    }
+
+                    @Override
+                    public void onSocketConnectionFailed(String msg, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onSocketDisconnection(String msg, Exception e) {
+
+                    }
+
+                    @Override
+                    public void onSocketReadResponse(byte[] bytes) {
+                        Log.e("123",bytes.toString());
+                    }
+
+                    @Override
+                    public void onSocketWriteResponse(byte[] bytes) {
+                        Log.e("123",bytes.toString());
+                    }
+                });
                 break;
         }
     }
+
+
+
+    Thread pulstThread = new Thread(new Runnable() {
+        @Override
+        public void run() {
+            if (isPulse && fastSocketClient.isConnected()){
+                fastSocketClient.send(HexUtil.hexStringToByte(Constants.SOCKET_Pulse));
+            }
+            SystemClock.sleep(5000);
+            pulstThread.run();
+        }
+    });
 
     public void showFragment(Fragment fragment) {
         transaction = fragmentManager.beginTransaction();

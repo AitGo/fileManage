@@ -1,6 +1,6 @@
 package com.yh.filesmanage.diagnose;
 
-import com.xuhao.didi.core.iocore.interfaces.ISendable;
+import com.yh.filesmanage.socket.interfaces.ISendable;
 import com.yh.filesmanage.utils.CRC16;
 
 /**

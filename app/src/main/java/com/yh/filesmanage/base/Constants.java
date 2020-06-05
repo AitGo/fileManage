@@ -18,6 +18,11 @@ public class Constants {
     public static String defaultURL = "http://192.168.31.88:8080/lianyservice/service/appUploadDataService";
     //    public static String defaultURL = "http://175.6.27.77:8088/lianyservice/service/appUploadDataService?wsdl";
     //    public static String defaultURL = "http://175.6.27.77:8084/lianyservice/service/appUploadDataService?wsdl";
+
+    public static String SOCKET_IP = "192.168.31.185";
+    public static  int SOCKET_PORT = 36401;
+    public static String SOCKET_Pulse = "7E000200000183399625520001597E";
+
     public static final boolean Bugly_isDebug = true;
     public static int DEBUGLEVEL = LogUtils.LEVEL_ALL; //打开日志开关
     public static String SP_FILE_NAME = "fileManageSP";
