@@ -23,6 +23,10 @@ public class Constants {
     public static  int SOCKET_PORT = 36401;
     public static String SOCKET_Pulse = "7E000200000183399625520001597E";
 
+    public static String SERIALPORT_NO = "/dev/ttyS1";//串口号
+    public static int SERIALPORT_BAUDRATE = 115200;//波特率
+
+
     public static final boolean Bugly_isDebug = true;
     public static int DEBUGLEVEL = LogUtils.LEVEL_ALL; //打开日志开关
     public static String SP_FILE_NAME = "fileManageSP";

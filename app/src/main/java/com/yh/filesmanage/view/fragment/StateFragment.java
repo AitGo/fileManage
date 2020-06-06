@@ -1,12 +1,16 @@
 package com.yh.filesmanage.view.fragment;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.aill.androidserialport.SerialPort;
 import com.chad.library.adapter.base.BaseQuickAdapter;
 import com.qmuiteam.qmui.layout.IQMUILayout;
 import com.qmuiteam.qmui.layout.QMUIButton;
@@ -18,11 +22,21 @@ import com.yh.filesmanage.R;
 import com.yh.filesmanage.adapter.LayerAdapter;
 import com.yh.filesmanage.adapter.LayerChooseAdapter;
 import com.yh.filesmanage.base.BaseFragment;
+import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.diagnose.LayerEntity;
+import com.yh.filesmanage.utils.HexUtil;
+import com.yh.filesmanage.utils.LogUtils;
+import com.yh.filesmanage.view.MainActivity;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -66,6 +80,9 @@ public class StateFragment extends BaseFragment {
     private LayerAdapter adapter;
     private QMUIPopup popup;
 
+    private InputStream mInputStream;
+    private OutputStream mOutputStream;
+    private ExecutorService readEs;
 
     @Override
     protected int getLayoutId() {
@@ -94,6 +111,10 @@ public class StateFragment extends BaseFragment {
 
     @Override
     protected void initData() {
+        MainActivity activity = (MainActivity) getActivity();
+        mInputStream = activity.getmInputStream();
+        mOutputStream = activity.getmOutputStream();
+        readEs = activity.getReadEs();
 
         Random rand = new Random();
         for (int i = 0; i < 20; i++) {
@@ -121,6 +142,22 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_up:
                 break;
             case R.id.btn_state_open:
+                readEs.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            byte[] send = new byte[]{(byte)0xAC,(byte)0x01,(byte)0x0b,(byte)0x00,(byte)0x9E};//查询报文
+                            //string转16进制的数据,下发的数据必须为byte数组，长度会根据协议来定
+                            mOutputStream.write(send);
+                            mOutputStream.flush();
+                            //System.out.println("串口发送");
+                            Thread.sleep(150);
+                            mainloop(mInputStream);
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    }
+                });
                 break;
             case R.id.btn_state_close:
                 break;
@@ -159,6 +196,21 @@ public class StateFragment extends BaseFragment {
                         .animStyle(QMUIPopup.ANIM_AUTO)
                         .show(llStateChooseLayer);
                 break;
+        }
+    }
+
+
+    public void mainloop(InputStream inputStream) throws IOException {
+        if (inputStream.available() >= 2) {
+            byte[] Re_buf = new byte[inputStream.available()];
+            int size = mInputStream.read(Re_buf);
+            LogUtils.e("接收到串口回调w == " + size);
+            if (size > 0) {
+                for (int i = 0; i < size; i++) {
+                    LogUtils.e( "十进制=" + Re_buf[i]);
+                    final String res = HexUtil.byteToHexString(Re_buf[i]);
+                }
+            }
         }
     }
 }

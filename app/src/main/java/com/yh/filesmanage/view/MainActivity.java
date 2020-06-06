@@ -9,6 +9,7 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.aill.androidserialport.SerialPort;
 import com.qmuiteam.qmui.layout.IQMUILayout;
 import com.qmuiteam.qmui.layout.QMUIRelativeLayout;
 import com.yh.filesmanage.R;
@@ -17,14 +18,21 @@ import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.diagnose.RFIDEntity;
 import com.yh.filesmanage.socket.FastSocketClient;
 import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
+import com.yh.filesmanage.utils.CRC16;
 import com.yh.filesmanage.utils.HexUtil;
+import com.yh.filesmanage.utils.LogUtils;
 import com.yh.filesmanage.view.fragment.StateFragment;
 import com.yh.filesmanage.view.fragment.SelectFragment;
 import com.yh.filesmanage.view.fragment.SettingFragment;
 import com.yh.filesmanage.view.fragment.TaskFragment;
 import com.yh.filesmanage.widget.FontIconView;
 
+import java.io.File;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.List;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -35,7 +43,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import pub.devrel.easypermissions.EasyPermissions;
 
-public class MainActivity extends BaseFragmentActivity implements EasyPermissions.PermissionCallbacks{
+public class MainActivity extends BaseFragmentActivity implements EasyPermissions.PermissionCallbacks,SerialportAnalyze{
 
 
     @BindView(R.id.fl_view)
@@ -96,6 +104,11 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     private FastSocketClient fastSocketClient;
     private boolean isPulse;
 
+    private InputStream mInputStream;
+    private OutputStream mOutputStream;
+    private SerialPort serialPort;
+    ExecutorService readES = Executors.newSingleThreadExecutor();
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -108,6 +121,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         hideFragment();
         selectButtonBg(0);
         showFragment(mStateFragment);
+//        initSerialPort();
     }
 
     @Override
@@ -152,16 +166,17 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
 //                TempTool tempTool = new TempTool(this);
 //                tempTool.openGetSSSerial();
-                RFIDEntity entity = new RFIDEntity();
-                entity.setHead(Integer.valueOf(0x11).byteValue());
-                entity.setAddress(new byte[]{Integer.valueOf(0x11).byteValue(),Integer.valueOf(0x32).byteValue()});
-                entity.setControllerCode(new byte[]{Integer.valueOf(0x11).byteValue(),Integer.valueOf(0x32).byteValue()});
-                entity.setOrderNo(new byte[]{Integer.valueOf(0x32).byteValue()});
-                entity.setData(new byte[]{});
-                entity.setLength();
-                entity.setCrcCode();
-                entity.getCrcCode();
-                fastSocketClient.send(entity.parse());
+//                RFIDEntity entity = new RFIDEntity();
+//                entity.setHead(Integer.valueOf(0x11).byteValue());
+//                entity.setAddress(new byte[]{Integer.valueOf(0x11).byteValue(),Integer.valueOf(0x32).byteValue()});
+//                entity.setControllerCode(new byte[]{(byte)0x00,(byte)0x01});
+//                entity.setOrderNo(new byte[]{(byte)0x01});
+//                entity.setData(new byte[]{});
+//                entity.setLength();
+//                entity.setCrcCode();
+                int i = CRC16.CRC16_CCITT(new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01});
+
+                fastSocketClient.send(new byte[]{(byte)0x1B,(byte)0x00,(byte)0x05,(byte)0x00,(byte)0x01,(byte)0x00,(byte)0x01,(byte)0x4a,(byte)0xae});
                 fastSocketClient.setOnSocketClientCallBackList(new OnSocketClientCallBackList() {
                     @Override
                     public void onSocketConnectionSuccess(String msg) {
@@ -204,6 +219,17 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             pulstThread.run();
         }
     });
+
+    private void initSerialPort() {
+        try {
+            serialPort = new SerialPort(new File(Constants.SERIALPORT_NO), Constants.SERIALPORT_BAUDRATE, 0);
+            mInputStream = serialPort.getInputStream();
+            mOutputStream = serialPort.getOutputStream();
+        } catch (Exception e) {
+            e.printStackTrace();
+            LogUtils.e("打开串口失败");
+        }
+    }
 
     public void showFragment(Fragment fragment) {
         transaction = fragmentManager.beginTransaction();
@@ -301,4 +327,16 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     }
 
+    public InputStream getmInputStream() {
+        return mInputStream;
+    }
+
+    public OutputStream getmOutputStream() {
+        return mOutputStream;
+    }
+
+    @Override
+    public ExecutorService getReadEs() {
+        return readES;
+    }
 }
