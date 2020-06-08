@@ -23,7 +23,7 @@ public class Constants {
     public static  int SOCKET_PORT = 36401;
     public static String SOCKET_Pulse = "7E000200000183399625520001597E";
 
-    public static String SERIALPORT_NO = "/dev/ttyS1";//串口号
+    public static String SERIALPORT_NO = "/dev/ttyS4";//串口号
     public static int SERIALPORT_BAUDRATE = 115200;//波特率
 
 

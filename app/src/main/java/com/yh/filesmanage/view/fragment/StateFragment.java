@@ -84,7 +84,10 @@ public class StateFragment extends BaseFragment {
     private OutputStream mOutputStream;
     private ExecutorService readEs;
 
-    @Override
+    private int layerNo = 0;//层数
+    private int cabinetNo = 0;//柜号
+
+   @Override
     protected int getLayoutId() {
         return R.layout.fragment_state;
     }
@@ -142,32 +145,43 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_up:
                 break;
             case R.id.btn_state_open:
-                readEs.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        try {
-                            byte[] send = new byte[]{(byte)0xAC,(byte)0x01,(byte)0x0b,(byte)0x00,(byte)0x9E};//查询报文
-                            //string转16进制的数据,下发的数据必须为byte数组，长度会根据协议来定
-                            mOutputStream.write(send);
-                            mOutputStream.flush();
-                            //System.out.println("串口发送");
-                            Thread.sleep(150);
-                            mainloop(mInputStream);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                sendSeriportData(new byte[]{(byte)0xAC,
+                        (byte)0x01,//区号
+                        (byte)0x1A,
+                        (byte)0x00,//柜号
+                        (byte)0x9E});
                 break;
             case R.id.btn_state_close:
+                sendSeriportData(new byte[]{(byte)0xAC,
+                        (byte)0x01,//区号
+                        (byte)0x0C,
+                        (byte)0x00,//柜号
+                        (byte)0x9E});
                 break;
             case R.id.btn_state_stop:
+                sendSeriportData(new byte[]{(byte)0xAC,
+                        (byte)0x01,//区号
+                        (byte)0x06,
+                        (byte)0x00,//柜号
+                        (byte)0x9E});
                 break;
             case R.id.btn_state_forward:
                 break;
             case R.id.btn_state_reverse:
                 break;
             case R.id.btn_state_open_layer:
+                //0xac 区号 0x07 打开的柜号 01 层号 盒号 00 01 档案名称 0x9e
+                sendSeriportData(new byte[]{(byte)0xAC,
+                        (byte)0x01,//区号
+                        (byte)0x07,
+                        (byte)0x00,//柜号
+                        (byte)0x01,
+                        (byte)0x01,//层号
+                        (byte)0x01,//盒号
+                        (byte)0x00,
+                        (byte)0x01,
+                        (byte)0x01,//档案名称
+                        (byte)0x9E});
                 break;
             case R.id.ll_state_choose_layer:
                 List<String> list = new ArrayList<>();
@@ -199,6 +213,24 @@ public class StateFragment extends BaseFragment {
         }
     }
 
+    public void sendSeriportData(byte[] send) {
+        readEs.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+//                    byte[] send = new byte[]{(byte)0xAC,(byte)0x01,(byte)0x1A,(byte)0x00,(byte)0x9E};//查询报文
+                    //string转16进制的数据,下发的数据必须为byte数组，长度会根据协议来定
+                    mOutputStream.write(send);
+                    mOutputStream.flush();
+                    //System.out.println("串口发送");
+                    Thread.sleep(150);
+                    mainloop(mInputStream);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
     public void mainloop(InputStream inputStream) throws IOException {
         if (inputStream.available() >= 2) {
