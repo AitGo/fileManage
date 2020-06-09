@@ -20,7 +20,7 @@ public class Constants {
     //    public static String defaultURL = "http://175.6.27.77:8084/lianyservice/service/appUploadDataService?wsdl";
 
     public static String SOCKET_IP = "192.168.31.185";
-    public static  int SOCKET_PORT = 36401;
+    public static  int SOCKET_PORT = 5000;
     public static String SOCKET_Pulse = "7E000200000183399625520001597E";
 
     public static String SERIALPORT_NO = "/dev/ttyS4";//串口号

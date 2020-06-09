@@ -166,7 +166,7 @@
             android:layout_height="wrap_content"
             android:text="盘点"
             style="@style/mainTextSubStyle"
-            android:background="@drawable/bg_main_btn"/>
+            android:background="@drawable/bg_btn_select"/>
 
         <com.qmuiteam.qmui.layout.QMUIButton
             android:id="@+id/btn_state_up"
@@ -176,7 +176,7 @@
             android:layout_marginLeft="8dp"
             android:text="上架"
             style="@style/mainTextSubStyle"
-            android:background="@drawable/bg_main_btn"/>
+            android:background="@drawable/bg_btn_select"/>
 
         <com.qmuiteam.qmui.layout.QMUIButton
             android:id="@+id/btn_state_open"
@@ -186,7 +186,7 @@
             android:layout_marginLeft="8dp"
             android:text="开门"
             style="@style/mainTextSubStyle"
-            android:background="@drawable/bg_main_btn"/>
+            android:background="@drawable/bg_btn_select"/>
 
         <com.qmuiteam.qmui.layout.QMUIButton
             android:id="@+id/btn_state_close"
@@ -196,7 +196,7 @@
             android:layout_marginLeft="8dp"
             android:text="关门"
             style="@style/mainTextSubStyle"
-            android:background="@drawable/bg_main_btn"/>
+            android:background="@drawable/bg_btn_select"/>
 
         <com.qmuiteam.qmui.layout.QMUIButton
             android:id="@+id/btn_state_stop"
@@ -206,7 +206,7 @@
             android:layout_marginLeft="8dp"
             android:text="停止"
             style="@style/mainTextSubStyle"
-            android:background="@drawable/bg_main_btn"/>
+            android:background="@drawable/bg_btn_select"/>
 
         <com.qmuiteam.qmui.layout.QMUIButton
             android:id="@+id/btn_state_forward"
@@ -216,7 +216,7 @@
             android:layout_marginLeft="8dp"
             android:text="正转"
             style="@style/mainTextSubStyle"
-            android:background="@drawable/bg_main_btn"/>
+            android:background="@drawable/bg_btn_select"/>
 
         <com.qmuiteam.qmui.layout.QMUIButton
             android:id="@+id/btn_state_reverse"
@@ -226,7 +226,7 @@
             android:layout_marginLeft="8dp"
             android:text="反转"
             style="@style/mainTextSubStyle"
-            android:background="@drawable/bg_main_btn"/>
+            android:background="@drawable/bg_btn_select"/>
 
         <com.qmuiteam.qmui.layout.QMUIButton
             android:id="@+id/btn_state_open_layer"
@@ -236,7 +236,7 @@
             android:layout_marginLeft="8dp"
             android:text="打开层"
             style="@style/mainTextSubStyle"
-            android:background="@drawable/bg_main_btn"/>
+            android:background="@drawable/bg_btn_select"/>
 
     </LinearLayout>
 
