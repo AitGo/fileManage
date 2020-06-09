@@ -1,10 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/blue_bg">
     <com.qmuiteam.qmui.widget.tab.QMUITabSegment2
         android:id="@+id/setting_tab"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:background="@drawable/bg_select_list"/>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/setting_page"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:fitsSystemWindows="true" />
 </LinearLayout>

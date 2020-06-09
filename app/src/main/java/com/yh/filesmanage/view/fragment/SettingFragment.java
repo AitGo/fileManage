@@ -11,6 +11,7 @@ import com.qmuiteam.qmui.widget.tab.QMUITabSegment2;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseFragment;
 
+import androidx.viewpager2.widget.ViewPager2;
 import butterknife.BindView;
 
 public class SettingFragment extends BaseFragment {
@@ -18,25 +19,37 @@ public class SettingFragment extends BaseFragment {
 
     @BindView(R.id.setting_tab)
     QMUITabSegment2 mTabSegment;
+    @BindView(R.id.setting_page)
+    ViewPager2 mContentViewPager;
+
+    private String[] titles = new String[]{"基本设置", "数据设置", "动画设置", "通风设置", "温湿度设置", "自动控制设置", "其他设置", "测试"};
 
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_setting;
+
     }
 
     @Override
     protected void initView(View inflate) {
+        initTab();
+
+    }
+
+    private void initTab() {
+        mContentViewPager.setAdapter(mPageAdapter);
+        mContentViewPager.setCurrentItem(mDestPage.getPosition(), false);
+
         QMUITabBuilder tabBuilder = mTabSegment.tabBuilder();
-        mTabSegment.addTab(tabBuilder.setText("Item 1").build(getContext()));
-        mTabSegment.addTab(tabBuilder.setText("Item 2").build(getContext()));
-        mTabSegment.addTab(tabBuilder.setText("Item 3").build(getContext()));
-        mTabSegment.addTab(tabBuilder.setText("Item 4").build(getContext()));
+        for (String s : titles) {
+            mTabSegment.addTab(tabBuilder.setText(s).build(getContext()));
+        }
         int space = QMUIDisplayHelper.dp2px(getContext(), 16);
         mTabSegment.setIndicator(new QMUITabIndicator(
                 QMUIDisplayHelper.dp2px(getContext(), 2), false, true));
         mTabSegment.setMode(QMUITabSegment.MODE_SCROLLABLE);
         mTabSegment.setItemSpaceInScrollMode(space);
-//        mTabSegment.setupWithViewPager(mContentViewPager);
+        mTabSegment.setupWithViewPager(mContentViewPager);
         mTabSegment.setPadding(space, 0, space, 0);
         mTabSegment.addOnTabSelectedListener(new QMUITabSegment.OnTabSelectedListener() {
             @Override
