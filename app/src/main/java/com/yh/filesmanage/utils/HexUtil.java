@@ -231,4 +231,9 @@ public class HexUtil {
         return Integer.parseInt(hexStr, 16);
     }
 
+
+    public static int getIntForHexInt(int i) {
+        String hexStringForInteger = getHexStringForInteger(i);
+        return getIntForHexString(hexStringForInteger);
+    }
 }

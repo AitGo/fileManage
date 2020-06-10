@@ -11,4 +11,10 @@
         <attr name="lwvCenterMarkTextSize" format="dimension"/>
         <attr name="lwvAdditionalCenterMark" format="string|reference"/>
     </declare-styleable>
+
+    <declare-styleable name="chooseView">
+        <attr name="chooseValue" format="string|reference"/>
+        <attr name="chooseSize" format="dimension"/>
+        <attr name="chooseColor" format="color|reference"/>
+    </declare-styleable>
 </resources>

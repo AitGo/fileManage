@@ -84,8 +84,11 @@ public class StateFragment extends BaseFragment {
     private OutputStream mOutputStream;
     private ExecutorService readEs;
 
+    private int areaNo = 0;//区号
     private int layerNo = 0;//层数
     private int cabinetNo = 0;//柜号
+    private int boxNo = 0;//盒号
+
 
    @Override
     protected int getLayoutId() {
@@ -108,8 +111,6 @@ public class StateFragment extends BaseFragment {
         DividerItemDecoration divider = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.bg_custom_layer));
         rvStateLayer.addItemDecoration(divider);
-//        LayerView layerView = new LayerView(getContext());
-
     }
 
     @Override
@@ -146,23 +147,23 @@ public class StateFragment extends BaseFragment {
                 break;
             case R.id.btn_state_open:
                 sendSeriportData(new byte[]{(byte)0xAC,
-                        (byte)0x01,//区号
+                        (byte)HexUtil.getIntForHexInt(areaNo),//区号
                         (byte)0x1A,
-                        (byte)0x00,//柜号
+                        (byte)HexUtil.getIntForHexInt(cabinetNo),//柜号
                         (byte)0x9E});
                 break;
             case R.id.btn_state_close:
                 sendSeriportData(new byte[]{(byte)0xAC,
-                        (byte)0x01,//区号
+                        (byte)HexUtil.getIntForHexInt(areaNo),//区号
                         (byte)0x0C,
-                        (byte)0x00,//柜号
+                        (byte)HexUtil.getIntForHexInt(cabinetNo),//柜号
                         (byte)0x9E});
                 break;
             case R.id.btn_state_stop:
                 sendSeriportData(new byte[]{(byte)0xAC,
-                        (byte)0x01,//区号
+                        (byte)HexUtil.getIntForHexInt(areaNo),//区号
                         (byte)0x06,
-                        (byte)0x00,//柜号
+                        (byte)HexUtil.getIntForHexInt(cabinetNo),//柜号
                         (byte)0x9E});
                 break;
             case R.id.btn_state_forward:
@@ -172,12 +173,12 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_open_layer:
                 //0xac 区号 0x07 打开的柜号 01 层号 盒号 00 01 档案名称 0x9e
                 sendSeriportData(new byte[]{(byte)0xAC,
-                        (byte)0x01,//区号
+                        (byte)HexUtil.getIntForHexInt(areaNo),//区号
                         (byte)0x07,
-                        (byte)0x00,//柜号
+                        (byte)HexUtil.getIntForHexInt(cabinetNo),//区号
                         (byte)0x01,
-                        (byte)0x01,//层号
-                        (byte)0x01,//盒号
+                        (byte)HexUtil.getIntForHexInt(layerNo),//区号
+                        (byte)HexUtil.getIntForHexInt(boxNo),//区号
                         (byte)0x00,
                         (byte)0x01,
                         (byte)0x01,//档案名称
@@ -193,6 +194,7 @@ public class StateFragment extends BaseFragment {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Toast.makeText(getContext(), list.get(position), Toast.LENGTH_SHORT).show();
+                        layerNo = position + 1;
                         if(popup != null) {
                             popup.dismiss();
                         }
@@ -218,11 +220,27 @@ public class StateFragment extends BaseFragment {
             @Override
             public void run() {
                 try {
-//                    byte[] send = new byte[]{(byte)0xAC,(byte)0x01,(byte)0x1A,(byte)0x00,(byte)0x9E};//查询报文
-                    //string转16进制的数据,下发的数据必须为byte数组，长度会根据协议来定
                     mOutputStream.write(send);
                     mOutputStream.flush();
-                    //System.out.println("串口发送");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
+    public void getSeriportData(byte[] send) {
+        readEs.execute(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    byte[] send = new byte[]{(byte)0xAC,
+                            (byte)0x01,
+                            (byte)HexUtil.getIntForHexInt(areaNo),//区号
+                            (byte)0x00,
+                            (byte)0x9E};//查询报文
+                    mOutputStream.write(send);
+                    mOutputStream.flush();
                     Thread.sleep(150);
                     mainloop(mInputStream);
                 } catch (Exception e) {

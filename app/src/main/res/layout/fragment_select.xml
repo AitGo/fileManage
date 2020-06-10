@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -17,32 +18,13 @@
             android:layout_marginLeft="30dp"
             android:text="@string/select_way" />
 
-        <LinearLayout
+        <com.yh.filesmanage.widget.ChooseView
             android:id="@+id/ll_select_choose_way"
             android:layout_width="150dp"
-            android:layout_height="30dp"
-            android:layout_alignParentRight="true"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="20dp"
-            android:background="@color/white"
-            android:gravity="center">
-
-            <TextView
-                style="@style/selectTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:text="架位条码"
-                android:textColor="@color/blue_bg" />
-
-            <com.yh.filesmanage.widget.FontIconView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="5dp"
-                android:text="@string/icon_more"
-                android:textColor="@color/black" />
-        </LinearLayout>
+            android:layout_height="40dp"
+            app:chooseValue="架位条码"
+            app:chooseColor="@color/blue_bg"
+            app:chooseSize="18sp"/>
 
         <TextView
             style="@style/selectTextStyle"
@@ -53,14 +35,15 @@
 
         <EditText
             android:layout_width="300dp"
-            android:layout_height="wrap_content"
+            android:layout_height="40dp"
             android:layout_marginLeft="30dp"
+            android:textSize="15sp"
             android:background="@drawable/bg_edittext" />
 
         <Button
             style="@style/selectTextStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="35dp"
             android:layout_marginLeft="60dp"
             android:text="@string/select_select"
             android:background="@drawable/bg_btn_select"/>
@@ -72,168 +55,80 @@
         android:layout_marginTop="10dp"
         android:gravity="center_vertical">
 
-        <RelativeLayout
+        <com.yh.filesmanage.widget.ChooseView
             android:id="@+id/rl_select_choose_area"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="20dp"
-            android:layout_centerInParent="true"
-            android:background="@color/white"
-            android:layout_alignParentRight="true">
+            app:chooseValue="01"
+            app:chooseColor="@color/blue_bg"
+            app:chooseSize="18sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="01"
-                android:textColor="@color/blue_bg"
-                style="@style/selectTextStyle"
-                android:background="@null"/>
-
-            <com.yh.filesmanage.widget.FontIconView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentRight="true"
-                android:layout_centerVertical="true"
-                android:layout_marginRight="5dp"
-                android:text="@string/icon_more"
-                android:textColor="@color/black" />
-        </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="区"
             style="@style/selectTextStyle"/>
 
-        <RelativeLayout
+        <com.yh.filesmanage.widget.ChooseView
             android:id="@+id/rl_select_choose_col"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="20dp"
-            android:layout_centerInParent="true"
-            android:background="@color/white"
-            android:layout_alignParentRight="true">
+            app:chooseValue="01"
+            app:chooseColor="@color/blue_bg"
+            app:chooseSize="18sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="01"
-                android:textColor="@color/blue_bg"
-                style="@style/selectTextStyle"
-                android:background="@null"/>
-            <com.yh.filesmanage.widget.FontIconView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:textColor="@color/black"
-                android:text="@string/icon_more"/>
-        </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="列"
             style="@style/selectTextStyle"/>
 
-        <RelativeLayout
+        <com.yh.filesmanage.widget.ChooseView
             android:id="@+id/rl_select_choose_face"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="20dp"
-            android:layout_centerInParent="true"
-            android:background="@color/white"
-            android:layout_alignParentRight="true">
+            app:chooseValue="A"
+            app:chooseColor="@color/blue_bg"
+            app:chooseSize="18sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="A"
-                android:textColor="@color/blue_bg"
-                style="@style/selectTextStyle"
-                android:background="@null"/>
-            <com.yh.filesmanage.widget.FontIconView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:textColor="@color/black"
-                android:text="@string/icon_more"/>
-        </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="面"
             style="@style/selectTextStyle"/>
 
-        <RelativeLayout
+        <com.yh.filesmanage.widget.ChooseView
             android:id="@+id/rl_select_choose_way"
-            android:layout_width="100dp"
-            android:layout_height="30dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="20dp"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:background="@color/white"
-            android:layout_alignParentRight="true">
+            app:chooseValue="01"
+            app:chooseColor="@color/blue_bg"
+            app:chooseSize="18sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="01"
-                android:textColor="@color/blue_bg"
-                style="@style/selectTextStyle"
-                android:background="@null"
-                android:layout_centerInParent="true"/>
-            <com.yh.filesmanage.widget.FontIconView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:textColor="@color/black"
-                android:text="@string/icon_more"/>
-        </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="节"
             style="@style/selectTextStyle"/>
 
-        <RelativeLayout
+        <com.yh.filesmanage.widget.ChooseView
             android:id="@+id/rl_select_choose_layer"
-            android:layout_width="150dp"
-            android:layout_height="30dp"
+            android:layout_width="80dp"
+            android:layout_height="40dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="20dp"
-            android:layout_centerInParent="true"
-            android:gravity="center"
-            android:background="@color/white"
-            android:layout_alignParentRight="true">
+            app:chooseValue="01"
+            app:chooseColor="@color/blue_bg"
+            app:chooseSize="18sp"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:text="01"
-                android:textColor="@color/blue_bg"
-                style="@style/selectTextStyle"
-                android:background="@null"/>
-            <com.yh.filesmanage.widget.FontIconView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginRight="5dp"
-                android:textColor="@color/black"
-                android:text="@string/icon_more"/>
-        </RelativeLayout>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
