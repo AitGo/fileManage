@@ -19,6 +19,7 @@
     //state
     <string name="icon_more">&#xe611;</string>
     <string name="icon_back">&#xe68d;</string>
+    <string name="icon_next">&#xe729;</string>
     //select
     <string name="select_way">查询途径: </string>
     <string name="select_key">关键字:</string>

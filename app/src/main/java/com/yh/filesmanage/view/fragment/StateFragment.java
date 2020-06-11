@@ -1,20 +1,14 @@
 package com.yh.filesmanage.view.fragment;
 
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.LinearLayout;
-import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.aill.androidserialport.SerialPort;
 import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.qmuiteam.qmui.layout.IQMUILayout;
 import com.qmuiteam.qmui.layout.QMUIButton;
-import com.qmuiteam.qmui.layout.QMUILinearLayout;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
@@ -22,13 +16,11 @@ import com.yh.filesmanage.R;
 import com.yh.filesmanage.adapter.LayerAdapter;
 import com.yh.filesmanage.adapter.LayerChooseAdapter;
 import com.yh.filesmanage.base.BaseFragment;
-import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.diagnose.LayerEntity;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
 import com.yh.filesmanage.view.MainActivity;
 
-import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -36,7 +28,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -75,6 +66,10 @@ public class StateFragment extends BaseFragment {
     QMUIButton btnStateOpenLayer;
     @BindView(R.id.ll_state_choose_layer)
     LinearLayout llStateChooseLayer;
+    @BindView(R.id.btn_state_back)
+    ImageButton btnStateBack;
+    @BindView(R.id.btn_state_next)
+    ImageButton btnStateNext;
 
     private List<LayerEntity> layers = new ArrayList<>();
     private LayerAdapter adapter;
@@ -90,7 +85,7 @@ public class StateFragment extends BaseFragment {
     private int boxNo = 0;//盒号
 
 
-   @Override
+    @Override
     protected int getLayoutId() {
         return R.layout.fragment_state;
     }
@@ -138,7 +133,10 @@ public class StateFragment extends BaseFragment {
         }
     }
 
-    @OnClick({R.id.btn_state_check, R.id.btn_state_up, R.id.btn_state_open, R.id.btn_state_close, R.id.btn_state_stop, R.id.btn_state_forward, R.id.btn_state_reverse, R.id.btn_state_open_layer, R.id.ll_state_choose_layer})
+    @OnClick({R.id.btn_state_check, R.id.btn_state_up, R.id.btn_state_open,
+            R.id.btn_state_close, R.id.btn_state_stop, R.id.btn_state_forward,
+            R.id.btn_state_reverse, R.id.btn_state_open_layer, R.id.ll_state_choose_layer,
+            R.id.btn_state_back, R.id.btn_state_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_state_check:
@@ -146,25 +144,25 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_up:
                 break;
             case R.id.btn_state_open:
-                sendSeriportData(new byte[]{(byte)0xAC,
-                        (byte)HexUtil.getIntForHexInt(areaNo),//区号
-                        (byte)0x1A,
-                        (byte)HexUtil.getIntForHexInt(cabinetNo),//柜号
-                        (byte)0x9E});
+                sendSeriportData(new byte[]{(byte) 0xAC,
+                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) 0x1A,
+                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) 0x9E});
                 break;
             case R.id.btn_state_close:
-                sendSeriportData(new byte[]{(byte)0xAC,
-                        (byte)HexUtil.getIntForHexInt(areaNo),//区号
-                        (byte)0x0C,
-                        (byte)HexUtil.getIntForHexInt(cabinetNo),//柜号
-                        (byte)0x9E});
+                sendSeriportData(new byte[]{(byte) 0xAC,
+                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) 0x0C,
+                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) 0x9E});
                 break;
             case R.id.btn_state_stop:
-                sendSeriportData(new byte[]{(byte)0xAC,
-                        (byte)HexUtil.getIntForHexInt(areaNo),//区号
-                        (byte)0x06,
-                        (byte)HexUtil.getIntForHexInt(cabinetNo),//柜号
-                        (byte)0x9E});
+                sendSeriportData(new byte[]{(byte) 0xAC,
+                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) 0x06,
+                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) 0x9E});
                 break;
             case R.id.btn_state_forward:
                 break;
@@ -172,30 +170,30 @@ public class StateFragment extends BaseFragment {
                 break;
             case R.id.btn_state_open_layer:
                 //0xac 区号 0x07 打开的柜号 01 层号 盒号 00 01 档案名称 0x9e
-                sendSeriportData(new byte[]{(byte)0xAC,
-                        (byte)HexUtil.getIntForHexInt(areaNo),//区号
-                        (byte)0x07,
-                        (byte)HexUtil.getIntForHexInt(cabinetNo),//区号
-                        (byte)0x01,
-                        (byte)HexUtil.getIntForHexInt(layerNo),//区号
-                        (byte)HexUtil.getIntForHexInt(boxNo),//区号
-                        (byte)0x00,
-                        (byte)0x01,
-                        (byte)0x01,//档案名称
-                        (byte)0x9E});
+                sendSeriportData(new byte[]{(byte) 0xAC,
+                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) 0x07,
+                        (byte) HexUtil.getIntForHexInt(cabinetNo),//区号
+                        (byte) 0x01,
+                        (byte) HexUtil.getIntForHexInt(layerNo),//区号
+                        (byte) HexUtil.getIntForHexInt(boxNo),//区号
+                        (byte) 0x00,
+                        (byte) 0x01,
+                        (byte) 0x01,//档案名称
+                        (byte) 0x9E});
                 break;
             case R.id.ll_state_choose_layer:
                 List<String> list = new ArrayList<>();
-                for(int i = 0; i < 20; i++) {
-                    list.add(i+1 + "");
+                for (int i = 0; i < 20; i++) {
+                    list.add(i + 1 + "");
                 }
-                LayerChooseAdapter adapter = new LayerChooseAdapter(getContext(),list);
+                LayerChooseAdapter adapter = new LayerChooseAdapter(getContext(), list);
                 AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                         Toast.makeText(getContext(), list.get(position), Toast.LENGTH_SHORT).show();
                         layerNo = position + 1;
-                        if(popup != null) {
+                        if (popup != null) {
                             popup.dismiss();
                         }
                     }
@@ -211,6 +209,12 @@ public class StateFragment extends BaseFragment {
                         .arrow(true)
                         .animStyle(QMUIPopup.ANIM_AUTO)
                         .show(llStateChooseLayer);
+                break;
+            case R.id.btn_state_back:
+
+                break;
+            case R.id.btn_state_next:
+
                 break;
         }
     }
@@ -234,11 +238,11 @@ public class StateFragment extends BaseFragment {
             @Override
             public void run() {
                 try {
-                    byte[] send = new byte[]{(byte)0xAC,
-                            (byte)0x01,
-                            (byte)HexUtil.getIntForHexInt(areaNo),//区号
-                            (byte)0x00,
-                            (byte)0x9E};//查询报文
+                    byte[] send = new byte[]{(byte) 0xAC,
+                            (byte) 0x01,
+                            (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                            (byte) 0x00,
+                            (byte) 0x9E};//查询报文
                     mOutputStream.write(send);
                     mOutputStream.flush();
                     Thread.sleep(150);
@@ -257,7 +261,7 @@ public class StateFragment extends BaseFragment {
             LogUtils.e("接收到串口回调w == " + size);
             if (size > 0) {
                 for (int i = 0; i < size; i++) {
-                    LogUtils.e( "十进制=" + Re_buf[i]);
+                    LogUtils.e("十进制=" + Re_buf[i]);
                     final String res = HexUtil.byteToHexString(Re_buf[i]);
                 }
             }

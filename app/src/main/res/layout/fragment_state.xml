@@ -341,7 +341,13 @@
                     android:layout_height="0dp"
                     android:layout_weight="8">
 
-
+                    <ImageButton
+                        android:id="@+id/btn_state_back"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_centerVertical="true"
+                        android:background="@drawable/bg_state_back_select"/>
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_state_layer"
@@ -349,6 +355,15 @@
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
                         android:background="@color/white" />
+
+                    <ImageButton
+                        android:id="@+id/btn_state_next"
+                        android:layout_width="100dp"
+                        android:layout_height="100dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true"
+                        android:background="@drawable/bg_state_next_select"/>
                 </RelativeLayout>
 
                 <LinearLayout

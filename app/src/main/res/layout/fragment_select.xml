@@ -6,148 +6,172 @@
     android:layout_height="match_parent"
     android:background="@color/blue_bg">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="62dp"
-        android:gravity="center_vertical">
-
-        <TextView
-            style="@style/selectTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="@string/select_way" />
-
-        <com.yh.filesmanage.widget.ChooseView
-            android:id="@+id/ll_select_choose_way"
-            android:layout_width="150dp"
-            android:layout_height="40dp"
-            app:chooseValue="架位条码"
-            app:chooseColor="@color/blue_bg"
-            app:chooseSize="18sp"/>
-
-        <TextView
-            style="@style/selectTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginLeft="30dp"
-            android:text="@string/select_key" />
-
-        <EditText
-            android:layout_width="300dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:textSize="15sp"
-            android:background="@drawable/bg_edittext" />
-
-        <Button
-            style="@style/selectTextStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="35dp"
-            android:layout_marginLeft="60dp"
-            android:text="@string/select_select"
-            android:background="@drawable/bg_btn_select"/>
-    </LinearLayout>
-
-    <LinearLayout
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
-        android:gravity="center_vertical">
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="20dp"
+        app:qmui_radiusTopLeft="10dp"
+        app:qmui_radiusBottomLeft="10dp"
+        app:qmui_radiusBottomRight="10dp"
+        app:qmui_radiusTopRight="10dp"
+        app:qmui_backgroundColor="@color/blue_bg_white"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="62dp"
+            android:gravity="center_vertical">
 
-        <com.yh.filesmanage.widget.ChooseView
-            android:id="@+id/rl_select_choose_area"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="20dp"
-            app:chooseValue="01"
-            app:chooseColor="@color/blue_bg"
-            app:chooseSize="18sp"/>
+            <TextView
+                style="@style/selectTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="@string/select_way" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="区"
-            style="@style/selectTextStyle"/>
+            <com.yh.filesmanage.widget.ChooseView
+                android:id="@+id/ll_select_choose_way"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                app:chooseValue="架位条码"
+                app:chooseColor="@color/blue_bg"
+                app:chooseSize="18sp"/>
 
-        <com.yh.filesmanage.widget.ChooseView
-            android:id="@+id/rl_select_choose_col"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="20dp"
-            app:chooseValue="01"
-            app:chooseColor="@color/blue_bg"
-            app:chooseSize="18sp"/>
+            <TextView
+                style="@style/selectTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="@string/select_key" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="列"
-            style="@style/selectTextStyle"/>
+            <EditText
+                android:layout_width="300dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="30dp"
+                android:textSize="15sp"
+                android:background="@drawable/bg_edittext" />
 
-        <com.yh.filesmanage.widget.ChooseView
-            android:id="@+id/rl_select_choose_face"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="20dp"
-            app:chooseValue="A"
-            app:chooseColor="@color/blue_bg"
-            app:chooseSize="18sp"/>
+            <Button
+                style="@style/selectTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginLeft="60dp"
+                android:text="@string/select_select"
+                android:background="@drawable/bg_btn_select"/>
+        </LinearLayout>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="面"
-            style="@style/selectTextStyle"/>
-
-        <com.yh.filesmanage.widget.ChooseView
-            android:id="@+id/rl_select_choose_way"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="20dp"
-            app:chooseValue="01"
-            app:chooseColor="@color/blue_bg"
-            app:chooseSize="18sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="节"
-            style="@style/selectTextStyle"/>
-
-        <com.yh.filesmanage.widget.ChooseView
-            android:id="@+id/rl_select_choose_layer"
-            android:layout_width="80dp"
-            android:layout_height="40dp"
-            android:layout_marginLeft="30dp"
-            android:layout_marginRight="20dp"
-            app:chooseValue="01"
-            app:chooseColor="@color/blue_bg"
-            app:chooseSize="18sp"/>
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="层"
-            style="@style/selectTextStyle"/>
-    </LinearLayout>
-
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical"
-        android:background="@drawable/bg_select_list">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/gray_light">
+            android:layout_marginTop="10dp"
+            android:gravity="center_vertical">
+
+            <com.yh.filesmanage.widget.ChooseView
+                android:id="@+id/rl_select_choose_area"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                app:chooseValue="01"
+                app:chooseColor="@color/blue_bg"
+                app:chooseSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="区"
+                style="@style/selectTextStyle"/>
+
+            <com.yh.filesmanage.widget.ChooseView
+                android:id="@+id/rl_select_choose_col"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                app:chooseValue="01"
+                app:chooseColor="@color/blue_bg"
+                app:chooseSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="列"
+                style="@style/selectTextStyle"/>
+
+            <com.yh.filesmanage.widget.ChooseView
+                android:id="@+id/rl_select_choose_face"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                app:chooseValue="A"
+                app:chooseColor="@color/blue_bg"
+                app:chooseSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="面"
+                style="@style/selectTextStyle"/>
+
+            <com.yh.filesmanage.widget.ChooseView
+                android:id="@+id/rl_select_choose_way"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                app:chooseValue="01"
+                app:chooseColor="@color/blue_bg"
+                app:chooseSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="节"
+                style="@style/selectTextStyle"/>
+
+            <com.yh.filesmanage.widget.ChooseView
+                android:id="@+id/rl_select_choose_layer"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginRight="20dp"
+                app:chooseValue="01"
+                app:chooseColor="@color/blue_bg"
+                app:chooseSize="18sp"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="层"
+                style="@style/selectTextStyle"/>
+        </LinearLayout>
+    </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
+
+
+    <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        app:qmui_radiusTopLeft="5dp"
+        app:qmui_radiusBottomLeft="5dp"
+        app:qmui_radiusBottomRight="5dp"
+        app:qmui_radiusTopRight="5dp"
+        app:qmui_backgroundColor="@color/white"
+        android:orientation="vertical">
+        <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="0dp"
+            app:qmui_radiusTopRight="5dp"
+            app:qmui_radiusTopLeft="5dp"
+            android:orientation="horizontal"
+            app:qmui_backgroundColor="@color/gray_light">
             <TextView
                 android:layout_width="0dp"
                 android:layout_weight="1"
@@ -160,14 +184,15 @@
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
                 android:background="@color/gray"/>
+
             <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
+                style="@style/selectTextStyle"
+                android:layout_width="65dp"
                 android:layout_height="wrap_content"
+                android:layout_weight="1"
                 android:paddingLeft="15dp"
                 android:text="条码"
-                android:textColor="@color/black"
-                style="@style/selectTextStyle"/>
+                android:textColor="@color/black" />
             <View
                 android:layout_width="1dp"
                 android:layout_height="match_parent"
@@ -209,11 +234,11 @@
                 android:layout_height="match_parent"
                 android:background="@color/gray"/>
 
-        </LinearLayout>
+        </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-    </LinearLayout>
+            android:layout_height="match_parent" />
+    </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
 </LinearLayout>
