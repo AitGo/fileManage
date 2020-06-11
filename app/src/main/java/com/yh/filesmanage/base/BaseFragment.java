@@ -28,8 +28,8 @@ public abstract class BaseFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View inflate = inflater.inflate(getLayoutId(), null);
         unbind = ButterKnife.bind(this, inflate);
-        initView(inflate);
         initData();
+        initView(inflate);
         return inflate;
     }
 

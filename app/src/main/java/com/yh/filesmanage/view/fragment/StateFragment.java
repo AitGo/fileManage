@@ -19,6 +19,7 @@ import com.yh.filesmanage.base.BaseFragment;
 import com.yh.filesmanage.diagnose.LayerEntity;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
+import com.yh.filesmanage.utils.ToastUtils;
 import com.yh.filesmanage.view.MainActivity;
 
 import java.io.IOException;
@@ -70,6 +71,10 @@ public class StateFragment extends BaseFragment {
     ImageButton btnStateBack;
     @BindView(R.id.btn_state_next)
     ImageButton btnStateNext;
+    @BindView(R.id.tv_state_layer_no)
+    TextView tvStateLayerNo;
+    @BindView(R.id.tv_state_cabinet_no)
+    TextView tvStateCabinetNo;
 
     private List<LayerEntity> layers = new ArrayList<>();
     private LayerAdapter adapter;
@@ -79,10 +84,10 @@ public class StateFragment extends BaseFragment {
     private OutputStream mOutputStream;
     private ExecutorService readEs;
 
-    private int areaNo = 0;//区号
-    private int layerNo = 0;//层数
-    private int cabinetNo = 0;//柜号
-    private int boxNo = 0;//盒号
+    private int areaNo = 1;//区号
+    private int layerNo = 1;//层数
+    private int cabinetNo = 1;//柜号
+    private int boxNo = 1;//盒号
 
 
     @Override
@@ -99,6 +104,8 @@ public class StateFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
                 adapter.setPositionBg(layers.get(position));
+                int index = layers.get(position).getIndex();
+                tvStateLayerNo.setText(getNumber(index));
                 adapter.notifyDataSetChanged();
             }
         });
@@ -106,6 +113,9 @@ public class StateFragment extends BaseFragment {
         DividerItemDecoration divider = new DividerItemDecoration(getContext(), DividerItemDecoration.VERTICAL);
         divider.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.bg_custom_layer));
         rvStateLayer.addItemDecoration(divider);
+
+        adapter.setPositionBg(layers.get(0));
+        tvStateLayerNo.setText(getNumber(layers.get(0).getIndex()));
     }
 
     @Override
@@ -140,6 +150,13 @@ public class StateFragment extends BaseFragment {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_state_check:
+                // 0xac 区号 0x18 盘点柜号 盘点层号 0x9e
+                sendSeriportData(new byte[]{(byte) 0xAC,
+                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) 0x18,
+                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) HexUtil.getIntForHexInt(layerNo),//层号
+                        (byte) 0x9E});
                 break;
             case R.id.btn_state_up:
                 break;
@@ -211,51 +228,63 @@ public class StateFragment extends BaseFragment {
                         .show(llStateChooseLayer);
                 break;
             case R.id.btn_state_back:
-
+                if(cabinetNo > 1) {
+                    cabinetNo--;
+                    tvStateCabinetNo.setText(getNumber(cabinetNo));
+                }
                 break;
             case R.id.btn_state_next:
-
+                cabinetNo++;
+                tvStateCabinetNo.setText(getNumber(cabinetNo));
                 break;
         }
     }
 
     public void sendSeriportData(byte[] send) {
-        readEs.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    mOutputStream.write(send);
-                    mOutputStream.flush();
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if(mOutputStream != null) {
+            readEs.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        mOutputStream.write(send);
+                        mOutputStream.flush();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }else {
+            ToastUtils.showShort("串口未打开");
+        }
     }
 
     public void getSeriportData(byte[] send) {
-        readEs.execute(new Runnable() {
-            @Override
-            public void run() {
-                try {
-                    byte[] send = new byte[]{(byte) 0xAC,
-                            (byte) 0x01,
-                            (byte) HexUtil.getIntForHexInt(areaNo),//区号
-                            (byte) 0x00,
-                            (byte) 0x9E};//查询报文
-                    mOutputStream.write(send);
-                    mOutputStream.flush();
-                    Thread.sleep(150);
-                    mainloop(mInputStream);
-                } catch (Exception e) {
-                    e.printStackTrace();
+        if(mOutputStream != null) {
+            readEs.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        byte[] send = new byte[]{(byte) 0xAC,
+                                (byte) 0x01,
+                                (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                                (byte) 0x00,
+                                (byte) 0x9E};//查询报文
+                        mOutputStream.write(send);
+                        mOutputStream.flush();
+                        Thread.sleep(150);
+                        mainloop(mInputStream);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
+        }else {
+            ToastUtils.showShort("串口未打开");
+        }
     }
 
     public void mainloop(InputStream inputStream) throws IOException {
-        if (inputStream.available() >= 2) {
+        if (inputStream.available() > 0) {
             byte[] Re_buf = new byte[inputStream.available()];
             int size = mInputStream.read(Re_buf);
             LogUtils.e("接收到串口回调w == " + size);
@@ -266,5 +295,12 @@ public class StateFragment extends BaseFragment {
                 }
             }
         }
+    }
+
+    private String getNumber(int i) {
+        if (i < 10) {
+            return "0" + i;
+        }
+        return i + "";
     }
 }

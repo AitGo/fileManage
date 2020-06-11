@@ -31,14 +31,13 @@
                 android:text="首列:"
                 style="@style/selectTextStyle"/>
 
-            <com.yh.filesmanage.widget.ChooseView
-                android:id="@+id/setting_choose_first"
+            <EditText
+                android:id="@+id/et_setting_first"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
-                app:chooseValue="1"
-                app:chooseColor="@color/blue_bg"
-                app:chooseSize="20sp"/>
+                style="@style/selectTextStyle"
+                android:background="@color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -47,14 +46,13 @@
                 android:text="固定列:"
                 style="@style/selectTextStyle"/>
 
-            <com.yh.filesmanage.widget.ChooseView
-                android:id="@+id/setting_choose_fixed"
+            <EditText
+                android:id="@+id/et_setting_fixed"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
-                app:chooseValue="1"
-                app:chooseColor="@color/blue_bg"
-                app:chooseSize="20sp"/>
+                style="@style/selectTextStyle"
+                android:background="@color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -63,14 +61,13 @@
                 android:text="末列:"
                 style="@style/selectTextStyle"/>
 
-            <com.yh.filesmanage.widget.ChooseView
-                android:id="@+id/setting_choose_end"
+            <EditText
+                android:id="@+id/et_setting_end"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
-                app:chooseValue="1"
-                app:chooseColor="@color/blue_bg"
-                app:chooseSize="20sp"/>
+                style="@style/selectTextStyle"
+                android:background="@color/white"/>
 
         </LinearLayout>
 
@@ -87,14 +84,13 @@
                 android:text="区号:"
                 style="@style/selectTextStyle"/>
 
-            <com.yh.filesmanage.widget.ChooseView
-                android:id="@+id/setting_choose_area"
+            <EditText
+                android:id="@+id/et_setting_area"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
-                app:chooseValue="1"
-                app:chooseColor="@color/blue_bg"
-                app:chooseSize="20sp"/>
+                style="@style/selectTextStyle"
+                android:background="@color/white"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -113,6 +109,7 @@
                 app:chooseSize="20sp"/>
 
             <Button
+                android:id="@+id/btn_setting_set"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
                 android:layout_marginLeft="30dp"
@@ -149,6 +146,7 @@
                 android:text="库房号:"
                 style="@style/selectTextStyle"/>
             <EditText
+                android:id="@+id/et_setting_room_no"
                 android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
@@ -157,13 +155,22 @@
         </LinearLayout>
     </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        android:text="修改"
+        style="@style/selectTextStyle"
+        android:background="@drawable/bg_btn_select"/>
+
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="100dp"
+        android:layout_marginBottom="60dp"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         app:qmui_radiusTopLeft="10dp"
@@ -176,22 +183,128 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:gravity="center_vertical"
             android:layout_marginLeft="10dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Tcp端口:"
                 style="@style/selectTextStyle"/>
-            <com.yh.filesmanage.widget.ChooseView
-                android:id="@+id/setting_choose_tcp_port"
+            <EditText
+                android:id="@+id/et_setting_tcp_port"
                 android:layout_width="150dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
-                app:chooseValue="1"
-                app:chooseColor="@color/blue_bg"
-                app:chooseSize="20sp"/>
+                android:text=""
+                style="@style/selectTextStyle"
+                android:background="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="连接数:"
+                style="@style/selectTextStyle"/>
+            <EditText
+                android:id="@+id/et_setting_tcp_connect_no"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:text=""
+                style="@style/selectTextStyle"
+                android:background="@color/white"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:background="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="启用"
+                style="@style/selectTextStyle"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="用户名:"
+                style="@style/selectTextStyle"/>
+            <EditText
+                android:id="@+id/et_setting_username"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:text=""
+                style="@style/selectTextStyle"
+                android:background="@color/white"/>
 
         </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical"
+            android:layout_marginTop="30dp"
+            android:layout_marginLeft="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Http端口:"
+                style="@style/selectTextStyle"/>
+            <EditText
+                android:id="@+id/et_setting_http_port"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:text=""
+                style="@style/selectTextStyle"
+                android:background="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="连接数:"
+                style="@style/selectTextStyle"/>
+            <EditText
+                android:id="@+id/et_setting_http_connect_no"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:text=""
+                style="@style/selectTextStyle"
+                android:background="@color/white"/>
+
+            <CheckBox
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:background="@color/white"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="启用"
+                style="@style/selectTextStyle"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="密码:"
+                style="@style/selectTextStyle"/>
+            <EditText
+                android:id="@+id/et_setting_password"
+                android:layout_width="150dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:text=""
+                style="@style/selectTextStyle"
+                android:background="@color/white"/>
+
+        </LinearLayout>
+
     </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
 

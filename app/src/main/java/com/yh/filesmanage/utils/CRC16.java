@@ -54,6 +54,9 @@ public class CRC16 {
         byte[] bytes2 = {(byte) 0x4a, (byte) 0xae};
         byte[] bytes1 = {(byte) 0x4A, (byte) 0xAE};
         byte[] bytes3 = {(byte) parseInt, (byte) parseInt2};
+
+        int intForHexInt = HexUtil.getIntForHexInt(39);
+        System.out.println(intForHexInt + "");
     }
 
     /**

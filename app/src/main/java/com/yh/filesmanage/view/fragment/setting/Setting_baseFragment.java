@@ -19,13 +19,6 @@ import butterknife.OnClick;
  */
 public class Setting_baseFragment extends BaseFragment {
 
-    @BindView(R.id.setting_choose_first)
-    ChooseView settingChooseFirst;
-    @BindView(R.id.setting_choose_fixed)
-    ChooseView settingChooseFixed;
-    @BindView(R.id.setting_choose_end)
-    ChooseView settingChooseEnd;
-
     @Override
     protected int getLayoutId() {
         return R.layout.fragment_setting_base;

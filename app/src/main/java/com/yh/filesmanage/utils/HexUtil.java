@@ -234,6 +234,6 @@ public class HexUtil {
 
     public static int getIntForHexInt(int i) {
         String hexStringForInteger = getHexStringForInteger(i);
-        return getIntForHexString(hexStringForInteger);
+        return Integer.valueOf(hexStringForInteger);
     }
 }

@@ -286,6 +286,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true">
                         <TextView
+                            android:id="@+id/tv_state_cabinet_no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="01"
@@ -297,6 +298,7 @@
                             android:text="柜"
                             style="@style/mainTextStyle"/>
                         <TextView
+                            android:id="@+id/tv_state_layer_no"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="05"

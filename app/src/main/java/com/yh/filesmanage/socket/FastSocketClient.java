@@ -4,7 +4,9 @@ import android.os.SystemClock;
 
 
 import com.yh.filesmanage.base.Constants;
+import com.yh.filesmanage.base.MyApplication;
 import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
+import com.yh.filesmanage.utils.SPUtils;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -56,13 +58,14 @@ public class FastSocketClient {
             @Override
             public void run() {
                 try {
-                    socket.connect(new InetSocketAddress(Constants.SOCKET_IP, Constants.SOCKET_PORT), 5 * 1000);
+                    socket.connect(new InetSocketAddress((String) SPUtils.getParam(MyApplication.getContext(),Constants.SOCKET_IP,Constants.SOCKET_IP),
+                            (int) SPUtils.getParam(MyApplication.getContext(),Constants.SP_SOCKET_PORT,Constants.SOCKET_PORT)), 5 * 1000);
                     if (socket.isConnected()) {
                         out = socket.getOutputStream();
                         InputStream in = socket.getInputStream();
                         dis = new DataInputStream(in);
                         if (onSocketClientCallBackList != null)
-                            onSocketClientCallBackList.onSocketConnectionSuccess(Constants.SOCKET_IP + ":" + Constants.SOCKET_PORT);
+                            onSocketClientCallBackList.onSocketConnectionSuccess(SPUtils.getParam(MyApplication.getContext(),Constants.SOCKET_IP,Constants.SOCKET_IP) + ":" + SPUtils.getParam(MyApplication.getContext(),Constants.SP_SOCKET_PORT,Constants.SOCKET_PORT));
                         neverReconnect = false;
                     }
                 } catch (IOException e) {

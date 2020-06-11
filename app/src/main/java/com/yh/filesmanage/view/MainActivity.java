@@ -21,6 +21,8 @@ import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
 import com.yh.filesmanage.utils.CRC16;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
+import com.yh.filesmanage.utils.SPUtils;
+import com.yh.filesmanage.utils.ToastUtils;
 import com.yh.filesmanage.view.fragment.StateFragment;
 import com.yh.filesmanage.view.fragment.SelectFragment;
 import com.yh.filesmanage.view.fragment.SettingFragment;
@@ -121,7 +123,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         hideFragment();
         selectButtonBg(0);
         showFragment(mStateFragment);
-//        initSerialPort();
+        initSerialPort();
     }
 
     @Override
@@ -174,35 +176,35 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 //                entity.setData(new byte[]{});
 //                entity.setLength();
 //                entity.setCrcCode();
-                int i = CRC16.CRC16_CCITT(new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01});
-
-                fastSocketClient.send(new byte[]{(byte)0x1B,(byte)0x00,(byte)0x05,(byte)0x00,(byte)0x01,(byte)0x00,(byte)0x01,(byte)0x4a,(byte)0xae});
-                fastSocketClient.setOnSocketClientCallBackList(new OnSocketClientCallBackList() {
-                    @Override
-                    public void onSocketConnectionSuccess(String msg) {
-
-                    }
-
-                    @Override
-                    public void onSocketConnectionFailed(String msg, Exception e) {
-
-                    }
-
-                    @Override
-                    public void onSocketDisconnection(String msg, Exception e) {
-
-                    }
-
-                    @Override
-                    public void onSocketReadResponse(byte[] bytes) {
-                        Log.e("123",bytes.toString());
-                    }
-
-                    @Override
-                    public void onSocketWriteResponse(byte[] bytes) {
-                        Log.e("123",bytes.toString());
-                    }
-                });
+//                int i = CRC16.CRC16_CCITT(new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01});
+//
+//                fastSocketClient.send(new byte[]{(byte)0x1B,(byte)0x00,(byte)0x05,(byte)0x00,(byte)0x01,(byte)0x00,(byte)0x01,(byte)0x4a,(byte)0xae});
+//                fastSocketClient.setOnSocketClientCallBackList(new OnSocketClientCallBackList() {
+//                    @Override
+//                    public void onSocketConnectionSuccess(String msg) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onSocketConnectionFailed(String msg, Exception e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onSocketDisconnection(String msg, Exception e) {
+//
+//                    }
+//
+//                    @Override
+//                    public void onSocketReadResponse(byte[] bytes) {
+//                        Log.e("123",bytes.toString());
+//                    }
+//
+//                    @Override
+//                    public void onSocketWriteResponse(byte[] bytes) {
+//                        Log.e("123",bytes.toString());
+//                    }
+//                });
                 break;
         }
     }
@@ -222,12 +224,16 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     private void initSerialPort() {
         try {
-            serialPort = new SerialPort(new File(Constants.SERIALPORT_NO), Constants.SERIALPORT_BAUDRATE, 0);
+            String serialport_no = (String) SPUtils.getParam(this, Constants.SP_SERIALPORT_NO, Constants.SERIALPORT_NO);
+            int serialport_baudrate = (int) SPUtils.getParam(this, Constants.SP_SERIALPORT_BAUDRATE, Constants.SERIALPORT_BAUDRATE);
+            serialPort = new SerialPort(new File(serialport_no),
+                    serialport_baudrate, 0);
             mInputStream = serialPort.getInputStream();
             mOutputStream = serialPort.getOutputStream();
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.e("打开串口失败");
+            ToastUtils.showShort("打开串口失败");
         }
     }
 
