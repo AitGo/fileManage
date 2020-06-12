@@ -80,7 +80,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler {
 
                 sb.append(writer.toString());
 
-                FileUtils.writeTxtToFile(sb.toString(), Constants.settingDir + "/", "crash_" +StringUtils.Date2String(new Date(),"yyyy_MM_dd_HH_mm_ss") + ".txt");
+                FileUtils.writeTxtToFile(sb.toString(), Constants.settingDir + "/" + "log/", "crash_" +StringUtils.Date2String(new Date(),"yyyy_MM_dd_HH_mm_ss") + ".txt");
 //                File ff = new File(Constants.filePath + "/crash.txt");
 //                ff.createNewFile();
 //                FileWriter fw = new FileWriter(new File(Constants.filePath + "/crash.txt"));
