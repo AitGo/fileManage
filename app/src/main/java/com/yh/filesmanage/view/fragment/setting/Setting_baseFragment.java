@@ -106,6 +106,9 @@ public class Setting_baseFragment extends BaseFragment {
                 }
             }
         };
+
+        int areaNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_AREA, 1);
+        etSettingArea.setText(areaNo + "");
     }
 
     @Override

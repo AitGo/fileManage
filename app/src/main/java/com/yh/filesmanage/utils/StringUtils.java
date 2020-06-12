@@ -201,4 +201,11 @@ public class StringUtils {
             w = 0;
         return weekDays[w];
     }
+
+    public static String getNumber(int i) {
+        if (i < 10) {
+            return "0" + i;
+        }
+        return i + "";
+    }
 }

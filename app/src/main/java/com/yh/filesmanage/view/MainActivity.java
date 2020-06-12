@@ -22,6 +22,7 @@ import com.yh.filesmanage.utils.CRC16;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
 import com.yh.filesmanage.utils.SPUtils;
+import com.yh.filesmanage.utils.StringUtils;
 import com.yh.filesmanage.utils.ToastUtils;
 import com.yh.filesmanage.view.fragment.StateFragment;
 import com.yh.filesmanage.view.fragment.SelectFragment;
@@ -30,6 +31,7 @@ import com.yh.filesmanage.view.fragment.TaskFragment;
 import com.yh.filesmanage.widget.FontIconView;
 
 import java.io.File;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.List;
@@ -110,6 +112,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     private OutputStream mOutputStream;
     private SerialPort serialPort;
     ExecutorService readES = Executors.newSingleThreadExecutor();
+    private int areaNo = 1;
 
     @Override
     protected int getLayoutId() {
@@ -123,6 +126,9 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         hideFragment();
         selectButtonBg(0);
         showFragment(mStateFragment);
+        areaNo = (int) SPUtils.getParam(this, Constants.SP_NO_AREA, 1);
+        tvMainArea.setText(StringUtils.getNumber(areaNo));
+
         initSerialPort();
     }
 
@@ -220,10 +226,50 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                     serialport_baudrate, 0);
             mInputStream = serialPort.getInputStream();
             mOutputStream = serialPort.getOutputStream();
+            getSeriportData();
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.e("打开串口失败");
             ToastUtils.showShort("打开串口失败");
+        }
+    }
+
+    public void getSeriportData() {
+        if(mOutputStream != null) {
+            readES.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        byte[] send = new byte[]{(byte) 0xAC,
+                                (byte) 0x01,
+                                (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                                (byte) 0x00,
+                                (byte) 0x9E};//查询报文
+                        mOutputStream.write(send);
+                        mOutputStream.flush();
+                        Thread.sleep(150);
+                        mainloop(mInputStream);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }else {
+            ToastUtils.showShort("串口未打开");
+        }
+    }
+
+    public void mainloop(InputStream inputStream) throws IOException {
+        if (inputStream.available() > 0) {
+            byte[] Re_buf = new byte[inputStream.available()];
+            int size = mInputStream.read(Re_buf);
+            LogUtils.e("接收到串口回调w == " + size);
+            if (size > 0) {
+                for (int i = 0; i < size; i++) {
+                    LogUtils.e("十进制=" + Re_buf[i]);
+                    final String res = HexUtil.byteToHexString(Re_buf[i]);
+                }
+            }
         }
     }
 

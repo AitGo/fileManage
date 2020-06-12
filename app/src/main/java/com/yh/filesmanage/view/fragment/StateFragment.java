@@ -19,8 +19,10 @@ import com.yh.filesmanage.base.BaseFragment;
 import com.yh.filesmanage.diagnose.LayerEntity;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
+import com.yh.filesmanage.utils.StringUtils;
 import com.yh.filesmanage.utils.ToastUtils;
 import com.yh.filesmanage.view.MainActivity;
+import com.yh.filesmanage.widget.ChooseView;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -65,8 +67,8 @@ public class StateFragment extends BaseFragment {
     QMUIButton btnStateReverse;
     @BindView(R.id.btn_state_open_layer)
     QMUIButton btnStateOpenLayer;
-    @BindView(R.id.ll_state_choose_layer)
-    LinearLayout llStateChooseLayer;
+    @BindView(R.id.state_choose_layer)
+    ChooseView StateChooseLayer;
     @BindView(R.id.btn_state_back)
     ImageButton btnStateBack;
     @BindView(R.id.btn_state_next)
@@ -89,6 +91,8 @@ public class StateFragment extends BaseFragment {
     private int cabinetNo = 1;//柜号
     private int boxNo = 1;//盒号
 
+    private LayerChooseAdapter chooseAdapter;
+    private AdapterView.OnItemClickListener onItemClickListener;
 
     @Override
     protected int getLayoutId() {
@@ -105,7 +109,7 @@ public class StateFragment extends BaseFragment {
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
                 adapter.setPositionBg(layers.get(position));
                 int index = layers.get(position).getIndex();
-                tvStateLayerNo.setText(getNumber(index));
+                tvStateLayerNo.setText(StringUtils.getNumber(index));
                 adapter.notifyDataSetChanged();
             }
         });
@@ -115,7 +119,7 @@ public class StateFragment extends BaseFragment {
         rvStateLayer.addItemDecoration(divider);
 
         adapter.setPositionBg(layers.get(0));
-        tvStateLayerNo.setText(getNumber(layers.get(0).getIndex()));
+        tvStateLayerNo.setText(StringUtils.getNumber(layers.get(0).getIndex()));
     }
 
     @Override
@@ -141,11 +145,27 @@ public class StateFragment extends BaseFragment {
             entity.setItems(items);
             layers.add(entity);
         }
+
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 20; i++) {
+            list.add(i + 1 + "");
+        }
+        chooseAdapter = new LayerChooseAdapter(getContext(), list);
+        onItemClickListener = new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                layerNo = position + 1;
+                StateChooseLayer.setTextValue("第" + list.get(position) + "层");
+                if (popup != null) {
+                    popup.dismiss();
+                }
+            }
+        };
     }
 
     @OnClick({R.id.btn_state_check, R.id.btn_state_up, R.id.btn_state_open,
             R.id.btn_state_close, R.id.btn_state_stop, R.id.btn_state_forward,
-            R.id.btn_state_reverse, R.id.btn_state_open_layer, R.id.ll_state_choose_layer,
+            R.id.btn_state_reverse, R.id.btn_state_open_layer, R.id.state_choose_layer,
             R.id.btn_state_back, R.id.btn_state_next})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -199,25 +219,10 @@ public class StateFragment extends BaseFragment {
                         (byte) 0x01,//档案名称
                         (byte) 0x9E});
                 break;
-            case R.id.ll_state_choose_layer:
-                List<String> list = new ArrayList<>();
-                for (int i = 0; i < 20; i++) {
-                    list.add(i + 1 + "");
-                }
-                LayerChooseAdapter adapter = new LayerChooseAdapter(getContext(), list);
-                AdapterView.OnItemClickListener onItemClickListener = new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        Toast.makeText(getContext(), list.get(position), Toast.LENGTH_SHORT).show();
-                        layerNo = position + 1;
-                        if (popup != null) {
-                            popup.dismiss();
-                        }
-                    }
-                };
+            case R.id.state_choose_layer:
                 popup = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 150),
                         QMUIDisplayHelper.dp2px(getContext(), 250),
-                        adapter, onItemClickListener)
+                        chooseAdapter, onItemClickListener)
                         .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                         .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
                         .offsetX(QMUIDisplayHelper.dp2px(getContext(), 20))
@@ -225,17 +230,17 @@ public class StateFragment extends BaseFragment {
                         .shadow(true)
                         .arrow(true)
                         .animStyle(QMUIPopup.ANIM_AUTO)
-                        .show(llStateChooseLayer);
+                        .show(StateChooseLayer);
                 break;
             case R.id.btn_state_back:
                 if(cabinetNo > 1) {
                     cabinetNo--;
-                    tvStateCabinetNo.setText(getNumber(cabinetNo));
+                    tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
                 }
                 break;
             case R.id.btn_state_next:
                 cabinetNo++;
-                tvStateCabinetNo.setText(getNumber(cabinetNo));
+                tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
                 break;
         }
     }
@@ -297,10 +302,4 @@ public class StateFragment extends BaseFragment {
         }
     }
 
-    private String getNumber(int i) {
-        if (i < 10) {
-            return "0" + i;
-        }
-        return i + "";
-    }
 }

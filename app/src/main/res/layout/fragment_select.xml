@@ -20,6 +20,7 @@
         app:qmui_radiusTopRight="10dp"
         app:qmui_backgroundColor="@color/blue_bg_white"
         android:orientation="vertical">
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="62dp"
@@ -36,9 +37,9 @@
                 android:id="@+id/ll_select_choose_way"
                 android:layout_width="150dp"
                 android:layout_height="40dp"
-                app:chooseValue="架位条码"
                 app:chooseColor="@color/blue_bg"
-                app:chooseSize="18sp"/>
+                app:chooseSize="18sp"
+                app:chooseValue="架位条码" />
 
             <TextView
                 style="@style/selectTextStyle"
@@ -48,20 +49,21 @@
                 android:text="@string/select_key" />
 
             <EditText
+                android:id="@+id/et_select_key"
                 android:layout_width="300dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="30dp"
-                android:textSize="15sp"
+                android:background="@drawable/bg_edittext"
                 android:textColor="@color/black"
-                android:background="@drawable/bg_edittext" />
+                android:textSize="15sp" />
 
             <Button
                 style="@style/selectTextStyle"
                 android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_marginLeft="60dp"
-                android:text="@string/select_select"
-                android:background="@drawable/bg_btn_select"/>
+                android:background="@drawable/bg_btn_select"
+                android:text="@string/select_select" />
         </LinearLayout>
 
         <LinearLayout
@@ -149,6 +151,15 @@
                 android:layout_height="wrap_content"
                 android:text="层"
                 style="@style/selectTextStyle"/>
+
+            <Button
+                style="@style/selectTextStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="35dp"
+                android:layout_marginLeft="60dp"
+                android:background="@drawable/bg_btn_select"
+                android:text="开架" />
+
         </LinearLayout>
     </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 

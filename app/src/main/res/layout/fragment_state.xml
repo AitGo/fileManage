@@ -311,30 +311,16 @@
                             style="@style/mainTextStyle"/>
                     </LinearLayout>
 
-                    <LinearLayout
-                        android:id="@+id/ll_state_choose_layer"
+                    <com.yh.filesmanage.widget.ChooseView
+                        android:id="@+id/state_choose_layer"
                         android:layout_width="100dp"
                         android:layout_height="40dp"
                         android:layout_marginRight="20dp"
                         android:layout_centerInParent="true"
-                        android:gravity="center"
-                        android:background="@color/white"
-                        android:layout_alignParentRight="true">
-
-                        <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="第1层"
-                            android:textColor="@color/blue_bg"
-                            style="@style/mainTextSubStyle"
-                            android:background="@null"/>
-                        <com.yh.filesmanage.widget.FontIconView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:textColor="@color/black"
-                            android:text="@string/icon_more"/>
-                    </LinearLayout>
+                        android:layout_alignParentRight="true"
+                        app:chooseValue="第1层"
+                        app:chooseColor="@color/blue_bg"
+                        app:chooseSize="18sp"/>
 
                 </RelativeLayout>
 
