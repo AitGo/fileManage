@@ -36,6 +36,7 @@
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
 
@@ -51,6 +52,7 @@
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
 
@@ -66,6 +68,7 @@
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
 
@@ -89,6 +92,7 @@
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
 
@@ -150,6 +154,7 @@
                 android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
         </LinearLayout>
@@ -184,7 +189,8 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginLeft="10dp">
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -192,10 +198,11 @@
                 style="@style/selectTextStyle"/>
             <EditText
                 android:id="@+id/et_setting_tcp_port"
-                android:layout_width="150dp"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:text=""
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
 
@@ -207,18 +214,18 @@
                 style="@style/selectTextStyle"/>
             <EditText
                 android:id="@+id/et_setting_tcp_connect_no"
-                android:layout_width="150dp"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:text=""
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:background="@color/white"/>
+                android:layout_marginLeft="30dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -233,10 +240,11 @@
                 style="@style/selectTextStyle"/>
             <EditText
                 android:id="@+id/et_setting_username"
-                android:layout_width="150dp"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:text=""
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
 
@@ -255,10 +263,11 @@
                 style="@style/selectTextStyle"/>
             <EditText
                 android:id="@+id/et_setting_http_port"
-                android:layout_width="150dp"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:text=""
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
 
@@ -270,18 +279,18 @@
                 style="@style/selectTextStyle"/>
             <EditText
                 android:id="@+id/et_setting_http_connect_no"
-                android:layout_width="150dp"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:text=""
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
 
             <CheckBox
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:background="@color/white"/>
+                android:layout_marginLeft="30dp" />
 
             <TextView
                 android:layout_width="wrap_content"
@@ -296,10 +305,11 @@
                 style="@style/selectTextStyle"/>
             <EditText
                 android:id="@+id/et_setting_password"
-                android:layout_width="150dp"
+                android:layout_width="180dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:text=""
+                android:textColor="@color/black"
                 style="@style/selectTextStyle"
                 android:background="@color/white"/>
 

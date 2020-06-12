@@ -166,16 +166,6 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 selectButtonBg(3);
                 showFragment(mSettingFragment);
 
-//                TempTool tempTool = new TempTool(this);
-//                tempTool.openGetSSSerial();
-//                RFIDEntity entity = new RFIDEntity();
-//                entity.setHead(Integer.valueOf(0x11).byteValue());
-//                entity.setAddress(new byte[]{Integer.valueOf(0x11).byteValue(),Integer.valueOf(0x32).byteValue()});
-//                entity.setControllerCode(new byte[]{(byte)0x00,(byte)0x01});
-//                entity.setOrderNo(new byte[]{(byte)0x01});
-//                entity.setData(new byte[]{});
-//                entity.setLength();
-//                entity.setCrcCode();
 //                int i = CRC16.CRC16_CCITT(new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01});
 //
 //                fastSocketClient.send(new byte[]{(byte)0x1B,(byte)0x00,(byte)0x05,(byte)0x00,(byte)0x01,(byte)0x00,(byte)0x01,(byte)0x4a,(byte)0xae});

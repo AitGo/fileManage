@@ -236,4 +236,20 @@ public class HexUtil {
         String hexStringForInteger = getHexStringForInteger(i);
         return Integer.valueOf(hexStringForInteger);
     }
+
+    public static byte[] getSocketBytes(byte[] bytes) {
+        int i1 = CRC16.CRC16_CCITT(bytes);
+        //将其转换为十六进制并输出
+        String strHex = Integer.toHexString(i1);
+        int i = strHex.length() / 2;
+        String substring2 = strHex.substring(0, i);
+        String substring3 = strHex.substring(i);
+        int parseInt = Integer.parseInt(substring2, 16);
+        int parseInt2 = Integer.parseInt(substring3, 16);
+        byte[] bytes2 = {(byte) parseInt, (byte) parseInt2};
+        byte[] bt3 = new byte[bytes.length+bytes2.length];
+        System.arraycopy(bytes, 0, bt3, 0, bytes.length);
+        System.arraycopy(bytes2, 0, bt3, bytes.length, bytes2.length);
+        return bt3;
+    }
 }
