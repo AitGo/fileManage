@@ -52,9 +52,14 @@ public class CRC16 {
 
         int parseInt = Integer.parseInt(substring2, 16);
         int parseInt2 = Integer.parseInt(substring3, 16);
-        byte[] bytes2 = {(byte) 0x4a, (byte) 0xae};
+        byte[] bytes2 = {(byte) 0x00, (byte) 0xae};
         byte[] bytes1 = {(byte) 0x4A, (byte) 0xAE};
         byte[] bytes3 = {(byte) parseInt, (byte) parseInt2};
+        for(int j = 0; j < bytes2.length;j++ ) {
+            String s = HexUtil.byteToHexString(bytes2[j]);
+            int intForHexString = HexUtil.getIntForHexString("0101");
+            System.out.println(intForHexString + ":");
+        }
     }
 
     /**

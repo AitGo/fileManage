@@ -11,8 +11,8 @@
         android:layout_marginTop="30dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
         app:qmui_radiusTopLeft="10dp"
         app:qmui_radiusBottomLeft="10dp"
         app:qmui_radiusBottomRight="10dp"
@@ -23,28 +23,29 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="00dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="20dp"
-                android:text="首列:"
+                android:text="首柜:"
                 style="@style/selectTextStyle"/>
 
             <EditText
-                android:id="@+id/et_setting_first"
+                android:id="@+id/et_setting_min"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black"
                 style="@style/selectTextStyle"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:inputType="number|numberDecimal"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:text="固定列:"
+                android:text="固定柜:"
                 style="@style/selectTextStyle"/>
 
             <EditText
@@ -54,23 +55,76 @@
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black"
                 style="@style/selectTextStyle"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:inputType="number|numberDecimal"/>
 
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
-                android:text="末列:"
+                android:text="末柜:"
                 style="@style/selectTextStyle"/>
 
             <EditText
-                android:id="@+id/et_setting_end"
+                android:id="@+id/et_setting_max"
                 android:layout_width="80dp"
                 android:layout_height="40dp"
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black"
                 style="@style/selectTextStyle"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:inputType="number|numberDecimal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="节数:"
+                style="@style/selectTextStyle"/>
+
+            <EditText
+                android:id="@+id/et_setting_class_size"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
+                style="@style/selectTextStyle"
+                android:background="@color/white"
+                android:inputType="number|numberDecimal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="层数:"
+                style="@style/selectTextStyle"/>
+
+            <EditText
+                android:id="@+id/et_setting_layer_size"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
+                style="@style/selectTextStyle"
+                android:background="@color/white"
+                android:inputType="number|numberDecimal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
+                android:text="盒数:"
+                style="@style/selectTextStyle"/>
+
+            <EditText
+                android:id="@+id/et_setting_box_size"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:textColor="@color/black"
+                style="@style/selectTextStyle"
+                android:background="@color/white"
+                android:inputType="number|numberDecimal"/>
 
         </LinearLayout>
 
@@ -78,7 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="20dp">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -95,7 +149,8 @@
                 android:paddingLeft="3dp"
                 android:textColor="@color/black"
                 style="@style/selectTextStyle"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:inputType="number|numberDecimal"/>
 
             <TextView
                 android:layout_width="wrap_content"
@@ -114,6 +169,7 @@
                 app:chooseSize="20sp"/>
 
             <Button
+                android:visibility="gone"
                 android:id="@+id/btn_setting_set"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
@@ -143,7 +199,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginTop="30dp">
+            android:layout_marginTop="20dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -157,26 +213,45 @@
                 android:layout_marginLeft="20dp"
                 android:textColor="@color/black"
                 style="@style/selectTextStyle"
-                android:background="@color/white"/>
+                android:background="@color/white"
+                android:inputType="number|numberDecimal"/>
+
+            <Button
+                android:id="@+id/btn_setting_use"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="30dp"
+                android:layout_marginTop="10dp"
+                android:text="应用"
+                style="@style/selectTextStyle"
+                android:background="@drawable/bg_btn_select"/>
         </LinearLayout>
     </com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout>
 
-    <Button
-        android:layout_width="wrap_content"
-        android:layout_height="40dp"
-        android:layout_marginLeft="30dp"
-        android:layout_marginTop="30dp"
-        android:text="修改"
-        style="@style/selectTextStyle"
-        android:background="@drawable/bg_btn_select"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_setting_update"
+            android:layout_width="wrap_content"
+            android:layout_height="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginTop="10dp"
+            android:text="修改"
+            style="@style/selectTextStyle"
+            android:background="@drawable/bg_btn_select"/>
+
+
+    </LinearLayout>
+
 
     <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="80dp"
+        android:layout_marginBottom="0dp"
         android:paddingTop="20dp"
         android:paddingBottom="20dp"
         app:qmui_radiusTopLeft="10dp"
@@ -191,7 +266,7 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp">
+            android:layout_marginTop="0dp">
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -255,7 +330,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="20dp"
             android:layout_marginLeft="10dp">
             <TextView
                 android:layout_width="wrap_content"

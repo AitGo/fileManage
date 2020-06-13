@@ -1,6 +1,7 @@
 package com.yh.filesmanage.view;
 
 import android.Manifest;
+import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -28,6 +29,7 @@ import com.yh.filesmanage.view.fragment.StateFragment;
 import com.yh.filesmanage.view.fragment.SelectFragment;
 import com.yh.filesmanage.view.fragment.SettingFragment;
 import com.yh.filesmanage.view.fragment.TaskFragment;
+import com.yh.filesmanage.view.fragment.setting.Setting_baseFragment;
 import com.yh.filesmanage.widget.FontIconView;
 
 import java.io.File;
@@ -95,12 +97,14 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             Manifest.permission.WRITE_SETTINGS
     };
 
+    private Context mContext;
     private FragmentManager fragmentManager;
     private FragmentTransaction transaction;
     private StateFragment mStateFragment;
     private SelectFragment mSelectFragment;
     private TaskFragment mTaskFragment;
     private SettingFragment mSettingFragment;
+    private Setting_baseFragment mSettingBaseFragment;
 
     private FontIconView[] tabIvs;
     private TextView[] tabTvs;
@@ -113,6 +117,12 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     private SerialPort serialPort;
     ExecutorService readES = Executors.newSingleThreadExecutor();
     private int areaNo = 1;
+    private int temperatureHeight = 0;
+    private int temperatureLow = 0;
+    private int temperature = 0;
+    private int humidityHeight = 0;
+    private int humidityLow = 0;
+    private int humidity = 0;
 
     @Override
     protected int getLayoutId() {
@@ -135,6 +145,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     @Override
     protected void initData() {
         getPermission();
+        mContext = this;
         tabIvs = new FontIconView[]{ivMainState,ivMainSelect,ivMainTask,ivMainSetting};
         tabTvs = new TextView[]{tvMainState,tvMainSelect,tvMainTask,tvMainSetting};
         fragmentManager = getSupportFragmentManager();
@@ -170,7 +181,8 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             case R.id.ll_main_setting:
                 hideFragment();
                 selectButtonBg(3);
-                showFragment(mSettingFragment);
+//                showFragment(mSettingFragment);
+                showFragment(mSettingBaseFragment);
 
 //                int i = CRC16.CRC16_CCITT(new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01});
 //
@@ -265,10 +277,43 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             int size = mInputStream.read(Re_buf);
             LogUtils.e("接收到串口回调w == " + size);
             if (size > 0) {
+                String backString = "";
                 for (int i = 0; i < size; i++) {
-                    LogUtils.e("十进制=" + Re_buf[i]);
-                    final String res = HexUtil.byteToHexString(Re_buf[i]);
+                    LogUtils.e("接收到串口回调=" + Re_buf[i]);
+                    backString = backString + HexUtil.byteToHexString(Re_buf[i]);
                 }
+                //接受到命令后解析
+                if(!backString.contains("AC") && !backString.contains("9E")) {
+                    ToastUtils.showShort("命令不完整");
+                    return;
+                }
+                String backOrder = backString.substring(backString.indexOf("AC"),backString.indexOf("9E") + 1);
+                LogUtils.e("接受到的命令：" + backOrder);
+                String layer = backOrder.substring(31,33);
+                LogUtils.e("接受到的命令：layer " + backOrder);
+                int layerNo = HexUtil.getIntForHexString(layer);
+                SPUtils.setParam(mContext,Constants.SP_NO_LAYER,layerNo);
+                //温度
+//                temperatureHeight = HexUtil.getIntForHexString(backString.substring(37,39));
+//                LogUtils.e("接受到的命令：temperatureHeight " + temperatureHeight);
+//                temperatureLow = HexUtil.getIntForHexString(backString.substring(39,41));
+//                LogUtils.e("接受到的命令：temperatureLow " + temperatureLow);
+                temperature = HexUtil.getIntForHexString(backString.substring(37,41));
+                LogUtils.e("接受到的命令：temperature " + temperature);
+                //湿度
+//                humidityHeight = HexUtil.getIntForHexString(backString.substring(41,43));
+//                LogUtils.e("接受到的命令：humidityHeight " + humidityHeight);
+//                humidityLow = HexUtil.getIntForHexString(backString.substring(43,45));
+//                LogUtils.e("接受到的命令：humidityLow " + humidityLow);
+                humidity = HexUtil.getIntForHexString(backString.substring(41,45));
+                LogUtils.e("接受到的命令：humidity " + humidity);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        tvMainTemperature.setText(temperature/10 + "");
+                        tvMainHumidity.setText(humidity/10 + "");
+                    }
+                });
             }
         }
     }
@@ -293,9 +338,13 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             mTaskFragment = new TaskFragment();
             transaction.add(R.id.fl_view, mTaskFragment);
         }
-        if(mSettingFragment == null) {
-            mSettingFragment = new SettingFragment();
-            transaction.add(R.id.fl_view, mSettingFragment);
+//        if(mSettingFragment == null) {
+//            mSettingFragment = new SettingFragment();
+//            transaction.add(R.id.fl_view, mSettingFragment);
+//        }
+        if(mSettingBaseFragment == null) {
+            mSettingBaseFragment = new Setting_baseFragment();
+            transaction.add(R.id.fl_view, mSettingBaseFragment);
         }
 
         transaction.commit();
@@ -312,8 +361,11 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         if (mTaskFragment != null) {
             transaction.hide(mTaskFragment);
         }
-        if (mSettingFragment != null) {
-            transaction.hide(mSettingFragment);
+//        if (mSettingFragment != null) {
+//            transaction.hide(mSettingFragment);
+//        }
+        if (mSettingBaseFragment != null) {
+            transaction.hide(mSettingBaseFragment);
         }
         transaction.commit();
     }
@@ -380,5 +432,23 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     @Override
     public ExecutorService getReadEs() {
         return readES;
+    }
+
+    public void sendSeriportData(byte[] send) {
+        if(mOutputStream != null) {
+            readES.execute(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        mOutputStream.write(send);
+                        mOutputStream.flush();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }
+            });
+        }else {
+            ToastUtils.showShort("串口未打开");
+        }
     }
 }

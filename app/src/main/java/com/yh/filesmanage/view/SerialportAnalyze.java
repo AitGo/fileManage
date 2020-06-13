@@ -20,4 +20,6 @@ public interface SerialportAnalyze {
 
     ExecutorService getReadEs();
 
+    void sendSeriportData(byte[] send);
+
 }

@@ -39,6 +39,8 @@ public class Constants {
     public static String SP_NO_LAYER = "layer_no";//层数
     public static String SP_NO_CABINET = "cabinet_no";//柜号
     public static String SP_NO_BOX = "box_no";//盒号
+    public static String SP_NO_CABINET_MIN = "cabinet_no_min";
+    public static String SP_NO_CABINET_MAX = "cabinet_no_max";
 
 
     public static final String settingDir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "fileManage";

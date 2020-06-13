@@ -16,9 +16,11 @@ import com.yh.filesmanage.R;
 import com.yh.filesmanage.adapter.LayerAdapter;
 import com.yh.filesmanage.adapter.LayerChooseAdapter;
 import com.yh.filesmanage.base.BaseFragment;
+import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.diagnose.LayerEntity;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
+import com.yh.filesmanage.utils.SPUtils;
 import com.yh.filesmanage.utils.StringUtils;
 import com.yh.filesmanage.utils.ToastUtils;
 import com.yh.filesmanage.view.MainActivity;
@@ -82,10 +84,6 @@ public class StateFragment extends BaseFragment {
     private LayerAdapter adapter;
     private QMUIPopup popup;
 
-    private InputStream mInputStream;
-    private OutputStream mOutputStream;
-    private ExecutorService readEs;
-
     private int areaNo = 1;//区号
     private int layerNo = 1;//层数
     private int cabinetNo = 1;//柜号
@@ -93,6 +91,7 @@ public class StateFragment extends BaseFragment {
 
     private LayerChooseAdapter chooseAdapter;
     private AdapterView.OnItemClickListener onItemClickListener;
+    private MainActivity activity;
 
     @Override
     protected int getLayoutId() {
@@ -118,16 +117,17 @@ public class StateFragment extends BaseFragment {
         divider.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.bg_custom_layer));
         rvStateLayer.addItemDecoration(divider);
 
+        //初始化数据
         adapter.setPositionBg(layers.get(0));
         tvStateLayerNo.setText(StringUtils.getNumber(layers.get(0).getIndex()));
+        //选择层号
+        layerNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_LAYER,1);
+        StateChooseLayer.setTextValue("第" + StringUtils.getNumber(layerNo) + "层");
     }
 
     @Override
     protected void initData() {
-        MainActivity activity = (MainActivity) getActivity();
-        mInputStream = activity.getmInputStream();
-        mOutputStream = activity.getmOutputStream();
-        readEs = activity.getReadEs();
+        activity = (MainActivity) getActivity();
 
         Random rand = new Random();
         for (int i = 0; i < 20; i++) {
@@ -171,7 +171,7 @@ public class StateFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.btn_state_check:
                 // 0xac 区号 0x18 盘点柜号 盘点层号 0x9e
-                sendSeriportData(new byte[]{(byte) 0xAC,
+                activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) HexUtil.getIntForHexInt(areaNo),//区号
                         (byte) 0x18,
                         (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
@@ -181,39 +181,49 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_up:
                 break;
             case R.id.btn_state_open:
-                sendSeriportData(new byte[]{(byte) 0xAC,
+                activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) HexUtil.getIntForHexInt(areaNo),//区号
                         (byte) 0x1A,
                         (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_close:
-                sendSeriportData(new byte[]{(byte) 0xAC,
+                activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) HexUtil.getIntForHexInt(areaNo),//区号
                         (byte) 0x0C,
                         (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_stop:
-                sendSeriportData(new byte[]{(byte) 0xAC,
+                activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) HexUtil.getIntForHexInt(areaNo),//区号
                         (byte) 0x06,
                         (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_forward:
+                activity.sendSeriportData(new byte[]{(byte) 0xAC,
+                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) 0x08,
+                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) 0x9E});
                 break;
             case R.id.btn_state_reverse:
+                activity.sendSeriportData(new byte[]{(byte) 0xAC,
+                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) 0x09,
+                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) 0x9E});
                 break;
             case R.id.btn_state_open_layer:
                 //0xac 区号 0x07 打开的柜号 01 层号 盒号 00 01 档案名称 0x9e
-                sendSeriportData(new byte[]{(byte) 0xAC,
+                activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) HexUtil.getIntForHexInt(areaNo),//区号
                         (byte) 0x07,
-                        (byte) HexUtil.getIntForHexInt(cabinetNo),//区号
+                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
                         (byte) 0x01,
-                        (byte) HexUtil.getIntForHexInt(layerNo),//区号
-                        (byte) HexUtil.getIntForHexInt(boxNo),//区号
+                        (byte) HexUtil.getIntForHexInt(layerNo),//层号
+                        (byte) HexUtil.getIntForHexInt(boxNo),//盒号
                         (byte) 0x00,
                         (byte) 0x01,
                         (byte) 0x01,//档案名称
@@ -233,73 +243,23 @@ public class StateFragment extends BaseFragment {
                         .show(StateChooseLayer);
                 break;
             case R.id.btn_state_back:
-                if(cabinetNo > 1) {
+                int cabinetMin = (int) SPUtils.getParam(getContext(),Constants.SP_NO_CABINET_MIN,1);
+                if(cabinetNo != cabinetMin) {
                     cabinetNo--;
                     tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
+                }else {
+                    ToastUtils.showShort("没有更小的柜号");
                 }
                 break;
             case R.id.btn_state_next:
-                cabinetNo++;
-                tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
+                int cabinetMax = (int) SPUtils.getParam(getContext(),Constants.SP_NO_CABINET_MAX,5);
+                if(cabinetNo != cabinetMax) {
+                    cabinetNo++;
+                    tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
+                }else {
+                    ToastUtils.showShort("没有更大的柜号");
+                }
                 break;
         }
     }
-
-    public void sendSeriportData(byte[] send) {
-        if(mOutputStream != null) {
-            readEs.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        mOutputStream.write(send);
-                        mOutputStream.flush();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }else {
-            ToastUtils.showShort("串口未打开");
-        }
-    }
-
-    public void getSeriportData(byte[] send) {
-        if(mOutputStream != null) {
-            readEs.execute(new Runnable() {
-                @Override
-                public void run() {
-                    try {
-                        byte[] send = new byte[]{(byte) 0xAC,
-                                (byte) 0x01,
-                                (byte) HexUtil.getIntForHexInt(areaNo),//区号
-                                (byte) 0x00,
-                                (byte) 0x9E};//查询报文
-                        mOutputStream.write(send);
-                        mOutputStream.flush();
-                        Thread.sleep(150);
-                        mainloop(mInputStream);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            });
-        }else {
-            ToastUtils.showShort("串口未打开");
-        }
-    }
-
-    public void mainloop(InputStream inputStream) throws IOException {
-        if (inputStream.available() > 0) {
-            byte[] Re_buf = new byte[inputStream.available()];
-            int size = mInputStream.read(Re_buf);
-            LogUtils.e("接收到串口回调w == " + size);
-            if (size > 0) {
-                for (int i = 0; i < size; i++) {
-                    LogUtils.e("十进制=" + Re_buf[i]);
-                    final String res = HexUtil.byteToHexString(Re_buf[i]);
-                }
-            }
-        }
-    }
-
 }
