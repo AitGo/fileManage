@@ -288,11 +288,10 @@ public class StateFragment extends BaseFragment {
                         (byte) 0x05,//闪烁周期
                         (byte) 0x00,
                         (byte) layerNo,//层号
-                        (byte) 0x4a,
-                        (byte) 0x4a,
-                        (byte) 0xae};
-                int i = CRC16.CRC16_CCITT(bytes);
-                fastSocketClient.send();
+                        (byte) 0x02,//位置 2字节
+                        (byte) 0x00};
+                byte[] socketBytes = HexUtil.getSocketBytes(bytes);
+                fastSocketClient.send(socketBytes);
                 break;
             case R.id.state_choose_layer:
                 popup = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 150),

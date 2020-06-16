@@ -183,36 +183,6 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 selectButtonBg(3);
 //                showFragment(mSettingFragment);
                 showFragment(mSettingBaseFragment);
-
-//                int i = CRC16.CRC16_CCITT(new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01});
-//
-//                fastSocketClient.send(new byte[]{(byte)0x1B,(byte)0x00,(byte)0x05,(byte)0x00,(byte)0x01,(byte)0x00,(byte)0x01,(byte)0x4a,(byte)0xae});
-//                fastSocketClient.setOnSocketClientCallBackList(new OnSocketClientCallBackList() {
-//                    @Override
-//                    public void onSocketConnectionSuccess(String msg) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onSocketConnectionFailed(String msg, Exception e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onSocketDisconnection(String msg, Exception e) {
-//
-//                    }
-//
-//                    @Override
-//                    public void onSocketReadResponse(byte[] bytes) {
-//                        Log.e("123",bytes.toString());
-//                    }
-//
-//                    @Override
-//                    public void onSocketWriteResponse(byte[] bytes) {
-//                        Log.e("123",bytes.toString());
-//                    }
-//                });
                 break;
         }
     }
