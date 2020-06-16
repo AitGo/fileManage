@@ -1,5 +1,6 @@
 package com.yh.filesmanage.view.fragment;
 
+import android.content.Context;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -18,6 +19,9 @@ import com.yh.filesmanage.adapter.LayerChooseAdapter;
 import com.yh.filesmanage.base.BaseFragment;
 import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.diagnose.LayerEntity;
+import com.yh.filesmanage.socket.FastSocketClient;
+import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
+import com.yh.filesmanage.utils.CRC16;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
 import com.yh.filesmanage.utils.SPUtils;
@@ -92,6 +96,8 @@ public class StateFragment extends BaseFragment {
     private LayerChooseAdapter chooseAdapter;
     private AdapterView.OnItemClickListener onItemClickListener;
     private MainActivity activity;
+    private Context mContext;
+    private FastSocketClient fastSocketClient;
 
     @Override
     protected int getLayoutId() {
@@ -120,15 +126,13 @@ public class StateFragment extends BaseFragment {
         //初始化数据
         adapter.setPositionBg(layers.get(0));
         tvStateLayerNo.setText(StringUtils.getNumber(layers.get(0).getIndex()));
-        //选择层号
-        layerNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_LAYER,1);
-        StateChooseLayer.setTextValue("第" + StringUtils.getNumber(layerNo) + "层");
+
     }
 
     @Override
     protected void initData() {
         activity = (MainActivity) getActivity();
-
+        mContext = getContext();
         Random rand = new Random();
         for (int i = 0; i < 20; i++) {
             LayerEntity entity = new LayerEntity();
@@ -146,8 +150,9 @@ public class StateFragment extends BaseFragment {
             layers.add(entity);
         }
 
+        int layerSize = (int) SPUtils.getParam(getContext(),Constants.SP_SIZE_LAYER,10);
         List<String> list = new ArrayList<>();
-        for (int i = 0; i < 20; i++) {
+        for (int i = 0; i < layerSize; i++) {
             list.add(i + 1 + "");
         }
         chooseAdapter = new LayerChooseAdapter(getContext(), list);
@@ -156,11 +161,51 @@ public class StateFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 layerNo = position + 1;
                 StateChooseLayer.setTextValue("第" + list.get(position) + "层");
+                SPUtils.setParam(mContext,Constants.SP_NO_LAYER,layerNo);
                 if (popup != null) {
                     popup.dismiss();
                 }
             }
         };
+        fastSocketClient = FastSocketClient.getInstance();
+        fastSocketClient.setOnSocketClientCallBackList(new OnSocketClientCallBackList() {
+            @Override
+            public void onSocketConnectionSuccess(String msg) {
+
+            }
+
+            @Override
+            public void onSocketConnectionFailed(String msg, Exception e) {
+
+            }
+
+            @Override
+            public void onSocketDisconnection(String msg, Exception e) {
+
+            }
+
+            @Override
+            public void onSocketReadResponse(byte[] bytes) {
+                LogUtils.e(bytes.toString());
+            }
+
+            @Override
+            public void onSocketWriteResponse(byte[] bytes) {
+                LogUtils.e(bytes.toString());
+            }
+        });
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden) {
+            areaNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_AREA,1);
+            cabinetNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET,1);
+            layerNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_LAYER,1);
+            StateChooseLayer.setTextValue("第" + StringUtils.getNumber(layerNo) + "层");
+//            boxNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_BOX,1);
+        }
     }
 
     @OnClick({R.id.btn_state_check, R.id.btn_state_up, R.id.btn_state_open,
@@ -172,62 +217,82 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_check:
                 // 0xac 区号 0x18 盘点柜号 盘点层号 0x9e
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) areaNo,//区号
                         (byte) 0x18,
-                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
-                        (byte) HexUtil.getIntForHexInt(layerNo),//层号
+                        (byte) cabinetNo,//柜号
+                        (byte) layerNo,//层号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_up:
                 break;
             case R.id.btn_state_open:
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) areaNo,//区号
                         (byte) 0x1A,
-                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_close:
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) areaNo,//区号
                         (byte) 0x0C,
-                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_stop:
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) areaNo,//区号
                         (byte) 0x06,
-                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_forward:
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) areaNo,//区号
                         (byte) 0x08,
-                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_reverse:
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) areaNo,//区号
                         (byte) 0x09,
-                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_open_layer:
                 //0xac 区号 0x07 打开的柜号 01 层号 盒号 00 01 档案名称 0x9e
+                //工控机打开时盒号为0，档案名称不填
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                        (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                        (byte) areaNo,//区号
                         (byte) 0x07,
-                        (byte) HexUtil.getIntForHexInt(cabinetNo),//柜号
+                        (byte) cabinetNo,//柜号
                         (byte) 0x01,
-                        (byte) HexUtil.getIntForHexInt(layerNo),//层号
-                        (byte) HexUtil.getIntForHexInt(boxNo),//盒号
+                        (byte) layerNo,//层号
+                        (byte) 0x00,//盒号
                         (byte) 0x00,
                         (byte) 0x01,
-                        (byte) 0x01,//档案名称
+                        (byte) 0x00,//档案名称
                         (byte) 0x9E});
+                //控制RFID对应层灯闪烁
+                byte[] bytes = {(byte) 0x1B,
+                        (byte) 0x00,
+                        (byte) 0x0B,
+                        (byte) 0x00,
+                        (byte) 0x01,
+                        (byte) 0x00,
+                        (byte) 0x00,
+                        (byte) 0x07,
+                        (byte) 0x01,
+                        (byte) 0x0a,//闪烁次数
+                        (byte) 0x05,//闪烁周期
+                        (byte) 0x00,
+                        (byte) layerNo,//层号
+                        (byte) 0x4a,
+                        (byte) 0x4a,
+                        (byte) 0xae};
+                int i = CRC16.CRC16_CCITT(bytes);
+                fastSocketClient.send();
                 break;
             case R.id.state_choose_layer:
                 popup = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 150),
@@ -246,6 +311,7 @@ public class StateFragment extends BaseFragment {
                 int cabinetMin = (int) SPUtils.getParam(getContext(),Constants.SP_NO_CABINET_MIN,1);
                 if(cabinetNo != cabinetMin) {
                     cabinetNo--;
+                    SPUtils.setParam(mContext,Constants.SP_NO_CABINET,cabinetNo);
                     tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
                 }else {
                     ToastUtils.showShort("没有更小的柜号");
@@ -255,6 +321,7 @@ public class StateFragment extends BaseFragment {
                 int cabinetMax = (int) SPUtils.getParam(getContext(),Constants.SP_NO_CABINET_MAX,5);
                 if(cabinetNo != cabinetMax) {
                     cabinetNo++;
+                    SPUtils.setParam(mContext,Constants.SP_NO_CABINET,cabinetNo);
                     tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
                 }else {
                     ToastUtils.showShort("没有更大的柜号");
@@ -262,4 +329,6 @@ public class StateFragment extends BaseFragment {
                 break;
         }
     }
+
+
 }

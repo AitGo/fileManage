@@ -41,6 +41,10 @@ public class Constants {
     public static String SP_NO_BOX = "box_no";//盒号
     public static String SP_NO_CABINET_MIN = "cabinet_no_min";
     public static String SP_NO_CABINET_MAX = "cabinet_no_max";
+    public static String SP_NO_CABINET_FIXED = "cabinet_no_fixed";
+    public static String SP_SIZE_LAYER = "layer_size";
+    public static String SP_SIZE_CLASS = "class_size";
+    public static String SP_SIZE_BOX = "box_size";
 
 
     public static final String settingDir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "fileManage";

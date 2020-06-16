@@ -34,32 +34,34 @@ public class CRC16 {
 
     public static void main(String args[]) {
         //测试数据
-        byte[] bytes = new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01};
-        byte[] socketBytes = HexUtil.getSocketBytes(bytes);
-        int i1 = CRC16.CRC16_CCITT(bytes);
-        //将其转换为十六进制并输出
-        String strHex = Integer.toHexString(i1);
-        System.out.println(strHex + "");
-        String substring1 = strHex.substring(0, 2);
-        String substring = strHex.substring(2);
-        System.out.println(substring1 + "");
-        System.out.println(substring + "");
-        int i = strHex.length() / 2;
-        String substring2 = strHex.substring(0, i);
-        String substring3 = strHex.substring(i);
-        System.out.println(substring2 + "");
-        System.out.println(substring3 + "");
-
-        int parseInt = Integer.parseInt(substring2, 16);
-        int parseInt2 = Integer.parseInt(substring3, 16);
-        byte[] bytes2 = {(byte) 0x00, (byte) 0xae};
-        byte[] bytes1 = {(byte) 0x4A, (byte) 0xAE};
-        byte[] bytes3 = {(byte) parseInt, (byte) parseInt2};
-        for(int j = 0; j < bytes2.length;j++ ) {
-            String s = HexUtil.byteToHexString(bytes2[j]);
-            int intForHexString = HexUtil.getIntForHexString("0101");
-            System.out.println(intForHexString + ":");
-        }
+//        byte[] bytes = new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01};
+//        byte[] socketBytes = HexUtil.getSocketBytes(bytes);
+//        int i1 = CRC16.CRC16_CCITT(bytes);
+//        //将其转换为十六进制并输出
+//        String strHex = Integer.toHexString(i1);
+//        System.out.println(strHex + "");
+//        String substring1 = strHex.substring(0, 2);
+//        String substring = strHex.substring(2);
+//        System.out.println(substring1 + "");
+//        System.out.println(substring + "");
+//        int i = strHex.length() / 2;
+//        String substring2 = strHex.substring(0, i);
+//        String substring3 = strHex.substring(i);
+//        System.out.println(substring2 + "");
+//        System.out.println(substring3 + "");
+//
+//        int parseInt = Integer.parseInt(substring2, 16);
+//        int parseInt2 = Integer.parseInt(substring3, 16);
+        byte[] bytes2 = {(byte) 74, (byte) 0xae};
+        byte[] bytes1 = {(byte) 0x4A, (byte) 174};
+//        byte[] bytes3 = {(byte) parseInt, (byte) parseInt2};
+//        for(int j = 0; j < bytes2.length;j++ ) {
+//            String s = HexUtil.byteToHexString(bytes2[j]);
+//            int intForHexString = HexUtil.getIntForHexInt(10);
+//            System.out.println(intForHexString + ":");
+//        }
+        int intForHexString = HexUtil.getIntForHexInt(10);
+        System.out.println(intForHexString + ":");
     }
 
     /**

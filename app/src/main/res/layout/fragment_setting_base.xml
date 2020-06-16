@@ -24,107 +24,134 @@
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
             android:layout_marginTop="00dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="20dp"
-                android:text="首柜:"
-                style="@style/selectTextStyle"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="首柜:"
+                    style="@style/selectTextStyle"/>
 
-            <EditText
-                android:id="@+id/et_setting_min"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/black"
-                style="@style/selectTextStyle"
-                android:background="@color/white"
-                android:inputType="number|numberDecimal"/>
+                <EditText
+                    android:id="@+id/et_setting_min"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
+                    style="@style/selectTextStyle"
+                    android:background="@color/white"
+                    android:inputType="number|numberDecimal"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="固定柜:"
-                style="@style/selectTextStyle"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="固定柜:"
+                    style="@style/selectTextStyle"/>
 
-            <EditText
-                android:id="@+id/et_setting_fixed"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/black"
-                style="@style/selectTextStyle"
-                android:background="@color/white"
-                android:inputType="number|numberDecimal"/>
+                <EditText
+                    android:id="@+id/et_setting_fixed"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
+                    style="@style/selectTextStyle"
+                    android:background="@color/white"
+                    android:inputType="number|numberDecimal"/>
+            </LinearLayout>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="末柜:"
-                style="@style/selectTextStyle"/>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="末柜:"
+                    style="@style/selectTextStyle"/>
 
-            <EditText
-                android:id="@+id/et_setting_max"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/black"
-                style="@style/selectTextStyle"
-                android:background="@color/white"
-                android:inputType="number|numberDecimal"/>
+                <EditText
+                    android:id="@+id/et_setting_max"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
+                    style="@style/selectTextStyle"
+                    android:background="@color/white"
+                    android:inputType="number|numberDecimal"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="节数:"
+                    style="@style/selectTextStyle"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="节数:"
-                style="@style/selectTextStyle"/>
+                <EditText
+                    android:id="@+id/et_setting_class_size"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
+                    style="@style/selectTextStyle"
+                    android:background="@color/white"
+                    android:inputType="number|numberDecimal"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="层数:"
+                    style="@style/selectTextStyle"/>
 
-            <EditText
-                android:id="@+id/et_setting_class_size"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/black"
-                style="@style/selectTextStyle"
-                android:background="@color/white"
-                android:inputType="number|numberDecimal"/>
+                <EditText
+                    android:id="@+id/et_setting_layer_size"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
+                    style="@style/selectTextStyle"
+                    android:background="@color/white"
+                    android:inputType="number|numberDecimal"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="wrap_content">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="20dp"
+                    android:text="盒数:"
+                    style="@style/selectTextStyle"/>
 
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="层数:"
-                style="@style/selectTextStyle"/>
-
-            <EditText
-                android:id="@+id/et_setting_layer_size"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/black"
-                style="@style/selectTextStyle"
-                android:background="@color/white"
-                android:inputType="number|numberDecimal"/>
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp"
-                android:text="盒数:"
-                style="@style/selectTextStyle"/>
-
-            <EditText
-                android:id="@+id/et_setting_box_size"
-                android:layout_width="80dp"
-                android:layout_height="40dp"
-                android:layout_marginLeft="20dp"
-                android:textColor="@color/black"
-                style="@style/selectTextStyle"
-                android:background="@color/white"
-                android:inputType="number|numberDecimal"/>
+                <EditText
+                    android:id="@+id/et_setting_box_size"
+                    android:layout_width="80dp"
+                    android:layout_height="40dp"
+                    android:layout_marginLeft="10dp"
+                    android:textColor="@color/black"
+                    style="@style/selectTextStyle"
+                    android:background="@color/white"
+                    android:inputType="number|numberDecimal"/>
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -219,9 +246,8 @@
             <Button
                 android:id="@+id/btn_setting_use"
                 android:layout_width="wrap_content"
-                android:layout_height="40dp"
+                android:layout_height="35dp"
                 android:layout_marginLeft="30dp"
-                android:layout_marginTop="10dp"
                 android:text="应用"
                 style="@style/selectTextStyle"
                 android:background="@drawable/bg_btn_select"/>
@@ -234,7 +260,7 @@
         <Button
             android:id="@+id/btn_setting_update"
             android:layout_width="wrap_content"
-            android:layout_height="40dp"
+            android:layout_height="35dp"
             android:layout_marginLeft="30dp"
             android:layout_marginTop="10dp"
             android:text="修改"

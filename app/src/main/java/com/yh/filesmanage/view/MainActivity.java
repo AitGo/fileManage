@@ -421,19 +421,6 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     }
 
-    public InputStream getmInputStream() {
-        return mInputStream;
-    }
-
-    public OutputStream getmOutputStream() {
-        return mOutputStream;
-    }
-
-    @Override
-    public ExecutorService getReadEs() {
-        return readES;
-    }
-
     public void sendSeriportData(byte[] send) {
         if(mOutputStream != null) {
             readES.execute(new Runnable() {

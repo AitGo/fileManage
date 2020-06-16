@@ -14,12 +14,6 @@ import java.util.concurrent.ExecutorService;
  */
 public interface SerialportAnalyze {
 
-    InputStream getmInputStream();
-
-    OutputStream getmOutputStream();
-
-    ExecutorService getReadEs();
-
     void sendSeriportData(byte[] send);
 
 }

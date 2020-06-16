@@ -16,6 +16,7 @@ import com.yh.filesmanage.base.BaseFragment;
 import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.SPUtils;
+import com.yh.filesmanage.utils.StringUtils;
 import com.yh.filesmanage.utils.ToastUtils;
 import com.yh.filesmanage.view.MainActivity;
 import com.yh.filesmanage.widget.ChooseView;
@@ -156,6 +157,20 @@ public class Setting_baseFragment extends BaseFragment {
         }
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden) {
+            etSettingArea.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_AREA,1) + "");
+            etSettingMin.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_MIN,1) + "");
+            etSettingMax.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_MAX,1) + "");
+            etSettingFixed.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_FIXED,1) + "");
+            etSettingClassSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_CLASS,1) + "");
+            etSettingLayerSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_LAYER,1) + "");
+            etSettingBoxSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_BOX,1) + "");
+        }
+    }
+
     @OnClick({R.id.setting_choose_seriaport, R.id.setting_choose_bt, R.id.btn_setting_update, R.id.btn_setting_use})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -189,31 +204,79 @@ public class Setting_baseFragment extends BaseFragment {
 
                 break;
             case R.id.btn_setting_use:
-                cabinet_min = Integer.valueOf(etSettingMin.getText().toString().trim());
-                cabinet_max = Integer.valueOf(etSettingMax.getText().toString().trim());
+                String cabinetMinString = etSettingMin.getText().toString().trim();
+                String cabinetMaxString = etSettingMax.getText().toString().trim();
+                String cabinetFixedString = etSettingFixed.getText().toString().trim();
+                String classSizeString = etSettingClassSize.getText().toString().trim();
+                String layerSizeString = etSettingLayerSize.getText().toString().trim();
+                String boxSizeString = etSettingBoxSize.getText().toString().trim();
+                String areaNoString = etSettingArea.getText().toString().trim();
+
+                if(!StringUtils.checkString(cabinetMinString)) {
+                    ToastUtils.showShort("请填写首柜");
+                    return;
+                }
+                if(!StringUtils.checkString(cabinetMaxString)) {
+                    ToastUtils.showShort("请填写末柜");
+                    return;
+                }
+                if(!StringUtils.checkString(cabinetFixedString)) {
+                    ToastUtils.showShort("请填写固定柜");
+                    return;
+                }
+                if(!StringUtils.checkString(classSizeString)) {
+                    ToastUtils.showShort("请填写节数");
+                    return;
+                }
+                if(!StringUtils.checkString(layerSizeString)) {
+                    ToastUtils.showShort("请填写层数");
+                    return;
+                }
+                if(!StringUtils.checkString(boxSizeString)) {
+                    ToastUtils.showShort("请填写盒数");
+                    return;
+                }
+                if(!StringUtils.checkString(areaNoString)) {
+                    ToastUtils.showShort("请填写区号");
+                    return;
+                }
+                cabinet_min = Integer.valueOf(cabinetMinString);
+                cabinet_max = Integer.valueOf(cabinetMaxString);
                 if(cabinet_max < cabinet_min) {
                     ToastUtils.showShort("首柜不能大于末柜");
                     return;
                 }
-                cabinet_fixed = Integer.valueOf(etSettingFixed.getText().toString().trim());
-                class_size = Integer.valueOf(etSettingClassSize.getText().toString().trim());
-                layer_size = Integer.valueOf(etSettingLayerSize.getText().toString().trim());
-                box_size = Integer.valueOf(etSettingBoxSize.getText().toString().trim());
-                area_no = Integer.valueOf(etSettingArea.getText().toString().trim());
+                cabinet_fixed = Integer.valueOf(cabinetFixedString);
+                if(cabinet_fixed < cabinet_min) {
+                    ToastUtils.showShort("固定柜不能小于首柜");
+                    return;
+                }
+                if(cabinet_fixed > cabinet_max) {
+                    ToastUtils.showShort("固定柜不能大于末柜");
+                    return;
+                }
+                class_size = Integer.valueOf(classSizeString);
+                layer_size = Integer.valueOf(layerSizeString);
+                box_size = Integer.valueOf(boxSizeString);
+                area_no = Integer.valueOf(areaNoString);
 
-                SPUtils.setParam(getContext(), Constants.SP_NO_AREA,area_no);
                 //设置命令
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                        (byte) HexUtil.getIntForHexInt(area_no),//区号
+                        (byte) area_no,//区号
                         (byte) 0x24,
-                        (byte) HexUtil.getIntForHexInt(area_no),//设区号
-                        (byte) HexUtil.getIntForHexInt(cabinet_fixed),//设固定列
-                        (byte) HexUtil.getIntForHexInt(cabinet_max),//设高区最大列
-                        (byte) HexUtil.getIntForHexInt(cabinet_min - 1),//设屏蔽列
-                        (byte) HexUtil.getIntForHexInt(class_size),//设节数
-                        (byte) HexUtil.getIntForHexInt(layer_size),//设层数
-                        (byte) HexUtil.getIntForHexInt(box_size),//设盒数
+                        (byte) area_no,//设区号
+                        (byte) cabinet_fixed,//设固定列
+                        (byte) cabinet_max,//设高区最大列
+                        (byte) (cabinet_min - 1),//设屏蔽列
+                        (byte) class_size,//设节数
+                        (byte) layer_size,//设层数
+                        (byte) box_size,//设盒数
                         (byte) 0x9E});
+                //设置sp
+                SPUtils.setParam(getContext(),Constants.SP_NO_AREA,area_no);
+                SPUtils.setParam(getContext(),Constants.SP_SIZE_LAYER,layer_size);
+                SPUtils.setParam(getContext(),Constants.SP_SIZE_CLASS,class_size);
+                SPUtils.setParam(getContext(),Constants.SP_SIZE_BOX,box_size);
                 break;
         }
     }
