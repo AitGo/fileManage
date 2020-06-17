@@ -97,7 +97,6 @@ public class StateFragment extends BaseFragment {
     private AdapterView.OnItemClickListener onItemClickListener;
     private MainActivity activity;
     private Context mContext;
-    private FastSocketClient fastSocketClient;
 
     @Override
     protected int getLayoutId() {
@@ -167,33 +166,6 @@ public class StateFragment extends BaseFragment {
                 }
             }
         };
-        fastSocketClient = FastSocketClient.getInstance();
-        fastSocketClient.setOnSocketClientCallBackList(new OnSocketClientCallBackList() {
-            @Override
-            public void onSocketConnectionSuccess(String msg) {
-
-            }
-
-            @Override
-            public void onSocketConnectionFailed(String msg, Exception e) {
-
-            }
-
-            @Override
-            public void onSocketDisconnection(String msg, Exception e) {
-
-            }
-
-            @Override
-            public void onSocketReadResponse(byte[] bytes) {
-                LogUtils.e(bytes.toString());
-            }
-
-            @Override
-            public void onSocketWriteResponse(byte[] bytes) {
-                LogUtils.e(bytes.toString());
-            }
-        });
     }
 
     @Override
@@ -291,7 +263,7 @@ public class StateFragment extends BaseFragment {
                         (byte) 0x02,//位置 2字节
                         (byte) 0x00};
                 byte[] socketBytes = HexUtil.getSocketBytes(bytes);
-                fastSocketClient.send(socketBytes);
+                activity.sendSocketData(socketBytes);
                 break;
             case R.id.state_choose_layer:
                 popup = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 150),

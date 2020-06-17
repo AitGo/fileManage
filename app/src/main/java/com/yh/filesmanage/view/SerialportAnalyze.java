@@ -16,4 +16,6 @@ public interface SerialportAnalyze {
 
     void sendSeriportData(byte[] send);
 
+    void sendSocketData(byte[] send);
+
 }

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.content.Context;
 import android.os.Bundle;
 import android.os.SystemClock;
-import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -16,10 +15,8 @@ import com.qmuiteam.qmui.layout.QMUIRelativeLayout;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseFragmentActivity;
 import com.yh.filesmanage.base.Constants;
-import com.yh.filesmanage.diagnose.RFIDEntity;
 import com.yh.filesmanage.socket.FastSocketClient;
 import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
-import com.yh.filesmanage.utils.CRC16;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
 import com.yh.filesmanage.utils.SPUtils;
@@ -151,6 +148,34 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         fragmentManager = getSupportFragmentManager();
         transaction = fragmentManager.beginTransaction();
         fastSocketClient = FastSocketClient.getInstance();
+        fastSocketClient.setOnSocketClientCallBackList(new OnSocketClientCallBackList() {
+            @Override
+            public void onSocketConnectionSuccess(String msg) {
+                LogUtils.e("ConnectionSuccess" + msg);
+            }
+
+            @Override
+            public void onSocketConnectionFailed(String msg, Exception e) {
+                LogUtils.e("ConnectionFailed" + msg);
+            }
+
+            @Override
+            public void onSocketDisconnection(String msg, Exception e) {
+                LogUtils.e("Disconnection" + msg);
+            }
+
+            @Override
+            public void onSocketReadResponse(byte[] bytes) {
+                //接收命令
+                readSocketResponse(bytes);
+            }
+
+            @Override
+            public void onSocketWriteResponse(byte[] bytes) {
+                LogUtils.e("Write" + bytes.toString());
+            }
+        });
+        fastSocketClient.connect();
     }
 
     @Override
@@ -158,6 +183,12 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
         ButterKnife.bind(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        fastSocketClient.close();
     }
 
     @OnClick({R.id.ll_main_main, R.id.ll_main_select, R.id.ll_main_task, R.id.ll_main_setting})
@@ -187,13 +218,19 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         }
     }
 
-
-
     Thread pulstThread = new Thread(new Runnable() {
         @Override
         public void run() {
             if (isPulse && fastSocketClient.isConnected()){
-                fastSocketClient.send(HexUtil.hexStringToByte(Constants.SOCKET_Pulse));
+                byte[] bytes = {(byte) 0x1B,
+                        (byte) 0x00,
+                        (byte) 0x05,
+                        (byte) 0x00,//硬件地址
+                        (byte) 0x01,
+                        (byte) 0x00,
+                        (byte) 0x01,
+                        (byte) 0x01};
+                fastSocketClient.send(HexUtil.getSocketBytes(bytes));
             }
             SystemClock.sleep(5000);
             pulstThread.run();
@@ -224,7 +261,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                     try {
                         byte[] send = new byte[]{(byte) 0xAC,
                                 (byte) 0x01,
-                                (byte) HexUtil.getIntForHexInt(areaNo),//区号
+                                (byte) areaNo,//区号
                                 (byte) 0x00,
                                 (byte) 0x9E};//查询报文
                         mOutputStream.write(send);
@@ -286,6 +323,35 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 });
             }
         }
+    }
+
+    private void readSocketResponse(byte[] bytes) {
+        if(bytes.length >= 9) {
+            switch (HexUtil.byteToHexString(bytes[7])) {
+                case "01":
+                    //获取设备信息
+                    if("80".equals(HexUtil.byteToHexString(bytes[6]))) {
+
+                    }
+                    break;
+                case "03":
+                    //开始检卡
+                    break;
+                case "07":
+                    //指示灯闪烁
+                    if("80".equals(HexUtil.byteToHexString(bytes[6]))) {
+                        if("00".equals(HexUtil.byteToHexString(bytes[9]))) {
+                            //执行成功
+                        }
+                    }
+                    break;
+            }
+        }
+        String backString = "";
+        for (int i = 0; i < bytes.length; i++) {
+            backString = backString + HexUtil.byteToHexString(bytes[i]);
+        }
+        LogUtils.e("Read string " + backString);
     }
 
     public void showFragment(Fragment fragment) {
@@ -408,4 +474,10 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             ToastUtils.showShort("串口未打开");
         }
     }
+
+    @Override
+    public void sendSocketData(byte[] send) {
+        fastSocketClient.send(send);
+    }
+
 }

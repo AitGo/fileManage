@@ -34,7 +34,7 @@ public class CRC16 {
 
     public static void main(String args[]) {
         //测试数据
-//        byte[] bytes = new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01};
+        byte[] bytes = new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x01};
 //        byte[] socketBytes = HexUtil.getSocketBytes(bytes);
 //        int i1 = CRC16.CRC16_CCITT(bytes);
 //        //将其转换为十六进制并输出
@@ -60,6 +60,9 @@ public class CRC16 {
 //            int intForHexString = HexUtil.getIntForHexInt(10);
 //            System.out.println(intForHexString + ":");
 //        }
+        int i = CRC16_CCITT(bytes);
+        byte[] socketBytes = HexUtil.getSocketBytes(bytes);
+
         int intForHexString = HexUtil.getIntForHexInt(10);
         System.out.println(intForHexString + ":");
     }
