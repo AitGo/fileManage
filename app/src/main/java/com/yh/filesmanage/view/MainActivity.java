@@ -327,20 +327,37 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     private void readSocketResponse(byte[] bytes) {
         if(bytes.length >= 9) {
-            switch (HexUtil.byteToHexString(bytes[7])) {
+            switch (HexUtil.byteToHexString(bytes[6])) {
                 case "01":
                     //获取设备信息
-                    if("80".equals(HexUtil.byteToHexString(bytes[6]))) {
+                    if("80".equals(HexUtil.byteToHexString(bytes[5]))) {
 
                     }
                     break;
                 case "03":
                     //开始检卡
                     break;
+                case "05":
+                    //读取单层UID
+                    if("80".equals(HexUtil.byteToHexString(bytes[5]))) {
+                        int index = 8;
+                        while(index < bytes.length) {
+                            if(!"83".equals(HexUtil.byteToHexString(bytes[index + 1]))) {
+                                int id = HexUtil.getIntForHexString(HexUtil.byteToHexString(bytes[index]));
+                                byte[] destBytes = new byte[8];
+                                System.arraycopy(bytes, index + 1, destBytes, 0, 8);
+                                String uid = HexUtil.byte2HexStrNoSpace(destBytes);
+                                index += 8;
+                            }else {
+                                index += 1;
+                            }
+                        }
+                    }
+                    break;
                 case "07":
                     //指示灯闪烁
-                    if("80".equals(HexUtil.byteToHexString(bytes[6]))) {
-                        if("00".equals(HexUtil.byteToHexString(bytes[9]))) {
+                    if("80".equals(HexUtil.byteToHexString(bytes[5]))) {
+                        if("00".equals(HexUtil.byteToHexString(bytes[8]))) {
                             //执行成功
                         }
                     }
