@@ -4,11 +4,20 @@ import android.app.Application;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.cache.CacheMode;
+import com.lzy.okgo.cookie.CookieJarImpl;
+import com.lzy.okgo.cookie.store.SPCookieStore;
+import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.yh.filesmanage.database.greenDao.db.DBHelper;
 import com.yh.filesmanage.database.greenDao.db.DaoMaster;
 import com.yh.filesmanage.database.greenDao.db.DaoSession;
 import com.yh.filesmanage.utils.CrashHandler;
+
+import java.util.logging.Level;
+
+import okhttp3.OkHttpClient;
 
 /**
  * @创建者 liuyang
@@ -29,6 +38,7 @@ public class MyApplication extends Application {
         //获取context
         mContext = getApplicationContext();
         initBugly();
+        initOkgo();
         initGreenDao();
         initCrash();
     }
@@ -42,6 +52,23 @@ public class MyApplication extends Application {
 
     private void initBugly() {
         CrashReport.initCrashReport(getApplicationContext(), "cdac8d34db", Constants.Bugly_isDebug);
+    }
+
+    private void initOkgo() {
+        OkHttpClient.Builder builder = new OkHttpClient.Builder();
+        HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor("OkGo");
+        //log打印级别，决定了log显示的详细程度
+        loggingInterceptor.setPrintLevel(HttpLoggingInterceptor.Level.BODY);
+        //log颜色级别，决定了log在控制台显示的颜色
+        loggingInterceptor.setColorLevel(Level.INFO);
+        builder.addInterceptor(loggingInterceptor);
+//        builder.cookieJar(new CookieJarImpl(new DBCookieStore(this)));
+        builder.cookieJar(new CookieJarImpl(new SPCookieStore(this)));
+
+        OkGo.getInstance().init(this)                           //必须调用初始化
+                .setOkHttpClient(builder.build())               //建议设置OkHttpClient，不设置将使用默认的
+                .setCacheMode(CacheMode.NO_CACHE)               //全局统一缓存模式，默认不使用缓存，可以不传
+                .setRetryCount(0);                               //全局统一超时重连次数，默认为三次，那么最差的情况会请求4次(一次原始请求，三次重连请求)，不需要可以设置为0
     }
 
     /**

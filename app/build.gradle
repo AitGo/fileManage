@@ -110,4 +110,6 @@ dependencies {
     annotationProcessor 'com.github.bumptech.glide:compiler:4.10.0'
     //android-serial-port
     implementation 'com.aill:AndroidSerialPort:1.0.8'
+    //okgo
+    implementation 'com.lzy.net:okgo:3.0.4'
 }

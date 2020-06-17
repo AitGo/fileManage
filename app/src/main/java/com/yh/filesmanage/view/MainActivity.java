@@ -348,6 +348,8 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                                 System.arraycopy(bytes, index + 1, destBytes, 0, 8);
                                 String uid = HexUtil.byte2HexStrNoSpace(destBytes);
                                 index += 8;
+                                //保存id和uid
+
                             }else {
                                 index += 1;
                             }

@@ -19,9 +19,8 @@ public class Constants {
 
     public static String defaultURL = "http://192.168.31.88:8080/lianyservice/service/appUploadDataService";
 
-    public static String SOCKET_IP = "192.168.31.185";
-    public static  int SOCKET_PORT = 5000;
     public static String SOCKET_IP = "192.168.31.239";
+    public static  int SOCKET_PORT = 35913;
     public static String SOCKET_Pulse = "7E000200000183399625520001597E";
 
     public static final String SERIALPORT_NO = "/dev/ttyS4";//串口号

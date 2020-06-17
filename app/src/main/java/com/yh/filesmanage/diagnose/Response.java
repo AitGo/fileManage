@@ -10,31 +10,47 @@ package com.yh.filesmanage.diagnose;
  */
 public class Response<T> {
 
-    private int code; // 返回的code
-    private T data; // 具体的数据结果
-    private String msg; // message 可用来返回接口的说明
+    /**
+     * Success : true
+     * Message : null
+     * MessageType : null
+     * Data : null
+     */
 
-    public int getCode() {
-        return code;
+    private boolean Success;
+    private String Message;
+    private String MessageType;
+    private T Data;
+
+    public boolean isSuccess() {
+        return Success;
     }
 
-    public void setCode(int code) {
-        this.code = code;
+    public void setSuccess(boolean success) {
+        Success = success;
+    }
+
+    public String getMessage() {
+        return Message;
+    }
+
+    public void setMessage(String message) {
+        Message = message;
+    }
+
+    public String getMessageType() {
+        return MessageType;
+    }
+
+    public void setMessageType(String messageType) {
+        MessageType = messageType;
     }
 
     public T getData() {
-        return data;
+        return Data;
     }
 
     public void setData(T data) {
-        this.data = data;
-    }
-
-    public String getMsg() {
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
+        Data = data;
     }
 }
