@@ -10,11 +10,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="3"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="0dp"
         app:qmui_radiusTopLeft="10dp"
         app:qmui_radiusBottomLeft="10dp"
         app:qmui_radiusBottomRight="10dp"
@@ -29,6 +29,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <Button
+                    android:id="@+id/btn_task_menu"
                     android:layout_width="wrap_content"
                     android:layout_height="30dp"
                     android:layout_marginLeft="10dp"
@@ -42,12 +43,13 @@
                     android:layout_marginLeft="10dp"
                     android:text="左侧:"
                     style="@style/selectTextStyle"/>
+
                 <TextView
+                    style="@style/selectTextStyle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
-                    android:text="停止"
-                    style="@style/selectTextStyle"/>
+                    android:text="停止" />
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -114,7 +116,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
+                android:layout_marginTop="10dp"
                 android:background="@color/gray_light">
                 <TextView
                     android:layout_width="0dp"
@@ -186,6 +188,7 @@
 
 
         <Button
+            android:id="@+id/btn_task_all_finish"
             android:layout_width="wrap_content"
             android:layout_height="30dp"
             android:layout_alignParentRight="true"
@@ -202,11 +205,11 @@
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="2"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:paddingTop="20dp"
-        android:paddingBottom="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="0dp"
         app:qmui_radiusTopLeft="10dp"
         app:qmui_radiusBottomLeft="10dp"
         app:qmui_radiusBottomRight="10dp"
@@ -247,6 +250,7 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp">
             <Button
+                android:id="@+id/btn_task_add_task"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
@@ -256,6 +260,7 @@
                 android:background="@drawable/bg_btn_select"/>
 
             <Button
+                android:id="@+id/btn_task_delete_task"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
@@ -265,6 +270,7 @@
                 android:background="@drawable/bg_btn_select"/>
 
             <Button
+                android:id="@+id/btn_task_finish_task"
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:layout_alignParentRight="true"
@@ -277,7 +283,7 @@
         <androidx.recyclerview.widget.RecyclerView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="0dp"
             android:layout_below="@id/ll_task_btn"
             android:background="@color/white"/>
 

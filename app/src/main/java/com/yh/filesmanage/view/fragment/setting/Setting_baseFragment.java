@@ -180,7 +180,7 @@ public class Setting_baseFragment extends BaseFragment {
                         seriaportAdapter, seriaportOnItemClickListener)
                         .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                         .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
-                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
                         .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
                         .shadow(true)
                         .arrow(true)
@@ -193,7 +193,7 @@ public class Setting_baseFragment extends BaseFragment {
                         btAdapter, btOnItemClickListener)
                         .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                         .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
-                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
                         .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
                         .shadow(true)
                         .arrow(true)
@@ -277,6 +277,7 @@ public class Setting_baseFragment extends BaseFragment {
                 SPUtils.setParam(getContext(),Constants.SP_SIZE_LAYER,layer_size);
                 SPUtils.setParam(getContext(),Constants.SP_SIZE_CLASS,class_size);
                 SPUtils.setParam(getContext(),Constants.SP_SIZE_BOX,box_size);
+                SPUtils.setParam(getContext(),Constants.SP_SIZE_CABINET,cabinet_max - cabinet_min + 1);
                 break;
         }
     }

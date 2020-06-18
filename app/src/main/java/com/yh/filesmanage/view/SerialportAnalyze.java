@@ -18,4 +18,11 @@ public interface SerialportAnalyze {
 
     void sendSocketData(byte[] send);
 
+    /**
+     *
+     * @param send
+     * @param type 0:上架 1:盘点
+     */
+    void sendSocketData(byte[] send,int type);
+
 }

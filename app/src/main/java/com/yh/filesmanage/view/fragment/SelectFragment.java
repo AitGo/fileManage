@@ -11,6 +11,8 @@ import com.yh.filesmanage.R;
 import com.yh.filesmanage.adapter.ChooseViewAdapter;
 import com.yh.filesmanage.adapter.LayerChooseAdapter;
 import com.yh.filesmanage.base.BaseFragment;
+import com.yh.filesmanage.base.Constants;
+import com.yh.filesmanage.utils.SPUtils;
 import com.yh.filesmanage.widget.ChooseView;
 
 import java.util.ArrayList;
@@ -128,6 +130,31 @@ public class SelectFragment extends BaseFragment {
         };
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden) {
+            cols.clear();
+            int cabinetSize = (int) SPUtils.getParam(getContext(), Constants.SP_SIZE_CABINET,1);
+            for(int i = 0;i < cabinetSize; i++) {
+                cols.add(i+1 + "");
+            }
+            colAdapter.notifyDataSetChanged();
+            ways.clear();
+            int classSize = (int) SPUtils.getParam(getContext(), Constants.SP_SIZE_CLASS,1);
+            for(int i = 0;i < classSize; i++) {
+                ways.add(i+1 + "");
+            }
+            wayAdapter.notifyDataSetChanged();
+            layers.clear();
+            int layerSize = (int) SPUtils.getParam(getContext(), Constants.SP_SIZE_LAYER,1);
+            for(int i = 0;i < layerSize; i++) {
+                layers.add(i+1 + "");
+            }
+            layerAdapter.notifyDataSetChanged();
+        }
+    }
+
     @OnClick({R.id.ll_select_choose_way, R.id.rl_select_choose_area, R.id.rl_select_choose_col, R.id.rl_select_choose_face, R.id.rl_select_choose_way, R.id.rl_select_choose_layer})
     public void onViewClicked(View view) {
         switch (view.getId()) {
@@ -137,7 +164,7 @@ public class SelectFragment extends BaseFragment {
                         selectWayAdapter, selectWayOnItemClickListener)
                         .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                         .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
-                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
                         .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
                         .shadow(true)
                         .arrow(true)
@@ -150,7 +177,7 @@ public class SelectFragment extends BaseFragment {
                         areaAdapter, areaOnItemClickListener)
                         .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                         .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
-                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
                         .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
                         .shadow(true)
                         .arrow(true)
@@ -163,7 +190,7 @@ public class SelectFragment extends BaseFragment {
                         colAdapter, colOnItemClickListener)
                         .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                         .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
-                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
                         .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
                         .shadow(true)
                         .arrow(true)
@@ -176,7 +203,7 @@ public class SelectFragment extends BaseFragment {
                         faceAdapter, faceOnItemClickListener)
                         .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                         .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
-                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
                         .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
                         .shadow(true)
                         .arrow(true)
@@ -189,7 +216,7 @@ public class SelectFragment extends BaseFragment {
                         wayAdapter, wayOnItemClickListener)
                         .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                         .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
-                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
                         .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
                         .shadow(true)
                         .arrow(true)
@@ -202,7 +229,7 @@ public class SelectFragment extends BaseFragment {
                         layerAdapter, layerOnItemClickListener)
                         .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                         .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
-                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
                         .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
                         .shadow(true)
                         .arrow(true)

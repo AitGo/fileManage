@@ -280,40 +280,45 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     public void mainloop(InputStream inputStream) throws IOException {
         if (inputStream.available() > 0) {
-            byte[] Re_buf = new byte[inputStream.available()];
-            int size = mInputStream.read(Re_buf);
+            byte[] bytes = new byte[inputStream.available()];
+            int size = mInputStream.read(bytes);
             LogUtils.e("接收到串口回调w == " + size);
             if (size > 0) {
                 String backString = "";
                 for (int i = 0; i < size; i++) {
-                    LogUtils.e("接收到串口回调=" + Re_buf[i]);
-                    backString = backString + HexUtil.byteToHexString(Re_buf[i]);
+                    LogUtils.e("接收到串口回调=" + bytes[i]);
+                    backString = backString + HexUtil.byteToHexString(bytes[i]);
                 }
                 //接受到命令后解析
-                if(!backString.contains("AC") && !backString.contains("9E")) {
+                if(!("AC").equals(HexUtil.byteToHexString(bytes[0])) || !("9E").equals(HexUtil.byteToHexString(bytes[bytes.length - 1]))) {
                     ToastUtils.showShort("命令不完整");
                     return;
                 }
-                String backOrder = backString.substring(backString.indexOf("AC"),backString.indexOf("9E") + 1);
-                LogUtils.e("接受到的命令：" + backOrder);
-                String layer = backOrder.substring(31,33);
-                LogUtils.e("接受到的命令：layer " + backOrder);
+                String hightState = HexUtil.byteToHexString(bytes[3]);
+                String hightAddress = HexUtil.byteToHexString(bytes[4]);
+                String lowState = HexUtil.byteToHexString(bytes[5]);
+                String lowAddress = HexUtil.byteToHexString(bytes[6]);
+                String fixedTemperature = HexUtil.byteToHexString(bytes[7]);
+                String fixedHumidity = HexUtil.byteToHexString(bytes[8]);
+                String pm25 = HexUtil.byte2HexStrNoSpace(new byte[]{bytes[9],bytes[10]});
+                String tvoc = HexUtil.byte2HexStrNoSpace(new byte[]{bytes[11],bytes[12]});
+                String co2 = HexUtil.byte2HexStrNoSpace(new byte[]{bytes[13],bytes[14]});
+                String layer = HexUtil.byteToHexString(bytes[15]);
                 int layerNo = HexUtil.getIntForHexString(layer);
                 SPUtils.setParam(mContext,Constants.SP_NO_LAYER,layerNo);
+                String lowErrorCab = HexUtil.byteToHexString(bytes[16]);
+                String reportCode = HexUtil.byteToHexString(bytes[17]);
                 //温度
-//                temperatureHeight = HexUtil.getIntForHexString(backString.substring(37,39));
-//                LogUtils.e("接受到的命令：temperatureHeight " + temperatureHeight);
-//                temperatureLow = HexUtil.getIntForHexString(backString.substring(39,41));
-//                LogUtils.e("接受到的命令：temperatureLow " + temperatureLow);
-                temperature = HexUtil.getIntForHexString(backString.substring(37,41));
+                temperature = HexUtil.getIntForHexString(HexUtil.byte2HexStrNoSpace(new byte[]{bytes[18],bytes[19]}));
+//                temperature = HexUtil.getIntForHexString(backString.substring(37,41));
                 LogUtils.e("接受到的命令：temperature " + temperature);
                 //湿度
-//                humidityHeight = HexUtil.getIntForHexString(backString.substring(41,43));
-//                LogUtils.e("接受到的命令：humidityHeight " + humidityHeight);
-//                humidityLow = HexUtil.getIntForHexString(backString.substring(43,45));
-//                LogUtils.e("接受到的命令：humidityLow " + humidityLow);
-                humidity = HexUtil.getIntForHexString(backString.substring(41,45));
+                humidity = HexUtil.getIntForHexString(HexUtil.byte2HexStrNoSpace(new byte[]{bytes[20],bytes[21]}));
+//                humidity = HexUtil.getIntForHexString(backString.substring(41,45));
                 LogUtils.e("接受到的命令：humidity " + humidity);
+                String checkCab = HexUtil.byteToHexString(bytes[22]);
+                //甲醛
+                String forma = HexUtil.byte2HexStrNoSpace(new byte[]{bytes[23],bytes[24]});
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
@@ -518,6 +523,11 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     @Override
     public void sendSocketData(byte[] send) {
+        fastSocketClient.send(send);
+    }
+
+    @Override
+    public void sendSocketData(byte[] send, int type) {
         fastSocketClient.send(send);
     }
 

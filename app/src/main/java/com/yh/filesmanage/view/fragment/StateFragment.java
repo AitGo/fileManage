@@ -91,7 +91,6 @@ public class StateFragment extends BaseFragment {
     private int areaNo = 1;//区号
     private int layerNo = 1;//层数
     private int cabinetNo = 1;//柜号
-    private int boxNo = 1;//盒号
 
     private LayerChooseAdapter chooseAdapter;
     private AdapterView.OnItemClickListener onItemClickListener;
@@ -176,7 +175,7 @@ public class StateFragment extends BaseFragment {
             cabinetNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET,1);
             layerNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_LAYER,1);
             StateChooseLayer.setTextValue("第" + StringUtils.getNumber(layerNo) + "层");
-//            boxNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_BOX,1);
+            tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
         }
     }
 
@@ -204,6 +203,15 @@ public class StateFragment extends BaseFragment {
                 activity.sendSocketData(HexUtil.getSocketBytes(startRead));
                 break;
             case R.id.btn_state_up:
+                //上架
+                //RFID开始检卡
+                byte[] startUp = {(byte) 0x1B,
+                        (byte) 0x00, (byte) 0x06,
+                        (byte) 0x00, (byte) 0x01,//硬件地址
+                        (byte) 0x00, (byte) 0x03,
+                        (byte) 0x01,
+                        (byte) 0x01};
+                activity.sendSocketData(HexUtil.getSocketBytes(startUp));
                 break;
             case R.id.btn_state_open:
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
@@ -280,7 +288,7 @@ public class StateFragment extends BaseFragment {
                         chooseAdapter, onItemClickListener)
                         .preferredDirection(QMUIPopup.DIRECTION_BOTTOM)
                         .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
-                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
                         .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
                         .shadow(true)
                         .arrow(true)

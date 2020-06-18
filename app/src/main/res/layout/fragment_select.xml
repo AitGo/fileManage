@@ -12,8 +12,8 @@
         android:layout_marginTop="10dp"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp"
-        android:paddingTop="10dp"
-        android:paddingBottom="20dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="10dp"
         app:qmui_radiusTopLeft="10dp"
         app:qmui_radiusBottomLeft="10dp"
         app:qmui_radiusBottomRight="10dp"
@@ -101,7 +101,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="列"
+                android:text="柜"
                 style="@style/selectTextStyle"/>
 
             <com.yh.filesmanage.widget.ChooseView
