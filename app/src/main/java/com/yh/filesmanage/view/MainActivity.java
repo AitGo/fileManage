@@ -336,6 +336,29 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                     break;
                 case "03":
                     //开始检卡
+                    if("80".equals(HexUtil.byteToHexString(bytes[5]))) {
+                        if("03".equals(HexUtil.byteToHexString(bytes[6]))) {
+                            if("00".equals(HexUtil.byteToHexString(bytes[8]))) {
+                                //检卡成功，读取uid
+//                                byte[] resdUid = {(byte) 0x1B,
+//                                        (byte) 0x00,
+//                                        (byte) 0x0B,
+//                                        (byte) 0x00,
+//                                        (byte) 0x01,
+//                                        (byte) 0x00,
+//                                        (byte) 0x00,
+//                                        (byte) 0x07,
+//                                        (byte) 0x01,
+//                                        (byte) 0x0a,//闪烁次数
+//                                        (byte) 0x05,//闪烁周期
+//                                        (byte) 0x00,
+//                                        (byte) layerNo,//层号
+//                                        (byte) 0x02,//位置 2字节
+//                                        (byte) 0x00};
+//                                sendSocketData(HexUtil.getSocketBytes(send));
+                            }
+                        }
+                    }
                     break;
                 case "05":
                     //读取单层UID
@@ -359,8 +382,16 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 case "07":
                     //指示灯闪烁
                     if("80".equals(HexUtil.byteToHexString(bytes[5]))) {
-                        if("00".equals(HexUtil.byteToHexString(bytes[8]))) {
-                            //执行成功
+                        String s = HexUtil.byteToHexString(bytes[8]);
+                        if(!"00".equals(s)) {
+                            //执行失败
+                            String id = s;
+                            String errorCode = HexUtil.byteToHexString(bytes[9]);
+                        }
+                    }else {
+                        if(bytes.length >= 10) {
+                            String id = HexUtil.byteToHexString(bytes[8]);
+                            String errorCode = HexUtil.byteToHexString(bytes[9]);
                         }
                     }
                     break;

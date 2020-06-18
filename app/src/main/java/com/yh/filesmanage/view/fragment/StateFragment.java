@@ -194,6 +194,14 @@ public class StateFragment extends BaseFragment {
                         (byte) cabinetNo,//柜号
                         (byte) layerNo,//层号
                         (byte) 0x9E});
+                //RFID开始检卡
+                byte[] startRead = {(byte) 0x1B,
+                        (byte) 0x00, (byte) 0x06,
+                        (byte) 0x00, (byte) 0x01,//硬件地址
+                        (byte) 0x00, (byte) 0x03,
+                        (byte) 0x01,
+                        (byte) 0x01};
+                activity.sendSocketData(HexUtil.getSocketBytes(startRead));
                 break;
             case R.id.btn_state_up:
                 break;
@@ -235,35 +243,39 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_open_layer:
                 //0xac 区号 0x07 打开的柜号 01 层号 盒号 00 01 档案名称 0x9e
                 //工控机打开时盒号为0，档案名称不填
-                activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                        (byte) areaNo,//区号
-                        (byte) 0x07,
-                        (byte) cabinetNo,//柜号
-                        (byte) 0x01,
-                        (byte) layerNo,//层号
-                        (byte) 0x00,//盒号
-                        (byte) 0x00,
-                        (byte) 0x01,
-                        (byte) 0x00,//档案名称
-                        (byte) 0x9E});
-                //控制RFID对应层灯闪烁
-                byte[] bytes = {(byte) 0x1B,
-                        (byte) 0x00,
-                        (byte) 0x0B,
-                        (byte) 0x00,
-                        (byte) 0x01,
-                        (byte) 0x00,
-                        (byte) 0x00,
-                        (byte) 0x07,
-                        (byte) 0x01,
-                        (byte) 0x0a,//闪烁次数
-                        (byte) 0x05,//闪烁周期
-                        (byte) 0x00,
-                        (byte) layerNo,//层号
-                        (byte) 0x02,//位置 2字节
-                        (byte) 0x00};
-                byte[] socketBytes = HexUtil.getSocketBytes(bytes);
-                activity.sendSocketData(socketBytes);
+                if(boxNo != 0) {
+                    activity.sendSeriportData(new byte[]{(byte) 0xAC,
+                            (byte) areaNo,//区号
+                            (byte) 0x07,
+                            (byte) cabinetNo,//柜号
+                            (byte) 0x01,
+                            (byte) layerNo,//层号
+                            (byte) boxNo,//盒号
+                            (byte) 0x00,
+                            (byte) 0x01,
+                            (byte) 0x00,//档案名称
+                            (byte) 0x9E});
+                    //控制RFID对应层灯闪烁
+                    byte[] bytes = {(byte) 0x1B,
+                            (byte) 0x00,
+                            (byte) 0x0B,
+                            (byte) 0x00,
+                            (byte) 0x01,
+                            (byte) 0x00,
+                            (byte) 0x00,
+                            (byte) 0x07,
+                            (byte) 0x01,
+                            (byte) 0x0a,//闪烁次数
+                            (byte) 0x05,//闪烁周期
+                            (byte) 0x00,
+                            (byte) layerNo,//层号
+                            (byte) 0x02,//位置 2字节
+                            (byte) 0x00};
+                    byte[] socketBytes = HexUtil.getSocketBytes(bytes);
+                    activity.sendSocketData(socketBytes);
+                }else {
+                    ToastUtils.showShort("盒号不能为0");
+                }
                 break;
             case R.id.state_choose_layer:
                 popup = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 150),
