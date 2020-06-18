@@ -337,26 +337,17 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 case "03":
                     //开始检卡
                     if("80".equals(HexUtil.byteToHexString(bytes[5]))) {
-                        if("03".equals(HexUtil.byteToHexString(bytes[6]))) {
-                            if("00".equals(HexUtil.byteToHexString(bytes[8]))) {
-                                //检卡成功，读取uid
-//                                byte[] resdUid = {(byte) 0x1B,
-//                                        (byte) 0x00,
-//                                        (byte) 0x0B,
-//                                        (byte) 0x00,
-//                                        (byte) 0x01,
-//                                        (byte) 0x00,
-//                                        (byte) 0x00,
-//                                        (byte) 0x07,
-//                                        (byte) 0x01,
-//                                        (byte) 0x0a,//闪烁次数
-//                                        (byte) 0x05,//闪烁周期
-//                                        (byte) 0x00,
-//                                        (byte) layerNo,//层号
-//                                        (byte) 0x02,//位置 2字节
-//                                        (byte) 0x00};
-//                                sendSocketData(HexUtil.getSocketBytes(send));
-                            }
+                        if("00".equals(HexUtil.byteToHexString(bytes[8]))) {
+                            //检卡成功，读取单层UID
+                            int cabinetNo = (int) SPUtils.getParam(mContext,Constants.SP_NO_CABINET,1);
+                            byte[] resdUid = {(byte) 0x1B,
+                                    (byte) 0x00, (byte) 0x06,
+                                    (byte) 0x00, (byte) 0x01,
+                                    (byte) 0x00, (byte) 0x05,//读取单层命令
+                                    (byte) 0x01,
+                                    (byte) cabinetNo//ID，与柜号一致
+                                    };
+                            sendSocketData(HexUtil.getSocketBytes(resdUid));
                         }
                     }
                     break;
