@@ -9,6 +9,7 @@ import com.lzy.okgo.cache.CacheMode;
 import com.lzy.okgo.cookie.CookieJarImpl;
 import com.lzy.okgo.cookie.store.SPCookieStore;
 import com.lzy.okgo.interceptor.HttpLoggingInterceptor;
+import com.tencent.bugly.Bugly;
 import com.tencent.bugly.crashreport.CrashReport;
 import com.yh.filesmanage.database.greenDao.db.DBHelper;
 import com.yh.filesmanage.database.greenDao.db.DaoMaster;
@@ -40,7 +41,7 @@ public class MyApplication extends Application {
         initBugly();
         initOkgo();
         initGreenDao();
-        initCrash();
+//        initCrash();
     }
 
 
@@ -51,7 +52,7 @@ public class MyApplication extends Application {
 
 
     private void initBugly() {
-        CrashReport.initCrashReport(getApplicationContext(), "cdac8d34db", Constants.Bugly_isDebug);
+        Bugly.init(getApplicationContext(), "cdac8d34db", Constants.Bugly_isDebug);
     }
 
     private void initOkgo() {
