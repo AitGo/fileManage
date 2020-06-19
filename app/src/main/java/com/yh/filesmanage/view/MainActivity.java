@@ -189,6 +189,16 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     protected void onDestroy() {
         super.onDestroy();
         fastSocketClient.close();
+        try {
+            mInputStream.close();
+            mOutputStream.close();
+            serialPort.close();
+            serialPort = null;
+            mInputStream = null;
+            mOutputStream = null;
+        }catch (Exception e) {
+
+        }
     }
 
     @OnClick({R.id.ll_main_main, R.id.ll_main_select, R.id.ll_main_task, R.id.ll_main_setting})
@@ -237,7 +247,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         }
     });
 
-    private void initSerialPort() {
+    public void initSerialPort() {
         try {
             String serialport_no = (String) SPUtils.getParam(this, Constants.SP_SERIALPORT_NO, Constants.SERIALPORT_NO);
             int serialport_baudrate = (int) SPUtils.getParam(this, Constants.SP_SERIALPORT_BAUDRATE, Constants.SERIALPORT_BAUDRATE);

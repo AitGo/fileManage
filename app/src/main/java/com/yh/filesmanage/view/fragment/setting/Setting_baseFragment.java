@@ -14,7 +14,6 @@ import com.yh.filesmanage.R;
 import com.yh.filesmanage.adapter.ChooseViewAdapter;
 import com.yh.filesmanage.base.BaseFragment;
 import com.yh.filesmanage.base.Constants;
-import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.SPUtils;
 import com.yh.filesmanage.utils.StringUtils;
 import com.yh.filesmanage.utils.ToastUtils;
@@ -22,7 +21,6 @@ import com.yh.filesmanage.view.MainActivity;
 import com.yh.filesmanage.widget.ChooseView;
 
 import java.util.ArrayList;
-import java.util.ConcurrentModificationException;
 import java.util.List;
 
 import butterknife.BindView;
@@ -48,8 +46,6 @@ public class Setting_baseFragment extends BaseFragment {
     EditText etSettingArea;
     @BindView(R.id.setting_choose_seriaport)
     ChooseView settingChooseSeriaport;
-    @BindView(R.id.btn_setting_set)
-    Button btnSettingSet;
     @BindView(R.id.setting_choose_bt)
     ChooseView settingChooseBt;
     @BindView(R.id.et_setting_room_no)
@@ -76,6 +72,8 @@ public class Setting_baseFragment extends BaseFragment {
     Button btnSettingUpdate;
     @BindView(R.id.btn_setting_use)
     Button btnSettingUse;
+    @BindView(R.id.btn_setting_seriaport)
+    Button btnSettingSeriaport;
 
     private MainActivity activity;
     private QMUIPopup popup;
@@ -110,7 +108,6 @@ public class Setting_baseFragment extends BaseFragment {
         seriaportOnItemClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), devices.get(position), Toast.LENGTH_SHORT).show();
                 settingChooseSeriaport.setTextValue(devices.get(position));
                 serialport = "/dev/" + devices.get(position);
                 if (popup != null) {
@@ -123,7 +120,6 @@ public class Setting_baseFragment extends BaseFragment {
         btOnItemClickListener = new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getContext(), bts.get(position), Toast.LENGTH_SHORT).show();
                 settingChooseBt.setTextValue(bts.get(position));
                 seriaport_bt = Integer.valueOf(bts.get(position));
                 if (popup != null) {
@@ -160,18 +156,18 @@ public class Setting_baseFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden) {
-            etSettingArea.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_AREA,1) + "");
-            etSettingMin.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_MIN,1) + "");
-            etSettingMax.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_MAX,1) + "");
-            etSettingFixed.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_FIXED,1) + "");
-            etSettingClassSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_CLASS,1) + "");
-            etSettingLayerSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_LAYER,1) + "");
-            etSettingBoxSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_BOX,1) + "");
+        if (!hidden) {
+            etSettingArea.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_AREA, 1) + "");
+            etSettingMin.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_MIN, 1) + "");
+            etSettingMax.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_MAX, 1) + "");
+            etSettingFixed.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_FIXED, 1) + "");
+            etSettingClassSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_CLASS, 1) + "");
+            etSettingLayerSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_LAYER, 1) + "");
+            etSettingBoxSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_BOX, 1) + "");
         }
     }
 
-    @OnClick({R.id.setting_choose_seriaport, R.id.setting_choose_bt, R.id.btn_setting_update, R.id.btn_setting_use})
+    @OnClick({R.id.setting_choose_seriaport, R.id.setting_choose_bt, R.id.btn_setting_update, R.id.btn_setting_use, R.id.btn_setting_seriaport})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.setting_choose_seriaport:
@@ -200,6 +196,11 @@ public class Setting_baseFragment extends BaseFragment {
                         .animStyle(QMUIPopup.ANIM_AUTO)
                         .show(settingChooseBt);
                 break;
+            case R.id.btn_setting_seriaport:
+                SPUtils.setParam(getContext(),Constants.SP_SERIALPORT_NO,serialport);
+                SPUtils.setParam(getContext(),Constants.SP_SERIALPORT_BAUDRATE,seriaport_bt);
+                activity.initSerialPort();
+                break;
             case R.id.btn_setting_update:
 
                 break;
@@ -212,46 +213,46 @@ public class Setting_baseFragment extends BaseFragment {
                 String boxSizeString = etSettingBoxSize.getText().toString().trim();
                 String areaNoString = etSettingArea.getText().toString().trim();
 
-                if(!StringUtils.checkString(cabinetMinString)) {
+                if (!StringUtils.checkString(cabinetMinString)) {
                     ToastUtils.showShort("请填写首柜");
                     return;
                 }
-                if(!StringUtils.checkString(cabinetMaxString)) {
+                if (!StringUtils.checkString(cabinetMaxString)) {
                     ToastUtils.showShort("请填写末柜");
                     return;
                 }
-                if(!StringUtils.checkString(cabinetFixedString)) {
+                if (!StringUtils.checkString(cabinetFixedString)) {
                     ToastUtils.showShort("请填写固定柜");
                     return;
                 }
-                if(!StringUtils.checkString(classSizeString)) {
+                if (!StringUtils.checkString(classSizeString)) {
                     ToastUtils.showShort("请填写节数");
                     return;
                 }
-                if(!StringUtils.checkString(layerSizeString)) {
+                if (!StringUtils.checkString(layerSizeString)) {
                     ToastUtils.showShort("请填写层数");
                     return;
                 }
-                if(!StringUtils.checkString(boxSizeString)) {
+                if (!StringUtils.checkString(boxSizeString)) {
                     ToastUtils.showShort("请填写盒数");
                     return;
                 }
-                if(!StringUtils.checkString(areaNoString)) {
+                if (!StringUtils.checkString(areaNoString)) {
                     ToastUtils.showShort("请填写区号");
                     return;
                 }
                 cabinet_min = Integer.valueOf(cabinetMinString);
                 cabinet_max = Integer.valueOf(cabinetMaxString);
-                if(cabinet_max < cabinet_min) {
+                if (cabinet_max < cabinet_min) {
                     ToastUtils.showShort("首柜不能大于末柜");
                     return;
                 }
                 cabinet_fixed = Integer.valueOf(cabinetFixedString);
-                if(cabinet_fixed < cabinet_min) {
+                if (cabinet_fixed < cabinet_min) {
                     ToastUtils.showShort("固定柜不能小于首柜");
                     return;
                 }
-                if(cabinet_fixed > cabinet_max) {
+                if (cabinet_fixed > cabinet_max) {
                     ToastUtils.showShort("固定柜不能大于末柜");
                     return;
                 }
@@ -273,14 +274,22 @@ public class Setting_baseFragment extends BaseFragment {
                         (byte) box_size,//设盒数
                         (byte) 0x9E});
                 //设置sp
-                SPUtils.setParam(getContext(),Constants.SP_NO_AREA,area_no);
-                SPUtils.setParam(getContext(),Constants.SP_SIZE_LAYER,layer_size);
-                SPUtils.setParam(getContext(),Constants.SP_SIZE_CLASS,class_size);
-                SPUtils.setParam(getContext(),Constants.SP_SIZE_BOX,box_size);
-                SPUtils.setParam(getContext(),Constants.SP_SIZE_CABINET,cabinet_max - cabinet_min + 1);
+                SPUtils.setParam(getContext(), Constants.SP_NO_AREA, area_no);
+                SPUtils.setParam(getContext(), Constants.SP_SIZE_LAYER, layer_size);
+                SPUtils.setParam(getContext(), Constants.SP_SIZE_CLASS, class_size);
+                SPUtils.setParam(getContext(), Constants.SP_SIZE_BOX, box_size);
+                SPUtils.setParam(getContext(), Constants.SP_SIZE_CABINET, cabinet_max - cabinet_min + 1);
                 break;
         }
     }
 
+    public void setEditState(boolean isEdit) {
+        etSettingHttpPort.setEnabled(isEdit);
+        etSettingHttpConnectNo.setEnabled(isEdit);
+        etSettingTcpPort.setEnabled(isEdit);
+        etSettingTcpConnectNo.setEnabled(isEdit);
+        etSettingUsername.setEnabled(isEdit);
+        etSettingPassword.setEnabled(isEdit);
+    }
 
 }

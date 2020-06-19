@@ -280,7 +280,6 @@ public class StateFragment extends BaseFragment {
 //                    };
 //                    byte[] socketBytes = HexUtil.getSocketBytes(bytes);
 //                    activity.sendSocketData(socketBytes);
-
                 break;
             case R.id.state_choose_layer:
                 popup = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 150),

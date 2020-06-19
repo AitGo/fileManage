@@ -195,16 +195,6 @@
                 app:chooseColor="@color/blue_bg"
                 app:chooseSize="20sp"/>
 
-            <Button
-                android:visibility="gone"
-                android:id="@+id/btn_setting_set"
-                android:layout_width="wrap_content"
-                android:layout_height="40dp"
-                android:layout_marginLeft="30dp"
-                android:text="设置"
-                style="@style/selectTextStyle"
-                android:background="@drawable/bg_btn_select"/>
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -220,6 +210,16 @@
                 app:chooseValue="1"
                 app:chooseColor="@color/blue_bg"
                 app:chooseSize="20sp"/>
+
+            <Button
+                android:visibility="visible"
+                android:id="@+id/btn_setting_seriaport"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:layout_marginLeft="40dp"
+                android:text="设置串口"
+                style="@style/selectTextStyle"
+                android:background="@drawable/bg_btn_select"/>
         </LinearLayout>
 
         <LinearLayout
@@ -325,15 +325,13 @@
                 android:background="@color/white"/>
 
             <CheckBox
+                android:id="@+id/cb_setting_tcp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
                 android:text="启用"
                 style="@style/selectTextStyle"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -390,15 +388,13 @@
                 android:background="@color/white"/>
 
             <CheckBox
+                android:id="@+id/cb_setting_http"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="30dp" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_marginLeft="30dp"
                 android:text="启用"
                 style="@style/selectTextStyle"/>
+
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
