@@ -48,8 +48,8 @@ public class Setting_baseFragment extends BaseFragment {
     ChooseView settingChooseSeriaport;
     @BindView(R.id.setting_choose_bt)
     ChooseView settingChooseBt;
-    @BindView(R.id.et_setting_room_no)
-    EditText etSettingRoomNo;
+    @BindView(R.id.et_setting_house_no)
+    EditText etSettingHouseNo;
     @BindView(R.id.et_setting_tcp_port)
     EditText etSettingTcpPort;
     @BindView(R.id.et_setting_tcp_connect_no)
@@ -90,6 +90,7 @@ public class Setting_baseFragment extends BaseFragment {
     private int layer_size;
     private int box_size;
     private int area_no;
+    private int house_no;
     private String serialport;
     private int seriaport_bt;
 
@@ -164,6 +165,7 @@ public class Setting_baseFragment extends BaseFragment {
             etSettingClassSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_CLASS, 1) + "");
             etSettingLayerSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_LAYER, 1) + "");
             etSettingBoxSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_BOX, 1) + "");
+            etSettingHouseNo.setText(SPUtils.getParam(getContext(), Constants.SP_NO_HOUSE,1) + "");
         }
     }
 
@@ -212,6 +214,7 @@ public class Setting_baseFragment extends BaseFragment {
                 String layerSizeString = etSettingLayerSize.getText().toString().trim();
                 String boxSizeString = etSettingBoxSize.getText().toString().trim();
                 String areaNoString = etSettingArea.getText().toString().trim();
+                String houseNoString = etSettingHouseNo.getText().toString().trim();
 
                 if (!StringUtils.checkString(cabinetMinString)) {
                     ToastUtils.showShort("请填写首柜");
@@ -241,6 +244,10 @@ public class Setting_baseFragment extends BaseFragment {
                     ToastUtils.showShort("请填写区号");
                     return;
                 }
+                if (!StringUtils.checkString(houseNoString)) {
+                    ToastUtils.showShort("请填写库房号");
+                    return;
+                }
                 cabinet_min = Integer.valueOf(cabinetMinString);
                 cabinet_max = Integer.valueOf(cabinetMaxString);
                 if (cabinet_max < cabinet_min) {
@@ -260,7 +267,7 @@ public class Setting_baseFragment extends BaseFragment {
                 layer_size = Integer.valueOf(layerSizeString);
                 box_size = Integer.valueOf(boxSizeString);
                 area_no = Integer.valueOf(areaNoString);
-
+                house_no = Integer.valueOf(houseNoString);
                 //设置命令
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) area_no,//区号
@@ -279,6 +286,7 @@ public class Setting_baseFragment extends BaseFragment {
                 SPUtils.setParam(getContext(), Constants.SP_SIZE_CLASS, class_size);
                 SPUtils.setParam(getContext(), Constants.SP_SIZE_BOX, box_size);
                 SPUtils.setParam(getContext(), Constants.SP_SIZE_CABINET, cabinet_max - cabinet_min + 1);
+                SPUtils.setParam(getContext(), Constants.SP_NO_HOUSE, house_no);
                 break;
         }
     }

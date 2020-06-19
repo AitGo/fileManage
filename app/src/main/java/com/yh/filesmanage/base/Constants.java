@@ -46,6 +46,7 @@ public class Constants {
     public static String SP_SIZE_LAYER = "layer_size";
     public static String SP_SIZE_CLASS = "class_size";
     public static String SP_SIZE_BOX = "box_size";
+    public static String SP_NO_HOUSE = "house_no";
 
 
     public static final String settingDir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "fileManage";

@@ -234,11 +234,7 @@
                 android:background="@color/white"/>
             <CheckBox
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="10dp"
                 android:text="出库"
                 style="@style/selectTextStyle"/>
         </LinearLayout>
