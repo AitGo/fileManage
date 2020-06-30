@@ -200,7 +200,7 @@ public class StateFragment extends BaseFragment {
                         (byte) 0x00, (byte) 0x03,
                         (byte) 0x01,
                         (byte) 0x01};
-                activity.sendSocketData(HexUtil.getSocketBytes(startRead));
+                activity.sendSocketData(HexUtil.getSocketBytes(startRead), Constants.VALUE_CHECK);
                 break;
             case R.id.btn_state_up:
                 //上架
@@ -211,7 +211,7 @@ public class StateFragment extends BaseFragment {
                         (byte) 0x00, (byte) 0x03,
                         (byte) 0x01,
                         (byte) 0x01};
-                activity.sendSocketData(HexUtil.getSocketBytes(startUp));
+                activity.sendSocketData(HexUtil.getSocketBytes(startUp), Constants.VALUE_UP);
                 break;
             case R.id.btn_state_open:
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,

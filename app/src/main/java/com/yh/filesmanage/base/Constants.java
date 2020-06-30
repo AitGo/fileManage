@@ -48,6 +48,8 @@ public class Constants {
     public static String SP_SIZE_BOX = "box_size";
     public static String SP_NO_HOUSE = "house_no";
 
+    public static int VALUE_CHECK = 1;
+    public static int VALUE_UP = 2;
 
     public static final String settingDir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "fileManage";
 }

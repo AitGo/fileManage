@@ -21,7 +21,7 @@ public interface SerialportAnalyze {
     /**
      *
      * @param send
-     * @param type 0:上架 1:盘点
+     * @param type 1:上架 2:盘点
      */
     void sendSocketData(byte[] send,int type);
 

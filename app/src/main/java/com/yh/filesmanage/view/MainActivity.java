@@ -120,6 +120,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     private int humidityHeight = 0;
     private int humidityLow = 0;
     private int humidity = 0;
+    private int readType = 0;
 
     @Override
     protected int getLayoutId() {
@@ -383,6 +384,12 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                                 index += 1;
                             }
                         }
+                        //判断上架或盘点
+                        if(readType == Constants.VALUE_CHECK) {
+
+                        }else if(readType == Constants.VALUE_UP) {
+
+                        }
                     }
                     break;
                 case "07":
@@ -538,6 +545,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
     @Override
     public void sendSocketData(byte[] send, int type) {
+        readType = type;
         fastSocketClient.send(send);
     }
 
