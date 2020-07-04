@@ -358,7 +358,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                             int cabinetNo = (int) SPUtils.getParam(mContext,Constants.SP_NO_CABINET,1);
                             byte[] resdUid = {(byte) 0x1B,
                                     (byte) 0x00, (byte) 0x06,
-                                    (byte) 0x00, (byte) 0x01,
+                                    (byte) 0x00, (byte) 0x01,//硬件地址
                                     (byte) 0x00, (byte) 0x05,//读取单层命令
                                     (byte) 0x01,
                                     (byte) cabinetNo//ID，与柜号一致
@@ -379,7 +379,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                                 String uid = HexUtil.byte2HexStrNoSpace(destBytes);
                                 index += 8;
                                 //保存id和uid
-
+                                LogUtils.e("index:" + index + "   id:" + id + "   uid:" + uid);
                             }else {
                                 index += 1;
                             }
