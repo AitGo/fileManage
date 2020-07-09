@@ -246,10 +246,12 @@ public class HexUtil {
         String substring3 = strHex.substring(i);
         int parseInt = Integer.parseInt(substring2, 16);
         int parseInt2 = Integer.parseInt(substring3, 16);
+        byte[] byte1 = {(byte) 0x1B};
         byte[] bytes2 = {(byte) parseInt, (byte) parseInt2};
-        byte[] bt3 = new byte[bytes.length+bytes2.length];
-        System.arraycopy(bytes, 0, bt3, 0, bytes.length);
-        System.arraycopy(bytes2, 0, bt3, bytes.length, bytes2.length);
+        byte[] bt3 = new byte[byte1.length + bytes.length + bytes2.length];
+        System.arraycopy(byte1, 0, bt3, 0, byte1.length);
+        System.arraycopy(bytes, 0, bt3, byte1.length, bytes.length);
+        System.arraycopy(bytes2, 0, bt3, byte1.length + bytes.length, bytes2.length);
         return bt3;
     }
 }

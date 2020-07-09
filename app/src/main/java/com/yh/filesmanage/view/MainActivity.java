@@ -356,7 +356,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                         if("00".equals(HexUtil.byteToHexString(bytes[8]))) {
                             //检卡成功，读取单层UID
                             int cabinetNo = (int) SPUtils.getParam(mContext,Constants.SP_NO_CABINET,1);
-                            byte[] resdUid = {(byte) 0x1B,
+                            byte[] resdUid = {
                                     (byte) 0x00, (byte) 0x06,
                                     (byte) 0x00, (byte) 0x01,//硬件地址
                                     (byte) 0x00, (byte) 0x05,//读取单层命令

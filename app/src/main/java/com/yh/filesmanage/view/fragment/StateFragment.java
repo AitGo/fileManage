@@ -194,7 +194,7 @@ public class StateFragment extends BaseFragment {
                         (byte) layerNo,//层号
                         (byte) 0x9E});
                 //RFID开始检卡
-                byte[] startRead = {(byte) 0x1B,
+                byte[] startRead = {
                         (byte) 0x00, (byte) 0x06,
                         (byte) 0x00, (byte) 0x01,//硬件地址
                         (byte) 0x00, (byte) 0x03,
@@ -205,7 +205,7 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_up:
                 //上架
                 //RFID开始检卡
-                byte[] startUp = {(byte) 0x1B,
+                byte[] startUp = {
                         (byte) 0x00, (byte) 0x06,
                         (byte) 0x00, (byte) 0x01,//硬件地址
                         (byte) 0x00, (byte) 0x03,

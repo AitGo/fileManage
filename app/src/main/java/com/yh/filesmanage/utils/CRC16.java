@@ -34,7 +34,8 @@ public class CRC16 {
 
     public static void main(String args[]) {
         //测试数据
-        byte[] bytes = new byte[]{(byte) 0x1B, (byte) 0x00, (byte) 0x05, (byte) 0x00, (byte) 0x01, (byte) 0x00, (byte) 0x01, (byte) 0x01};
+        byte[] bytes = new byte[]{ (byte) 0x00, (byte) 0x06, (byte) 0x00, (byte) 0x01, (byte) 0x90, (byte) 0x00, (byte) 0x01, (byte) 0x02};
+//        byte[] bytes = new byte[]{ (byte)0xAA,(byte)0x0C ,(byte)0x01 ,(byte)0x00 ,(byte)0x01 ,(byte)0x00 ,(byte)0x00 ,(byte)0x04 ,(byte)0x05 ,(byte)0x17 ,(byte)0x05 ,(byte)0x01 ,(byte)0xA0 ,(byte)0x86 ,(byte)0x01 ,(byte)0x00};
 //        byte[] socketBytes = HexUtil.getSocketBytes(bytes);
 //        int i1 = CRC16.CRC16_CCITT(bytes);
 //        //将其转换为十六进制并输出
@@ -62,9 +63,10 @@ public class CRC16 {
 //        }
         int i = CRC16_CCITT(bytes);
         byte[] socketBytes = HexUtil.getSocketBytes(bytes);
+        System.out.println(HexUtil.byte2HexStr(socketBytes) + ":");
 
-        int intForHexString = HexUtil.getIntForHexInt(10);
-        System.out.println(intForHexString + ":");
+//        int intForHexString = Integer.toHexString(i);;
+        System.out.println(Integer.toHexString(i) + ":");
     }
 
     /**
@@ -87,9 +89,9 @@ public class CRC16 {
                 }
             }
         }
-        wCRCin=(wCRCin<<8)|(wCRCin>>8);
+//        wCRCin=(wCRCin<<8)|(wCRCin>>8);
         wCRCin &= 0xffff;
-        return wCRCin ^= 0x0000;
+        return wCRCin ^= 0xffff;
 
     }
 
