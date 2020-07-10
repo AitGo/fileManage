@@ -70,7 +70,7 @@ public class CRC16 {
     }
 
     /**
-     * CRC16_CCITT：多项式x16+x12+x5+1（0x1021），初始值0x0000，低位在前，高位在后，结果与0x0000异或
+     * CRC16_CCITT：多项式x16+x12+x5+1（0x8408），初始值0x0000，低位在前，高位在后，结果与0x0000异或
      * 0x8408是0x1021按位颠倒后的结果。
      * @param buffer
      * @return
@@ -92,6 +92,32 @@ public class CRC16 {
 //        wCRCin=(wCRCin<<8)|(wCRCin>>8);
         wCRCin &= 0xffff;
         return wCRCin ^= 0xffff;
+
+    }
+
+    /**
+     * CRC16_CCITT：多项式x16+x12+x5+1（0x8408），初始值0x0000，低位在前，高位在后，结果与0x0000异或
+     * 0x8408是0x1021按位颠倒后的结果。
+     * @param buffer
+     * @return
+     */
+    public static int CRC16_CCITT1021(byte[] buffer) {
+        int wCRCin = 0x0000;
+        int wCPoly = 0x8408;
+        for (byte b : buffer) {
+            wCRCin ^= ((int) b & 0x00ff);
+            for (int j = 0; j < 8; j++) {
+                if ((wCRCin & 0x0001) != 0) {
+                    wCRCin >>= 1;
+                    wCRCin ^= wCPoly;
+                } else {
+                    wCRCin >>= 1;
+                }
+            }
+        }
+//        wCRCin=(wCRCin<<8)|(wCRCin>>8);
+        wCRCin &= 0xffff;
+        return wCRCin ^= 0x0000;
 
     }
 
