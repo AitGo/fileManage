@@ -14,6 +14,7 @@ import com.aill.androidserialport.SerialPort;
 import com.qmuiteam.qmui.layout.IQMUILayout;
 import com.qmuiteam.qmui.layout.QMUIRelativeLayout;
 import com.yh.filesmanage.R;
+import com.yh.filesmanage.base.BaseEvent;
 import com.yh.filesmanage.base.BaseFragmentActivity;
 import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.socket.FastSocketClient;
@@ -29,6 +30,8 @@ import com.yh.filesmanage.view.fragment.SettingFragment;
 import com.yh.filesmanage.view.fragment.TaskFragment;
 import com.yh.filesmanage.view.fragment.setting.Setting_baseFragment;
 import com.yh.filesmanage.widget.FontIconView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.File;
 import java.io.IOException;
@@ -347,6 +350,10 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                     return;
                 }
                 String hightState = HexUtil.byteToHexString(bytes[3]);
+                //发送状态码
+                BaseEvent.CommonEvent event = BaseEvent.CommonEvent.UPDATE_STATE;
+                event.setObject(hightState);
+                EventBus.getDefault().post(event);
                 String hightAddress = HexUtil.byteToHexString(bytes[4]);
                 String lowState = HexUtil.byteToHexString(bytes[5]);
                 String lowAddress = HexUtil.byteToHexString(bytes[6]);

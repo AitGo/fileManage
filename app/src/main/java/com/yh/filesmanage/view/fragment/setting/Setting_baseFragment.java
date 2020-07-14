@@ -12,6 +12,7 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.adapter.ChooseViewAdapter;
+import com.yh.filesmanage.base.BaseEvent;
 import com.yh.filesmanage.base.BaseFragment;
 import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.utils.SPUtils;
@@ -19,6 +20,8 @@ import com.yh.filesmanage.utils.StringUtils;
 import com.yh.filesmanage.utils.ToastUtils;
 import com.yh.filesmanage.view.MainActivity;
 import com.yh.filesmanage.widget.ChooseView;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;

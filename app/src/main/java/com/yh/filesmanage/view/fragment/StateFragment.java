@@ -1,6 +1,7 @@
 package com.yh.filesmanage.view.fragment;
 
 import android.content.Context;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ImageButton;
@@ -16,6 +17,7 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.adapter.LayerAdapter;
 import com.yh.filesmanage.adapter.LayerChooseAdapter;
+import com.yh.filesmanage.base.BaseEvent;
 import com.yh.filesmanage.base.BaseFragment;
 import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.diagnose.LayerEntity;
@@ -30,6 +32,10 @@ import com.yh.filesmanage.utils.ToastUtils;
 import com.yh.filesmanage.view.MainActivity;
 import com.yh.filesmanage.widget.ChooseView;
 
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
+
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -38,6 +44,7 @@ import java.util.List;
 import java.util.Random;
 import java.util.concurrent.ExecutorService;
 
+import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -167,6 +174,15 @@ public class StateFragment extends BaseFragment {
         };
     }
 
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void Event(BaseEvent.CommonEvent event) {
+        if (event == BaseEvent.CommonEvent.UPDATE_STATE) {
+            String s = (String) event.getObject();
+            String state = StringUtils.selectState(s);
+            tvStateRun.setText(state);
+        }
+    }
+
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
@@ -189,7 +205,7 @@ public class StateFragment extends BaseFragment {
                 // 0xac 区号 0x18 盘点柜号 盘点层号 0x9e
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) areaNo,//区号
-                        (byte) 0x18,
+                        (byte) 0x20,
                         (byte) cabinetNo,//柜号
                         (byte) layerNo,//层号
                         (byte) 0x9E});
@@ -216,14 +232,14 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_open:
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) areaNo,//区号
-                        (byte) 0x1A,
+                        (byte) 0x32,
                         (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_close:
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) areaNo,//区号
-                        (byte) 0x0C,
+                        (byte) 0x33,
                         (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
@@ -237,14 +253,14 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_forward://正转
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) areaNo,//区号
-                        (byte) 0x08,
+                        (byte) 0x30,
                         (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
             case R.id.btn_state_reverse://反转
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) areaNo,//区号
-                        (byte) 0x09,
+                        (byte) 0x31,
                         (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
@@ -318,4 +334,15 @@ public class StateFragment extends BaseFragment {
     }
 
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        EventBus.getDefault().register(this);
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        EventBus.getDefault().unregister(this);
+    }
 }
