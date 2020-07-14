@@ -208,4 +208,35 @@ public class StringUtils {
         }
         return i + "";
     }
+
+    public static String selectState(String i) {
+        String state = "";
+        switch (i) {
+            case "50":
+                state = "正在开门";
+                break;
+            case "51":
+                state = "正在关门";
+                break;
+            case "52":
+                state = "层正在旋转";
+                break;
+            case "53":
+                state = "开门到位";
+                break;
+            case "54":
+                state = "关门到位";
+                break;
+            case "55":
+                state = "层旋转到位";
+                break;
+            case "56":
+                state = "正在盘点";
+                break;
+            case "57":
+                state = "存取窗口有阻挡物";
+                break;
+        }
+        return state;
+    }
 }

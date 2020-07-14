@@ -126,7 +126,7 @@
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
                 android:layout_gravity="center"
-                android:text="异常状态"
+                android:text="运行状态"
                 style="@style/mainTextStyle" />
 
             <com.qmuiteam.qmui.widget.roundwidget.QMUIRoundLinearLayout
@@ -138,7 +138,7 @@
                 app:qmui_backgroundColor="@color/blue_bg_white">
 
                 <TextView
-                    android:id="@+id/tv_state_error"
+                    android:id="@+id/tv_state_run"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="center"
@@ -453,6 +453,19 @@
                         android:layout_height="wrap_content"
                         android:layout_marginRight="10dp"
                         android:layout_alignParentRight="true">
+
+                        <ImageView
+                            android:layout_width="10dp"
+                            android:layout_height="22dp"
+                            android:layout_marginLeft="10dp"
+                            android:background="@drawable/bg_state_white"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginLeft="5dp"
+                            android:text="未著录"
+                            style="@style/mainTextSubStyle"/>
+
                         <ImageView
                             android:layout_width="10dp"
                             android:layout_height="22dp"

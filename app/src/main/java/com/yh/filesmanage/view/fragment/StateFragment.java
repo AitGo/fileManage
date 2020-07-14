@@ -55,8 +55,8 @@ public class StateFragment extends BaseFragment {
     TextView tvStateUseNum;
     @BindView(R.id.tv_state_useless_num)
     TextView tvStateUselessNum;
-    @BindView(R.id.tv_state_error)
-    TextView tvStateError;
+    @BindView(R.id.tv_state_run)
+    TextView tvStateRun;
     @BindView(R.id.btn_state_check)
     QMUIButton btnStateCheck;
     @BindView(R.id.btn_state_up)
@@ -140,7 +140,7 @@ public class StateFragment extends BaseFragment {
             for (int j = 0; j < 15; j++) {
                 LayerEntity.Item item = new LayerEntity.Item();
                 item.setIndex(j + 1);
-                int randNum = rand.nextInt(4);
+                int randNum = rand.nextInt(6);
                 item.setState(randNum);
                 items.add(item);
             }

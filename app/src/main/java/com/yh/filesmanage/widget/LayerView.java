@@ -21,7 +21,8 @@ public class LayerView extends View {
 
     private Context mContext;
     private int itemSize = 15;
-    private int itemBgWidth = 4;
+    private int itemBgWidth = 2;
+    private int itemBgHight = 4;
     private int itemHeight;
     private int itemWidth = 0;
     Paint paint;
@@ -64,6 +65,9 @@ public class LayerView extends View {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         this.itemHeight = heightMeasureSpec;
+        int measuredHeight = getMeasuredHeight();
+        itemWidth = getMeasuredWidth();
+        System.out.println("onMeasure 我被调用了"+System.currentTimeMillis());
     }
 
     @Override
@@ -84,16 +88,28 @@ public class LayerView extends View {
                 case 3:
                     paint.setColor(mContext.getResources().getColor(R.color.yellow));
                     break;
+                case 4:
+                    paint.setColor(mContext.getResources().getColor(R.color.gray_light));
+                    break;
+                case 5:
+                    paint.setColor(mContext.getResources().getColor(R.color.white));
+                    break;
             }
 
-            canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,itemBgWidth + i*itemSize), QMUIDisplayHelper.dp2px(mContext,itemBgWidth),
-                    QMUIDisplayHelper.dp2px(mContext,itemSize - itemBgWidth + i*itemSize), QMUIDisplayHelper.dp2px(mContext,95), paint);
+            canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,itemBgWidth + i*itemSize),
+                    QMUIDisplayHelper.dp2px(mContext,itemBgHight),
+                    QMUIDisplayHelper.dp2px(mContext,itemSize - itemBgWidth + i*itemSize),
+                    QMUIDisplayHelper.dp2px(mContext,95), paint);
 
-            canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,2), QMUIDisplayHelper.dp2px(mContext,2),
-                    QMUIDisplayHelper.dp2px(mContext,itemSize+ i*itemSize), QMUIDisplayHelper.dp2px(mContext,98), bg);
+//            canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,2),
+//                    QMUIDisplayHelper.dp2px(mContext,2),
+//                    QMUIDisplayHelper.dp2px(mContext,itemSize+ i*itemSize),
+//                    QMUIDisplayHelper.dp2px(mContext,98), bg);
             if(isDrawBg) {
-                canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,0), QMUIDisplayHelper.dp2px(mContext,0),
-                        QMUIDisplayHelper.dp2px(mContext,itemWidth), QMUIDisplayHelper.dp2px(mContext,100), positionBg);
+                canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,0),
+                        QMUIDisplayHelper.dp2px(mContext,0),
+                        QMUIDisplayHelper.dp2px(mContext,250),
+                        QMUIDisplayHelper.dp2px(mContext,150), positionBg);
             }
         }
     }
@@ -104,7 +120,7 @@ public class LayerView extends View {
 
     public void setPositionBg() {
         int size = item.getItems().size();
-        itemWidth = itemSize + (size - 1) * itemSize;
+//        itemWidth = itemSize + (size - 1) * itemSize;
         isDrawBg = true;
     }
 }
