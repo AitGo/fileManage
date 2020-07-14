@@ -160,7 +160,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        ToastUtils.showShort("ConnectionSuccess " + msg);
+//                        ToastUtils.showShort("ConnectionSuccess " + msg);
                     }
                 });
             }
@@ -305,8 +305,8 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 public void run() {
                     try {
                         byte[] send = new byte[]{(byte) 0xAC,
-                                (byte) 0x01,
                                 (byte) areaNo,//区号
+                                (byte) 0x0b,
                                 (byte) 0x00,
                                 (byte) 0x9E};//查询报文
                         mOutputStream.write(send);
@@ -315,6 +315,12 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                         mainloop(mInputStream);
                     } catch (Exception e) {
                         e.printStackTrace();
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                ToastUtils.showLong("串口发送数据失败：" + e.getMessage());
+                            }
+                        });
                     }
                 }
             });
