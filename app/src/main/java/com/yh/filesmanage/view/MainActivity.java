@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.aill.androidserialport.SerialPort;
 import com.qmuiteam.qmui.layout.IQMUILayout;
@@ -153,27 +154,57 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             @Override
             public void onSocketConnectionSuccess(String msg) {
                 LogUtils.e("ConnectionSuccess" + msg);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtils.showShort("ConnectionSuccess " + msg);
+                    }
+                });
             }
 
             @Override
             public void onSocketConnectionFailed(String msg, Exception e) {
                 LogUtils.e("ConnectionFailed" + msg);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtils.showShort("ConnectionFailed " + msg);
+                    }
+                });
             }
 
             @Override
             public void onSocketDisconnection(String msg, Exception e) {
                 LogUtils.e("Disconnection" + msg);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtils.showShort("Disconnection " + msg);
+                    }
+                });
             }
 
             @Override
             public void onSocketReadResponse(byte[] bytes) {
                 //接收命令
                 readSocketResponse(bytes);
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtils.showShort("onSocketReadResponse " +  HexUtil.ByteToString(bytes));
+                    }
+                });
             }
 
             @Override
             public void onSocketWriteResponse(byte[] bytes) {
                 LogUtils.e("Write" + bytes.toString());
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        ToastUtils.showShort("onSocketWriteResponse " + HexUtil.ByteToString(bytes));
+                    }
+                });
             }
         });
         fastSocketClient.connect();
