@@ -234,14 +234,14 @@ public class StateFragment extends BaseFragment {
                         (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
-            case R.id.btn_state_forward:
+            case R.id.btn_state_forward://正转
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) areaNo,//区号
                         (byte) 0x08,
                         (byte) cabinetNo,//柜号
                         (byte) 0x9E});
                 break;
-            case R.id.btn_state_reverse:
+            case R.id.btn_state_reverse://反转
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
                         (byte) areaNo,//区号
                         (byte) 0x09,
