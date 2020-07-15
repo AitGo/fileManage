@@ -212,6 +212,127 @@ public class StringUtils {
     public static String selectState(String i) {
         String state = "";
         switch (i) {
+            case "00":
+                state = "与本列通讯不成功";
+                break;
+            case "01":
+                state = "架体到位自动保护";
+                break;
+            case "02":
+                state = "前通道门禁保护";
+                break;
+            case "03":
+                state = "通道红外线保护";
+                break;
+            case "04":
+                state = "等待操作";
+                break;
+            case "05":
+                state = "资料显示";
+                break;
+            case "07":
+                state = "所有架体关到位";
+                break;
+            case "08":
+                state = "所有架体通风到位";
+                break;
+            case "09":
+                state = "后通道门禁保护";
+                break;
+            case "0B":
+                state = "正在开架移动";
+                break;
+            case "0C":
+                state = "正在合架移动";
+                break;
+            case "0D":
+                state = "题名显示";
+                break;
+            case "0E":
+                state = "解除系统保护";
+                break;
+            case "0F":
+                state = "解除通道内保护";
+                break;
+            case "10":
+                state = "红外正常工作";
+                break;
+            case "11":
+                state = "链路出错地址如下";
+                break;
+            case "12":
+                state = "开架限位故障";
+                break;
+            case "13":
+                state = "合架限位故障";
+                break;
+            case "14":
+                state = "电机故障";
+                break;
+            case "15":
+                state = "红外线故障";
+                break;
+            case "18":
+                state = "启动电源";
+                break;
+            case "1A":
+                state = "正在通风移动";
+                break;
+            case "1B":
+                state = "移动按键允许";
+                break;
+            case "1C":
+                state = "移动按键禁用";
+                break;
+            case "1D":
+                state = "复位系统";
+                break;
+            case "1E":
+                state = "正在通风移动";
+                break;
+            case "1F":
+                state = "资料定位显示";
+                break;
+            case "20":
+                state = "通讯故障";
+                break;
+            case "21":
+                state = "底部红外光幕保护";
+                break;
+            case "22":
+                state = "自动开架移动";
+                break;
+            case "23":
+                state = "自动合架移动";
+                break;
+            case "24":
+                state = "压力传感器挤压";
+                break;
+            case "25":
+                state = "侧例门未完全上锁";
+                break;
+            case "26":
+                state = "手动刹车锁定";
+                break;
+            case "27":
+                state = "手动刹车解锁";
+                break;
+            case "29":
+                state = "压力传感器松开";
+                break;
+            case "2A":
+                state = "通道有人弹开架体";
+                break;
+            case "2B":
+                state = "正在准备通风中";
+                break;
+            case "2C":
+                state = "压力挤压弹开架体";
+                break;
+            case "2D":
+                state = "自动进入待机";
+                break;
+
             case "50":
                 state = "正在开门";
                 break;

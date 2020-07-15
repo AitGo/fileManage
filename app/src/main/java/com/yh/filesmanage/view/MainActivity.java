@@ -214,6 +214,20 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     }
 
     @Override
+    public void closeSerialPort() {
+        try {
+            mInputStream.close();
+            mOutputStream.close();
+            serialPort.close();
+            serialPort = null;
+            mInputStream = null;
+            mOutputStream = null;
+        }catch (Exception e) {
+
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         // TODO: add setContentView(...) invocation
@@ -411,16 +425,21 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                     //开始检卡
                     if("80".equals(HexUtil.byteToHexString(bytes[5]))) {
                         if("00".equals(HexUtil.byteToHexString(bytes[8]))) {
-                            //检卡成功，读取单层UID
-                            int cabinetNo = (int) SPUtils.getParam(mContext,Constants.SP_NO_CABINET,1);
-                            byte[] resdUid = {
-                                    (byte) 0x00, (byte) 0x06,
-                                    (byte) 0x00, (byte) 0x01,//硬件地址
-                                    (byte) 0x00, (byte) 0x05,//读取单层命令
-                                    (byte) 0x01,
-                                    (byte) cabinetNo//ID，与柜号一致
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    //检卡成功，读取单层UID
+                                    int cabinetNo = (int) SPUtils.getParam(mContext,Constants.SP_NO_CABINET,1);
+                                    byte[] resdUid = {
+                                            (byte) 0x00, (byte) 0x06,
+                                            (byte) 0x00, (byte) 0x01,//硬件地址
+                                            (byte) 0x00, (byte) 0x05,//读取单层命令
+                                            (byte) 0x01,
+                                            (byte) cabinetNo//ID，与柜号一致
                                     };
-                            sendSocketData(HexUtil.getSocketBytes(resdUid));
+                                    sendSocketData(HexUtil.getSocketBytes(resdUid));
+                                }
+                            });
                         }
                     }
                     break;
@@ -584,6 +603,13 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 public void run() {
                     try {
                         mOutputStream.write(send);
+                        mOutputStream.flush();
+                        byte[] query = new byte[]{(byte) 0xAC,
+                                (byte) areaNo,//区号
+                                (byte) 0x0b,
+                                (byte) 0x00,
+                                (byte) 0x9E};//查询报文
+                        mOutputStream.write(query);
                         mOutputStream.flush();
                     } catch (Exception e) {
                         e.printStackTrace();

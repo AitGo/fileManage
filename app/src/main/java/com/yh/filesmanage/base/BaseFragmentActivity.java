@@ -55,4 +55,7 @@ public abstract class BaseFragmentActivity extends FragmentActivity {
      * 初始化数据
      */
     protected abstract void initData();
+
+    public abstract void closeSerialPort();
+
 }

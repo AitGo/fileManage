@@ -204,6 +204,7 @@ public class Setting_baseFragment extends BaseFragment {
             case R.id.btn_setting_seriaport:
                 SPUtils.setParam(getContext(),Constants.SP_SERIALPORT_NO,serialport);
                 SPUtils.setParam(getContext(),Constants.SP_SERIALPORT_BAUDRATE,seriaport_bt);
+                activity.closeSerialPort();
                 activity.initSerialPort();
                 break;
             case R.id.btn_setting_update:
