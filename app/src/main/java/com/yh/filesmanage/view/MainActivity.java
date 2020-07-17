@@ -2,7 +2,9 @@ package com.yh.filesmanage.view;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.SystemClock;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -11,14 +13,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.aill.androidserialport.SerialPort;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
+import com.lzy.okgo.model.Response;
 import com.qmuiteam.qmui.layout.IQMUILayout;
 import com.qmuiteam.qmui.layout.QMUIRelativeLayout;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseEvent;
 import com.yh.filesmanage.base.BaseFragmentActivity;
 import com.yh.filesmanage.base.Constants;
+import com.yh.filesmanage.diagnose.ResponseList;
 import com.yh.filesmanage.socket.FastSocketClient;
 import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
+import com.yh.filesmanage.utils.GsonUtils;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
 import com.yh.filesmanage.utils.SPUtils;
@@ -37,6 +44,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -126,6 +134,9 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     private int humidity = 0;
     private int readType = 0;
 
+    // 模拟的task id
+    private static int mTaskId = 0;
+
     @Override
     protected int getLayoutId() {
         return R.layout.activity_main;
@@ -140,7 +151,6 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         showFragment(mStateFragment);
         areaNo = (int) SPUtils.getParam(this, Constants.SP_NO_AREA, 1);
         tvMainArea.setText(StringUtils.getNumber(areaNo));
-
         initSerialPort();
     }
 
@@ -211,20 +221,30 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             }
         });
         fastSocketClient.connect();
-    }
 
-    @Override
-    public void closeSerialPort() {
-        try {
-            mInputStream.close();
-            mOutputStream.close();
-            serialPort.close();
-            serialPort = null;
-            mInputStream = null;
-            mOutputStream = null;
-        }catch (Exception e) {
+        OkGo.<String>post( Constants.ipAddress + "/set_wsd_history")
+                .tag(this)
+                .params("house_no",SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "")
+                .params("area_no",(int) SPUtils.getParam(mContext, Constants.SP_NO_AREA, 1) + "")
+                .params("temp",(double)26.8)
+                .params("humi",(double)70.2)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(Response<String> response) {
+                        LogUtils.e(response.body());
+                        com.yh.filesmanage.diagnose.Response<Object> jsonObject = GsonUtils.fromJsonObject(response.body(), String.class);
+                        if(!jsonObject.isSuccess()) {
+                            ToastUtils.showShort("提交温湿度日志失败：" + jsonObject.getMessage());
+                        }
+                    }
 
-        }
+                    @Override
+                    public void onError(Response<String> response) {
+                        super.onError(response);
+                        LogUtils.e(response.getException().getMessage());
+                        ToastUtils.showShort("提交温湿度日志错误：" + response.getException().getMessage());
+                    }
+                });
     }
 
     @Override
@@ -245,6 +265,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             serialPort = null;
             mInputStream = null;
             mOutputStream = null;
+            handler.removeCallbacks(runnable);
         }catch (Exception e) {
 
         }
@@ -296,6 +317,21 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         }
     });
 
+    @Override
+    public void closeSerialPort() {
+        try {
+            mInputStream.close();
+            mOutputStream.close();
+            serialPort.close();
+            serialPort = null;
+            mInputStream = null;
+            mOutputStream = null;
+            handler.removeCallbacks(runnable);
+        }catch (Exception e) {
+            ToastUtils.showShort("关闭串口错误：" + e.getMessage());
+        }
+    }
+
     public void initSerialPort() {
         try {
             String serialport_no = (String) SPUtils.getParam(this, Constants.SP_SERIALPORT_NO, Constants.SERIALPORT_NO);
@@ -304,7 +340,8 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                     serialport_baudrate, 0);
             mInputStream = serialPort.getInputStream();
             mOutputStream = serialPort.getOutputStream();
-            getSeriportData();
+            handler.postDelayed(runnable, 1000);//每两秒执行一次runnable.
+//            getSeriportData();
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.e("打开串口失败");
@@ -328,6 +365,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                         Thread.sleep(150);
                         mainloop(mInputStream);
                     } catch (Exception e) {
+                        handler.removeCallbacks(runnable);
                         e.printStackTrace();
                         runOnUiThread(new Runnable() {
                             @Override
@@ -384,7 +422,10 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 String co2 = HexUtil.byte2HexStrNoSpace(new byte[]{bytes[13],bytes[14]});
                 String hightErrorLayer = HexUtil.byteToHexString(bytes[15]);
                 String lowErrorLayer = HexUtil.byteToHexString(bytes[16]);
-                String reportCode = HexUtil.byteToHexString(bytes[17]);
+//                String reportCode = HexUtil.byteToHexString(bytes[17]);
+
+                //判断报警位
+                checkReportCode(bytes[17]);
                 //温度
                 temperature = HexUtil.getIntForHexString(HexUtil.byte2HexStrNoSpace(new byte[]{bytes[18],bytes[19]}));
 //                temperature = HexUtil.getIntForHexString(backString.substring(37,41));
@@ -406,9 +447,102 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                     public void run() {
                         tvMainTemperature.setText(temperature/10 + "");
                         tvMainHumidity.setText(humidity/10 + "");
+                        OkGo.<String>post( Constants.ipAddress + "/set_wsd_history")
+                                .tag(this)
+                                .params("house_no",SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "")
+                                .params("area_no",(int) SPUtils.getParam(mContext, Constants.SP_NO_AREA, 1) + "")
+                                .params("temp",Double.valueOf(temperature/(double)10))
+                                .params("humi",Double.valueOf(humidity/(double)10))
+                                .execute(new StringCallback() {
+                                    @Override
+                                    public void onSuccess(Response<String> response) {
+                                        LogUtils.e(response.body());
+                                        com.yh.filesmanage.diagnose.Response<Object> jsonObject = GsonUtils.fromJsonObject(response.body(), String.class);
+                                        if(!jsonObject.isSuccess()) {
+                                            ToastUtils.showShort("提交温湿度日志失败：" + jsonObject.getMessage());
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Response<String> response) {
+                                        super.onError(response);
+                                        LogUtils.e(response.getException().getMessage());
+                                        ToastUtils.showShort("提交温湿度日志错误：" + response.getException().getMessage());
+                                    }
+                                });
                     }
                 });
             }
+        }
+    }
+
+    private void checkReportCode(byte bytes) {
+        String reportCode = HexUtil.parseByte(bytes);
+        String yanwuCode = reportCode.substring(0, 1);
+        String loushuiCode = reportCode.substring(1, 2);
+        String wenduCode = reportCode.substring(2, 3);
+        String shiduCode = reportCode.substring(3, 4);
+//                String yanwuCode = reportCode.substring(4, 5);
+        String zhuapaiCode = reportCode.substring(5, 6);
+        String leixingCode = reportCode.substring(6, 7);
+        String yztgCode = reportCode.substring(7, 8);
+        int warn_code = 0;
+        String warn_remark = "";
+        boolean isReport = false;
+        if(yanwuCode.equals("1")) {
+            warn_code = 1;
+            warn_remark = "烟雾报警";
+            isReport = true;
+        }else if(loushuiCode.equals("1")) {
+            warn_code = 1;
+            warn_remark = "漏水报警";
+            isReport = true;
+        }else if(wenduCode.equals("1")) {
+            warn_code = 1;
+            warn_remark = "温度报警";
+            isReport = true;
+        }else if(shiduCode.equals("1")) {
+            warn_code = 1;
+            warn_remark = "湿度报警";
+            isReport = true;
+        }else if(zhuapaiCode.equals("1")) {
+            warn_code = 1;
+            warn_remark = "抓拍报警";
+            isReport = true;
+        }else if(leixingCode.equals("1")) {
+            warn_code = 1;
+            warn_remark = "类型报警";
+            isReport = true;
+        }else if(yztgCode.equals("1")) {
+            warn_code = 1;
+            warn_remark = "验证通过";
+            isReport = true;
+        }
+        if(isReport) {
+            OkGo.<String>post( Constants.ipAddress + "/set_warn_history")
+                    .tag(this)
+                    .params("house_no",SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "")
+                    .params("area_no",(int) SPUtils.getParam(mContext, Constants.SP_NO_AREA, 1) + "")
+                    .params("op_col",(int) SPUtils.getParam(mContext, Constants.SP_NO_CABINET, 1) + "")
+                    .params("warn_code",warn_code)
+                    .params("warn_remark",warn_remark)
+                    .execute(new StringCallback() {
+                        @Override
+                        public void onSuccess(Response<String> response) {
+                            LogUtils.e(response.body());
+                            com.yh.filesmanage.diagnose.Response<Object> jsonObject = GsonUtils.fromJsonObject(response.body(), String.class);
+                            if(!jsonObject.isSuccess()) {
+                                ToastUtils.showShort("提交报警日志失败：" + jsonObject.getMessage());
+                            }
+                        }
+
+                        @Override
+                        public void onError(Response<String> response) {
+                            super.onError(response);
+                            LogUtils.e(response.getException().getMessage());
+                            ToastUtils.showShort("提交报警日志错误：" + response.getException().getMessage());
+                        }
+                    });
         }
     }
 
@@ -464,7 +598,28 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                         if(readType == Constants.VALUE_CHECK) {
 
                         }else if(readType == Constants.VALUE_UP) {
-
+//                            OkGo.<String>post( Constants.ipAddress + "/on_shelf")
+//                                    .tag(this)
+//                                    .params("Barcode",)
+//                                    .params("HouseNo",SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "")
+//                                    .params("ShelfNo",)
+//                                    .execute(new StringCallback() {
+//                                        @Override
+//                                        public void onSuccess(Response<String> response) {
+//                                            LogUtils.e(response.body());
+//                                            com.yh.filesmanage.diagnose.Response<Object> jsonObject = GsonUtils.fromJsonArray(response.body(), String.class);
+//                                            if(!jsonObject.isSuccess()) {
+//                                                ToastUtils.showShort("提交温湿度日志失败：" + jsonObject.getMessage());
+//                                            }
+//                                        }
+//
+//                                        @Override
+//                                        public void onError(Response<String> response) {
+//                                            super.onError(response);
+//                                            LogUtils.e(response.getException().getMessage());
+//                                            ToastUtils.showShort("提交温湿度日志错误：" + response.getException().getMessage());
+//                                        }
+//                                    });
                         }
                     }
                     break;
@@ -631,5 +786,15 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
         readType = type;
         fastSocketClient.send(send);
     }
+
+    Handler handler=new Handler();
+    Runnable runnable=new Runnable() {
+        @Override
+        public void run() {
+            // TODO Auto-generated method stub
+            getSeriportData();
+            handler.postDelayed(this, 1000);
+        }
+    };
 
 }

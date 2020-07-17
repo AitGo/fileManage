@@ -254,4 +254,13 @@ public class HexUtil {
         System.arraycopy(bytes2, 0, bt3, byte1.length + bytes.length, bytes2.length);
         return bt3;
     }
+
+    /**
+     * 将byte转换为二进制字符串
+     * @param b
+     * @return
+     */
+    public static String parseByte(byte b) {
+        return Integer.toBinaryString((b & 0xFF) + 0x100).substring(1);
+    }
 }

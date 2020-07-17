@@ -1,6 +1,8 @@
 package com.yh.filesmanage.utils;
 
 
+import java.io.UnsupportedEncodingException;
+
 /**
  * CRC16_CCITT：多项式x16+x12+x5+1（0x1021），初始值0x0000，低位在前，高位在后，结果与0x0000异或
  * CRC16_CCITT_FALSE：多项式x16+x12+x5+1（0x1021），初始值0xFFFF，低位在后，高位在前，结果与0x0000异或
@@ -67,6 +69,18 @@ public class CRC16 {
 
 //        int intForHexString = Integer.toHexString(i);;
         System.out.println(Integer.toHexString(i) + ":");
+        byte[] srtbyte = {1};
+        try {
+            String res = new String(srtbyte,"UTF-8");
+            System.out.println(res + ":");
+            Byte b = srtbyte[0];
+            String tString1 = Integer.toBinaryString((b & 0xFF) + 0x100).substring(1);
+            System.out.println(tString1 + ":");
+
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
     }
 
     /**

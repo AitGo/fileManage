@@ -3,6 +3,7 @@ package com.yh.filesmanage.utils;
 
 import com.google.gson.Gson;
 import com.yh.filesmanage.diagnose.Response;
+import com.yh.filesmanage.diagnose.ResponseList;
 
 import java.lang.reflect.Type;
 import java.util.List;
@@ -57,17 +58,25 @@ public class GsonUtils {
     }
 
 
-    public static <T> Response<List<T>> fromJsonArray(String json, Class<T> clazz) {
+//    public static <T> Response<List<T>> fromJsonArray(String json, Class<T> clazz) {
+//        Type type = TypeBuilder
+//                .newInstance(Response.class)
+//                .beginSubType(List.class)
+//                .addTypeParam(clazz)
+//                .endSubType()
+//                .build();
+//        return new Gson().fromJson(json, type);
+//    }
+
+    public static <T> Response<T> fromJsonObject(String json, Class<String> clazz) {
         Type type = TypeBuilder
                 .newInstance(Response.class)
-                .beginSubType(List.class)
                 .addTypeParam(clazz)
-                .endSubType()
                 .build();
         return new Gson().fromJson(json, type);
     }
 
-    public static <T> Response<T> fromJsonObject(String json, Class<T> clazz) {
+    public static <T> Response<T> fromJsonArray(String json, Class<ResponseList> clazz) {
         Type type = TypeBuilder
                 .newInstance(Response.class)
                 .addTypeParam(clazz)

@@ -17,7 +17,7 @@ import java.io.File;
  */
 public class Constants {
 
-    public static String defaultURL = "http://192.168.31.88:8080/lianyservice/service/appUploadDataService";
+    public static String ipAddress = "http://60.190.30.138:9008/mjj_web";
 
     public static String SOCKET_IP = "192.168.20.189";
     public static  int SOCKET_PORT = 5000;
