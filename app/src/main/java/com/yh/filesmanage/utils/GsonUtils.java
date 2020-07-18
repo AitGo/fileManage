@@ -107,7 +107,7 @@ public class GsonUtils {
             FileInfo fileInfo = new FileInfo();
             Double id = (Double) list1.get(i).get("id");
             int ii = id.intValue();
-            fileInfo.setId(ii);
+            fileInfo.setId(ii + "");
             fileInfo.setFolder_no((String) list1.get(i).get("folder_no"));
             fileInfo.setMaintitle((String) list1.get(i).get("maintitle"));
             fileInfo.setResponsibleby((String) list1.get(i).get("responsibleby"));

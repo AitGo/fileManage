@@ -15,7 +15,7 @@ import com.yh.filesmanage.diagnose.FileInfo;
 /** 
  * DAO for table "FILE_INFO".
 */
-public class FileInfoDao extends AbstractDao<FileInfo, Integer> {
+public class FileInfoDao extends AbstractDao<FileInfo, String> {
 
     public static final String TABLENAME = "FILE_INFO";
 
@@ -24,7 +24,7 @@ public class FileInfoDao extends AbstractDao<FileInfo, Integer> {
      * Can be used for QueryBuilder and for referencing column names.
      */
     public static class Properties {
-        public final static Property Id = new Property(0, int.class, "id", true, "ID");
+        public final static Property Id = new Property(0, String.class, "id", true, "ID");
         public final static Property Folder_no = new Property(1, String.class, "folder_no", false, "FOLDER_NO");
         public final static Property Maintitle = new Property(2, String.class, "maintitle", false, "MAINTITLE");
         public final static Property Responsibleby = new Property(3, String.class, "responsibleby", false, "RESPONSIBLEBY");
@@ -64,7 +64,7 @@ public class FileInfoDao extends AbstractDao<FileInfo, Integer> {
     public static void createTable(Database db, boolean ifNotExists) {
         String constraint = ifNotExists? "IF NOT EXISTS ": "";
         db.execSQL("CREATE TABLE " + constraint + "\"FILE_INFO\" (" + //
-                "\"ID\" INTEGER PRIMARY KEY NOT NULL ," + // 0: id
+                "\"ID\" TEXT PRIMARY KEY NOT NULL ," + // 0: id
                 "\"FOLDER_NO\" TEXT," + // 1: folder_no
                 "\"MAINTITLE\" TEXT," + // 2: maintitle
                 "\"RESPONSIBLEBY\" TEXT," + // 3: responsibleby
@@ -100,7 +100,11 @@ public class FileInfoDao extends AbstractDao<FileInfo, Integer> {
     @Override
     protected final void bindValues(DatabaseStatement stmt, FileInfo entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getId());
+ 
+        String id = entity.getId();
+        if (id != null) {
+            stmt.bindString(1, id);
+        }
  
         String folder_no = entity.getFolder_no();
         if (folder_no != null) {
@@ -218,7 +222,11 @@ public class FileInfoDao extends AbstractDao<FileInfo, Integer> {
     @Override
     protected final void bindValues(SQLiteStatement stmt, FileInfo entity) {
         stmt.clearBindings();
-        stmt.bindLong(1, entity.getId());
+ 
+        String id = entity.getId();
+        if (id != null) {
+            stmt.bindString(1, id);
+        }
  
         String folder_no = entity.getFolder_no();
         if (folder_no != null) {
@@ -334,14 +342,14 @@ public class FileInfoDao extends AbstractDao<FileInfo, Integer> {
     }
 
     @Override
-    public Integer readKey(Cursor cursor, int offset) {
-        return cursor.getInt(offset + 0);
+    public String readKey(Cursor cursor, int offset) {
+        return cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0);
     }    
 
     @Override
     public FileInfo readEntity(Cursor cursor, int offset) {
         FileInfo entity = new FileInfo( //
-            cursor.getInt(offset + 0), // id
+            cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0), // id
             cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1), // folder_no
             cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2), // maintitle
             cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3), // responsibleby
@@ -372,7 +380,7 @@ public class FileInfoDao extends AbstractDao<FileInfo, Integer> {
      
     @Override
     public void readEntity(Cursor cursor, FileInfo entity, int offset) {
-        entity.setId(cursor.getInt(offset + 0));
+        entity.setId(cursor.isNull(offset + 0) ? null : cursor.getString(offset + 0));
         entity.setFolder_no(cursor.isNull(offset + 1) ? null : cursor.getString(offset + 1));
         entity.setMaintitle(cursor.isNull(offset + 2) ? null : cursor.getString(offset + 2));
         entity.setResponsibleby(cursor.isNull(offset + 3) ? null : cursor.getString(offset + 3));
@@ -400,12 +408,12 @@ public class FileInfoDao extends AbstractDao<FileInfo, Integer> {
      }
     
     @Override
-    protected final Integer updateKeyAfterInsert(FileInfo entity, long rowId) {
+    protected final String updateKeyAfterInsert(FileInfo entity, long rowId) {
         return entity.getId();
     }
     
     @Override
-    public Integer getKey(FileInfo entity) {
+    public String getKey(FileInfo entity) {
         if(entity != null) {
             return entity.getId();
         } else {
@@ -415,7 +423,7 @@ public class FileInfoDao extends AbstractDao<FileInfo, Integer> {
 
     @Override
     public boolean hasKey(FileInfo entity) {
-        throw new UnsupportedOperationException("Unsupported for entities with a non-null key");
+        return entity.getId() != null;
     }
 
     @Override

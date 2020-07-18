@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.yh.filesmanage.R;
+import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.diagnose.FileInfo;
 import com.yh.filesmanage.diagnose.LayerEntity;
 import com.yh.filesmanage.utils.DensityUtils;
@@ -21,7 +22,7 @@ import androidx.annotation.Nullable;
 public class LayerView extends View {
 
     private Context mContext;
-    private int itemSize = 15;
+    private int itemSize = 25;
     private int itemBgWidth = 2;
     private int itemBgHight = 4;
     private int itemHeight;
@@ -76,25 +77,19 @@ public class LayerView extends View {
         super.onDraw(canvas);
         List<FileInfo> items = item.getItems();
         for(int i = 0; i < items.size(); i++) {
-            switch (items.get(i).getStatus()) {
-                case "0"://空位
-                    paint.setColor(mContext.getResources().getColor(R.color.gray_dark));
-                    break;
-                case "1"://在位
-                    paint.setColor(mContext.getResources().getColor(R.color.green));
-                    break;
-                case "2"://缺失
-                    paint.setColor(mContext.getResources().getColor(R.color.red));
-                    break;
-                case "3"://错位
-                    paint.setColor(mContext.getResources().getColor(R.color.yellow));
-                    break;
-                case "4"://待盘点
-                    paint.setColor(mContext.getResources().getColor(R.color.gray_light));
-                    break;
-                case "5"://未著录
-                    paint.setColor(mContext.getResources().getColor(R.color.white));
-                    break;
+            String status = items.get(i).getStatus();
+            if(status.equals(Constants.VALUE_STATE_KW)) {
+                paint.setColor(mContext.getResources().getColor(R.color.gray_dark));
+            }else if(status.equals(Constants.VALUE_STATE_ZW)) {
+                paint.setColor(mContext.getResources().getColor(R.color.green));
+            }else if(status.equals(Constants.VALUE_STATE_QS)) {
+                paint.setColor(mContext.getResources().getColor(R.color.red));
+            }else if(status.equals(Constants.VALUE_STATE_CW)) {
+                paint.setColor(mContext.getResources().getColor(R.color.yellow));
+            }else if(status.equals(Constants.VALUE_STATE_DPD)) {
+                paint.setColor(mContext.getResources().getColor(R.color.gray_light));
+            }else if(status.equals(Constants.VALUE_STATE_WZL)) {
+                paint.setColor(mContext.getResources().getColor(R.color.white));
             }
 //            itemWidth = getWidth();
 //            int itemSizeCount = itemWidth - (items.size() + 1) * itemBgWidth;

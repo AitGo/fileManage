@@ -28,7 +28,6 @@ import com.yh.filesmanage.diagnose.LayerEntity;
 import com.yh.filesmanage.diagnose.Response;
 import com.yh.filesmanage.diagnose.ResponseList;
 import com.yh.filesmanage.utils.DBUtils;
-import com.yh.filesmanage.utils.FileUtils;
 import com.yh.filesmanage.utils.GsonUtils;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
@@ -104,10 +103,14 @@ public class StateFragment extends BaseFragment {
     LinearLayout llWzl;
     @BindView(R.id.ll_dpd)
     LinearLayout llDpd;
+    @BindView(R.id.tv_UseNum)
+    TextView tvUseNum;
+    @BindView(R.id.tv_UselessNum)
+    TextView tvUselessNum;
 
     private List<LayerEntity> layers = new ArrayList<>();
     private LayerAdapter adapter;
-    private QMUIPopup popup,cwpop,qspop;
+    private QMUIPopup popup, cwpop, qspop;
 
     private int areaNo = 1;//区号
     private int layerNo = 1;//层数
@@ -119,6 +122,7 @@ public class StateFragment extends BaseFragment {
     private AdapterView.OnItemClickListener onItemClickListener;
     private MainActivity activity;
     private Context mContext;
+    private int useSize = 0;
 
     @Override
     protected int getLayoutId() {
@@ -144,7 +148,7 @@ public class StateFragment extends BaseFragment {
         divider.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.bg_custom_layer));
         rvStateLayer.addItemDecoration(divider);
 
-        initLayerData();
+//        initLayerData();
         layers.addAll(DBUtils.selectLayerNoList());
         if (layers.size() > 0) {
             //初始化数据
@@ -184,22 +188,7 @@ public class StateFragment extends BaseFragment {
                 }
             }
         };
-//        String qsState = "";
-//        List<FileInfo> qsLists = DBUtils.selectFileInfoByState(qsState);
-        String s = FileUtils.ReadAssetsFile(getContext(), "fileInfos.json");
-        Response<Object> objectResponse = GsonUtils.fromJsonArray(s, ResponseList.class);
-        ResponseList<Map<String,Object>> fileInfoResponseList = (ResponseList<Map<String,Object>>) objectResponse.getData();
-        List<FileInfo> fileInfos = GsonUtils.map2List(fileInfoResponseList);
 
-        FileInfo head = new FileInfo();
-        head.setBarcode("条码");
-        head.setMaintitle("题名");
-        head.setShelf_no("当前架位");
-        head.setRev1("正确架位");
-        fileInfos.add(0,head);
-        qsAdapter = new QSAdapter(getContext(), fileInfos);
-
-        cwAdapter = new CWAdapter(getContext(), fileInfos);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -220,14 +209,6 @@ public class StateFragment extends BaseFragment {
             layerNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_LAYER, 1);
             StateChooseLayer.setTextValue("第" + StringUtils.getNumber(layerNo) + "层");
             tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
-            //设置状态数据
-            int boxSize = (int) SPUtils.getParam(getContext(), Constants.SP_SIZE_BOX, 1);
-            int layerSize = (int) SPUtils.getParam(getContext(), Constants.SP_SIZE_LAYER, 1);
-            int count = layerSize * boxSize;
-            tvStatePlaceNum.setText(count + "");
-            int useSize = 0;
-            tvStateUseNum.setText(useSize + "");
-            tvStateUselessNum.setText((count - useSize) + "");
         }
     }
 
@@ -240,27 +221,29 @@ public class StateFragment extends BaseFragment {
         switch (view.getId()) {
             case R.id.btn_state_check:
                 // 0xac 区号 0x18 盘点柜号 盘点层号 0x9e
-                activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                        (byte) areaNo,//区号
-                        (byte) 0x20,
-                        (byte) cabinetNo,//柜号
-                        (byte) layerNo,//层号
-                        (byte) 0x9E});
-                //RFID开始检卡
+//                activity.sendSeriportData(new byte[]{(byte) 0xAC,
+//                        (byte) areaNo,//区号
+//                        (byte) 0x20,
+//                        (byte) cabinetNo,//柜号
+//                        (byte) layerNo,//层号
+//                        (byte) 0x9E});
+
 //                byte[] startRead = {
 //                        (byte) 0x00, (byte) 0x06,
 //                        (byte) 0x00, (byte) 0x01,//硬件地址
-//                        (byte) 0x00, (byte) 0x03,
+//                        (byte) 0x00, (byte) 0x05,//读取单层命令
 //                        (byte) 0x01,
-//                        (byte) 0x01};
-                byte[] startRead = {
-                        (byte) 0x00, (byte) 0x06,
-                        (byte) 0x00, (byte) 0x01,//硬件地址
-                        (byte) 0x00, (byte) 0x05,//读取单层命令
-                        (byte) 0x01,
-                        (byte) cabinetNo//ID，与柜号一致
-                };
-                activity.sendSocketData(HexUtil.getSocketBytes(startRead), Constants.VALUE_CHECK);
+//                        (byte) cabinetNo//ID，与柜号一致
+//                };
+//                activity.sendSocketData(HexUtil.getSocketBytes(startRead), Constants.VALUE_CHECK);
+                activity.setSocektType(1);
+                List<FileInfo> fileInfos1 = DBUtils.selectFileInfoByNotState(Constants.VALUE_STATE_KW);
+                for (FileInfo fileInfo : fileInfos1) {
+                    fileInfo.setStatus(Constants.VALUE_STATE_DPD);
+                }
+                layers.clear();
+                layers.addAll(DBUtils.selectLayerNoList());
+                adapter.notifyDataSetChanged();
                 break;
             case R.id.btn_state_up:
                 //上架
@@ -271,14 +254,27 @@ public class StateFragment extends BaseFragment {
 //                        (byte) 0x00, (byte) 0x03,
 //                        (byte) 0x01,
 //                        (byte) 0x01};
-                byte[] startUp = {
-                        (byte) 0x00, (byte) 0x06,
-                        (byte) 0x00, (byte) 0x01,//硬件地址
-                        (byte) 0x00, (byte) 0x05,//读取单层命令
-                        (byte) 0x01,
-                        (byte) cabinetNo//ID，与柜号一致
-                };
-                activity.sendSocketData(HexUtil.getSocketBytes(startUp), Constants.VALUE_UP);
+//                byte[] startUp = {
+//                        (byte) 0x00, (byte) 0x06,
+//                        (byte) 0x00, (byte) 0x01,//硬件地址
+//                        (byte) 0x00, (byte) 0x05,//读取单层命令
+//                        (byte) 0x01,
+//                        (byte) cabinetNo//ID，与柜号一致
+//                };
+//                activity.sendSocketData(HexUtil.getSocketBytes(startUp), Constants.VALUE_UP);
+                activity.setSocektType(2);
+                //修改错误信息
+                List<FileInfo> fileInfos = DBUtils.selectFileInfoByState(Constants.VALUE_STATE_CW);
+                for (FileInfo info : fileInfos) {
+                    String rev1 = info.getRev1();
+                    info.setRev1("");
+                    info.setShelf_no(rev1);
+                    info.setStatus(Constants.VALUE_STATE_ZW);
+                    DBUtils.insertOrReplaceFileInfo(info);
+                }
+                layers.clear();
+                layers.addAll(DBUtils.selectLayerNoList());
+                adapter.notifyDataSetChanged();
                 break;
             case R.id.btn_state_open:
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
@@ -388,6 +384,20 @@ public class StateFragment extends BaseFragment {
 
                 break;
             case R.id.ll_qs://缺失
+                //        String qsState = "";
+                List<FileInfo> qsLists = DBUtils.selectFileInfoByState(Constants.VALUE_STATE_QS);
+                if (qsLists.size() == 0) {
+                    ToastUtils.showShort("暂无缺失数据");
+                    return;
+                }
+                FileInfo head = new FileInfo();
+                head.setBarcode("条码");
+                head.setMaintitle("题名");
+                head.setShelf_no("当前架位");
+                head.setRev1("正确架位");
+                qsLists.add(0, head);
+                qsAdapter = new QSAdapter(getContext(), qsLists);
+
                 qspop = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 400),
                         QMUIDisplayHelper.dp2px(getContext(), 300),
                         qsAdapter, null)
@@ -401,7 +411,20 @@ public class StateFragment extends BaseFragment {
                         .show(rvStateLayer);
                 break;
             case R.id.ll_cw://错位
-                cwpop = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 500),
+                List<FileInfo> cwLists = DBUtils.selectFileInfoByState(Constants.VALUE_STATE_CW);
+                if (cwLists.size() == 0) {
+                    ToastUtils.showShort("暂无错位数据");
+                    return;
+                }
+                FileInfo head1 = new FileInfo();
+                head1.setBarcode("条码");
+                head1.setMaintitle("题名");
+                head1.setShelf_no("当前架位");
+                head1.setRev1("正确架位");
+                cwLists.add(0, head1);
+                cwAdapter = new CWAdapter(getContext(), cwLists);
+
+                cwpop = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 550),
                         QMUIDisplayHelper.dp2px(getContext(), 300),
                         cwAdapter, null)
                         .preferredDirection(QMUIPopup.DIRECTION_CENTER_IN_SCREEN)
@@ -435,7 +458,7 @@ public class StateFragment extends BaseFragment {
                             ToastUtils.showShort("柜号获取档案信息失败：" + objectResponse.getMessage());
                             return;
                         }
-                        ResponseList<Map<String,Object>> fileInfoResponseList = (ResponseList<Map<String,Object>>) objectResponse.getData();
+                        ResponseList<Map<String, Object>> fileInfoResponseList = (ResponseList<Map<String, Object>>) objectResponse.getData();
                         List<FileInfo> fileInfos = GsonUtils.map2List(fileInfoResponseList);
                         //解析架位条码shelf_no
                         analyShelfNo(fileInfos);
@@ -497,5 +520,21 @@ public class StateFragment extends BaseFragment {
     public void onDestroy() {
         super.onDestroy();
         EventBus.getDefault().unregister(this);
+    }
+
+    public void updateLayerList() {
+        layers.clear();
+        layers.addAll(DBUtils.selectLayerNoList());
+        adapter.notifyDataSetChanged();
+        //设置状态数据
+        List<FileInfo> fileInfos = DBUtils.selectFileInfoByState(Constants.VALUE_STATE_KW);
+        int boxSize = (int) SPUtils.getParam(getContext(), Constants.SP_SIZE_BOX, 1);
+        int layerSize = (int) SPUtils.getParam(getContext(), Constants.SP_SIZE_LAYER, 1);
+        int count = layerSize * boxSize;
+        tvStatePlaceNum.setText(count + "");
+        tvStateUseNum.setText(count - fileInfos.size() + "");
+        tvStateUselessNum.setText(fileInfos.size() + "");
+        tvUseNum.setText(count - fileInfos.size() + "");
+        tvUselessNum.setText(fileInfos.size() + "");
     }
 }

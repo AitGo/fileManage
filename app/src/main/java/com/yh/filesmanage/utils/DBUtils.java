@@ -47,8 +47,10 @@ public class DBUtils {
             entity.setIndex(layerNo);
             List<FileInfo> list = daoSession.getFileInfoDao().queryBuilder()
                     .where(FileInfoDao.Properties.LayerNo.eq(layerNo))
+                    .orderAsc(FileInfoDao.Properties.BoxNo)
                     .list();
             entity.setItems(list);
+            layerEntities.add(entity);
         }
         return layerEntities;
     }
@@ -56,6 +58,11 @@ public class DBUtils {
     public static List<FileInfo> selectFileInfoByState(String state) {
         return MyApplication.getDaoSession().getFileInfoDao().queryBuilder()
                 .where(FileInfoDao.Properties.Status.eq(state))
+                .list();
+    }
+    public static List<FileInfo> selectFileInfoByNotState(String state) {
+        return MyApplication.getDaoSession().getFileInfoDao().queryBuilder()
+                .where(FileInfoDao.Properties.Status.notEq(state))
                 .list();
     }
 
@@ -82,5 +89,19 @@ public class DBUtils {
                         FileInfoDao.Properties.BoxNo.eq(boxNo),
                         FileInfoDao.Properties.Barcode.eq(uid))
                 .list();
+    }
+
+    public static List<FileInfo> selectFileInfoByBarcode(String barcode) {
+        return MyApplication.getDaoSession().getFileInfoDao().queryBuilder()
+                .where(FileInfoDao.Properties.Barcode.eq(barcode))
+                .list();
+    }
+
+    public static List<FileInfo> selectAllFileInfo() {
+        return MyApplication.getDaoSession().getFileInfoDao().loadAll();
+    }
+
+    public static void insertOrReplaceFileInfoList(List<FileInfo> fileInfoList) {
+        MyApplication.getDaoSession().getFileInfoDao().insertOrReplaceInTx(fileInfoList);
     }
 }

@@ -27,6 +27,7 @@ import com.yh.filesmanage.diagnose.ResponseList;
 import com.yh.filesmanage.socket.FastSocketClient;
 import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
 import com.yh.filesmanage.utils.DBUtils;
+import com.yh.filesmanage.utils.FileUtils;
 import com.yh.filesmanage.utils.GsonUtils;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
@@ -49,6 +50,7 @@ import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -160,6 +162,15 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     @Override
     protected void initData() {
         getPermission();
+        List<FileInfo> fileInfos = DBUtils.selectAllFileInfo();
+        if(fileInfos.size() == 0) {
+            String s = FileUtils.ReadAssetsFile(this, "fileInfos.json");
+            com.yh.filesmanage.diagnose.Response<Object> objectResponse = GsonUtils.fromJsonArray(s, ResponseList.class);
+            ResponseList<Map<String,Object>> fileInfoResponseList = (ResponseList<Map<String,Object>>) objectResponse.getData();
+            List<FileInfo> fileInfoList = GsonUtils.map2List(fileInfoResponseList);
+            List<FileInfo> fileInfos1 = StringUtils.analyShelfNo(fileInfoList);
+            DBUtils.insertOrReplaceFileInfoList(fileInfos1);
+        }
         mContext = this;
         tabIvs = new FontIconView[]{ivMainState,ivMainSelect,ivMainTask,ivMainSetting};
         tabTvs = new TextView[]{tvMainState,tvMainSelect,tvMainTask,tvMainSetting};
@@ -181,23 +192,23 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             @Override
             public void onSocketConnectionFailed(String msg, Exception e) {
                 LogUtils.e("ConnectionFailed" + msg);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtils.showShort("ConnectionFailed " + msg);
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ToastUtils.showShort("ConnectionFailed " + msg);
+//                    }
+//                });
             }
 
             @Override
             public void onSocketDisconnection(String msg, Exception e) {
                 LogUtils.e("Disconnection" + msg);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtils.showShort("Disconnection " + msg);
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ToastUtils.showShort("Disconnection " + msg);
+//                    }
+//                });
             }
 
             @Override
@@ -365,12 +376,12 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             byte[] bytes = new byte[inputStream.available()];
             int size = mInputStream.read(bytes);
             LogUtils.e("接收到串口回调w == " + size);
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    ToastUtils.showLong("seriaport read: " + HexUtil.byte2HexStr(bytes));
-                }
-            });
+//            runOnUiThread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    ToastUtils.showLong("seriaport read: " + HexUtil.byte2HexStr(bytes));
+//                }
+//            });
             if (size > 0) {
                 String backString = "";
                 for (int i = 0; i < size; i++) {
@@ -387,6 +398,10 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                     return;
                 }
                 String hightState = HexUtil.byteToHexString(bytes[3]);
+                //层旋转到位后再次读取RFID
+                if(hightState.equals("55")) {
+                    readType = 0;
+                }
                 //发送状态码
                 BaseEvent.CommonEvent event = BaseEvent.CommonEvent.UPDATE_STATE;
                 event.setObject(hightState);
@@ -425,6 +440,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                     public void run() {
                         tvMainHumidity.setText(humidity/10 + "%RH");
                         tvMainTemperature.setText(temperature/10 + "℃");
+
                     }
                 });
 
@@ -570,38 +586,61 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                         List<FileInfo> cwInfos = new ArrayList<>();
                         int index = 9;
                         while (index < bytes.length - 2) {
+                            FileInfo info = new FileInfo();
+                            info.setHouseSNo(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_HOUSE, 1)));
+                            info.setAreaNO(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_AREA, 1)));
+                            info.setCabinetNo(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_CABINET, 1)));
+                            info.setFaceNo("2");
+                            info.setClassNo("01");
+//                            info.setLayerNo(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_LAYER, 1)));
+                            info.setLayerNo("01");
+
                             if (!"83".equals(HexUtil.byteToHexString(bytes[index + 1]))) {
                                 String s = HexUtil.byteToHexString(bytes[index]);
-                                int id = HexUtil.getIntForHexString(s);
+                                int intForHexString = HexUtil.getIntForHexString(s);
+                                s = StringUtils.getNumber(intForHexString);
                                 byte[] destBytes = new byte[8];
                                 System.arraycopy(bytes, index + 1, destBytes, 0, 8);
                                 String uid = HexUtil.byte2HexStrNoSpace(destBytes);
                                 index += 9;
                                 //保存id和uid
-                                LogUtils.e("index:" + index + "   boxNo:" + id + "   uid:" + uid);
+                                LogUtils.e("index:" + index + "   boxNo:" + s + "   uid:" + uid);
+                                String finalS = s;
                                 runOnUiThread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        ToastUtils.showLong("boxNo:" + s + "   uid:" + uid);
+//                                        ToastUtils.showShort("boxNo:" + finalS + "   uid:" + uid);
                                         //查询数据库，对比数据
-                                        FileInfo info = new FileInfo();
-                                        info.setHouseSNo(SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "");
-                                        info.setAreaNO(SPUtils.getParam(mContext, Constants.SP_NO_AREA,1) + "");
-                                        info.setCabinetNo(SPUtils.getParam(mContext, Constants.SP_NO_CABINET,1) + "");
-                                        info.setFaceNo("1");
-                                        info.setClassNo("1");
-                                        info.setLayerNo(SPUtils.getParam(mContext, Constants.SP_NO_LAYER, 1) + "");
-                                        List<FileInfo> infos = DBUtils.selectFileInfo(info, s,uid);
-                                        if(infos.size() > 0) {
-                                            fileInfos.addAll(infos);
+                                        List<FileInfo> barcodeList = DBUtils.selectFileInfoByBarcode(uid);
+                                        if(barcodeList.size() == 0) {
+                                            //未著录
+                                            List<FileInfo> fileInfos1 = DBUtils.selectFileInfo(info, finalS);
+//                                            ToastUtils.showShort("未著录 fileInfos1 size:" + fileInfos1.size());
+                                            for(FileInfo info1 : fileInfos1) {
+                                                info1.setStatus(Constants.VALUE_STATE_WZL);
+                                                info1.setBarcode(uid);
+                                                DBUtils.insertOrReplaceFileInfo(info1);
+                                            }
                                         }else {
-                                            List<FileInfo> fileInfos1 = DBUtils.selectFileInfo(info, s);
-                                            if(fileInfos1.size() > 0) {
-                                                for(FileInfo info1 : fileInfos1) {
-                                                    String shelfNo = StringUtils.getShelfNo(info, s);
-                                                    info1.setRev1(shelfNo);
-                                                    DBUtils.insertOrReplaceFileInfo(info1);
-                                                    cwInfos.add(info);
+                                            //判断架位条码是否一致，不一致为错位
+                                            for(FileInfo info1 : barcodeList) {
+                                                //搜索架位
+                                                List<FileInfo> fileInfos1 = DBUtils.selectFileInfo(info, finalS);
+                                                if(fileInfos1.size() > 0) {
+                                                    for(FileInfo info11 : fileInfos1) {
+                                                        if(!info1.getShelf_no().equals(info11.getShelf_no())) {
+                                                            //错位
+                                                            info11.setStatus(Constants.VALUE_STATE_CW);
+                                                            info11.setRev1(uid);
+                                                            DBUtils.insertOrReplaceFileInfo(info11);
+                                                        }else {
+                                                            if(!info11.getStatus().equals(Constants.VALUE_STATE_WZL)) {
+                                                                //在位
+                                                                info11.setStatus(Constants.VALUE_STATE_ZW);
+                                                                DBUtils.insertOrReplaceFileInfo(info11);
+                                                            }
+                                                        }
+                                                    }
                                                 }
                                             }
                                         }
@@ -609,9 +648,40 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                                 });
 
                             } else {
+                                String s = HexUtil.byteToHexString(bytes[index]);
+                                int intForHexString = HexUtil.getIntForHexString(s);
+                                s = StringUtils.getNumber(intForHexString);
+                                List<FileInfo> fileInfos1 = DBUtils.selectFileInfo(info, s);
+                                if(fileInfos1.size() > 0) {
+                                    //缺失
+                                    for(FileInfo info1 : fileInfos1) {
+                                        info1.setStatus(Constants.VALUE_STATE_QS);
+                                        DBUtils.insertOrReplaceFileInfo(info1);
+                                    }
+                                }
                                 index += 2;
                             }
                         }
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                //更新界面
+                                mStateFragment.updateLayerList();
+                                //判断是否需要读取uid
+                                if(readType == 0) {
+                                    //检卡成功，读取单层UID
+                                    int cabinetNo = (int) SPUtils.getParam(mContext,Constants.SP_NO_CABINET,1);
+                                    byte[] resdUid = {
+                                            (byte) 0x00, (byte) 0x06,
+                                            (byte) 0x00, (byte) 0x01,//硬件地址
+                                            (byte) 0x00, (byte) 0x05,//读取单层命令
+                                            (byte) 0x01,
+                                            (byte) cabinetNo//ID，与柜号一致
+                                    };
+                                    sendSocketData(HexUtil.getSocketBytes(resdUid));
+                                }
+                            }
+                        });
                         //判断上架或盘点
                         if(readType == Constants.VALUE_CHECK) {
 
@@ -641,21 +711,7 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                         }
 
                     }
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            //检卡成功，读取单层UID
-                            int cabinetNo = (int) SPUtils.getParam(mContext,Constants.SP_NO_CABINET,1);
-                            byte[] resdUid = {
-                                    (byte) 0x00, (byte) 0x06,
-                                    (byte) 0x00, (byte) 0x01,//硬件地址
-                                    (byte) 0x00, (byte) 0x05,//读取单层命令
-                                    (byte) 0x01,
-                                    (byte) cabinetNo//ID，与柜号一致
-                            };
-                            sendSocketData(HexUtil.getSocketBytes(resdUid));
-                        }
-                    });
+
                     break;
                 case "07":
                     //指示灯闪烁
@@ -820,6 +876,12 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
     public void sendSocketData(byte[] send, int type) {
         readType = type;
         fastSocketClient.send(send);
+    }
+
+
+    @Override
+    public void setSocektType(int type) {
+        readType = type;
     }
 
     Handler handler=new Handler();

@@ -64,8 +64,8 @@ public class CWAdapter extends BaseAdapter {
         }
         holder.mCode.setText(list.get(position).getBarcode());
         holder.mTitle.setText(list.get(position).getMaintitle());
-        holder.mAddressNow.setText(list.get(position).getShelf_no());
-        holder.mAddressRight.setText(list.get(position).getRev1());
+        holder.mAddressNow.setText(list.get(position).getRev1());
+        holder.mAddressRight.setText(list.get(position).getShelf_no());
         return convertView;
     }
 

@@ -33,7 +33,7 @@ public class FileInfo {
      */
 
     @Id
-    private int id;
+    private String id;
     private String folder_no;
     private String maintitle;
     private String responsibleby;
@@ -65,8 +65,8 @@ public class FileInfo {
     private String rev2;
     private String rev3;
     private String rev4;
-    @Generated(hash = 592808691)
-    public FileInfo(int id, String folder_no, String maintitle,
+    @Generated(hash = 569647901)
+    public FileInfo(String id, String folder_no, String maintitle,
             String responsibleby, String create_time, String sbt_word,
             int filing_year, String case_no, int archive_type_id, String barcode,
             String box_barcode, String house_no, String shelf_no, String status,
@@ -102,10 +102,10 @@ public class FileInfo {
     @Generated(hash = 1367591352)
     public FileInfo() {
     }
-    public int getId() {
+    public String getId() {
         return this.id;
     }
-    public void setId(int id) {
+    public void setId(String id) {
         this.id = id;
     }
     public String getFolder_no() {
@@ -252,5 +252,6 @@ public class FileInfo {
     public void setRev4(String rev4) {
         this.rev4 = rev4;
     }
+    
 
 }

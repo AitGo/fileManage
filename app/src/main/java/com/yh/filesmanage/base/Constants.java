@@ -3,6 +3,7 @@ package com.yh.filesmanage.base;
 
 import android.os.Environment;
 
+import com.yh.filesmanage.R;
 import com.yh.filesmanage.utils.LogUtils;
 
 import java.io.File;
@@ -50,6 +51,12 @@ public class Constants {
 
     public static int VALUE_CHECK = 1;
     public static int VALUE_UP = 2;
+    public static String VALUE_STATE_ZW = "1";
+    public static String VALUE_STATE_KW = "0";
+    public static String VALUE_STATE_QS = "2";
+    public static String VALUE_STATE_CW = "3";
+    public static String VALUE_STATE_DPD = "4";
+    public static String VALUE_STATE_WZL = "5";
 
     public static final String settingDir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "fileManage";
 }

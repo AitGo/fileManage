@@ -27,4 +27,5 @@ public interface SerialportAnalyze {
 
     void initSerialPort();
 
+    void setSocektType(int type);
 }

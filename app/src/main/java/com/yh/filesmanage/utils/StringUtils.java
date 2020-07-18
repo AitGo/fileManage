@@ -13,6 +13,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -367,5 +368,47 @@ public class StringUtils {
         String shelfNo = "";
         shelfNo = info.getHouseSNo() + info.getAreaNO() + info.getCabinetNo() + info.getFaceNo() + info.getClassNo() + info.getLayerNo() + s;
         return shelfNo;
+    }
+
+    /**
+     * 解析架位条码shelf_no
+     *
+     * @param list
+     */
+    public static List<FileInfo> analyShelfNo(List<FileInfo> list) {
+        for (FileInfo info : list) {
+            /**
+             * 密集架架位地址
+             * 01       02  03   2                   03    04   01
+             * 库房号   区  列   面（1左2右）         节    层    本
+             */
+            String shelf_no = info.getShelf_no();
+            if (shelf_no.length() < 13) {
+                ToastUtils.showShort("价位条码解析错误：长度=" + shelf_no.length());
+//                return ;
+            }
+            String houseNo = shelf_no.substring(0, 2);
+            houseNo = StringUtils.getNumber(HexUtil.getIntForHexString(houseNo));
+            String areaNo = shelf_no.substring(2, 4);
+            areaNo = StringUtils.getNumber(HexUtil.getIntForHexString(areaNo));
+            String cabinetNo = shelf_no.substring(4, 6);
+            cabinetNo = StringUtils.getNumber(HexUtil.getIntForHexString(cabinetNo));
+            String faceNo = shelf_no.substring(6, 7);
+            String classNo = shelf_no.substring(7, 9);
+            classNo = StringUtils.getNumber(HexUtil.getIntForHexString(classNo));
+            String layerNo = shelf_no.substring(9, 11);
+            layerNo = StringUtils.getNumber(HexUtil.getIntForHexString(layerNo));
+            String boxNo = shelf_no.substring(11, 13);
+            boxNo = StringUtils.getNumber(HexUtil.getIntForHexString(boxNo));
+
+            info.setHouseSNo(houseNo);
+            info.setAreaNO(areaNo);
+            info.setCabinetNo(cabinetNo);
+            info.setFaceNo(faceNo);
+            info.setClassNo(classNo);
+            info.setLayerNo(layerNo);
+            info.setBoxNo(boxNo);
+        }
+        return list;
     }
 }
