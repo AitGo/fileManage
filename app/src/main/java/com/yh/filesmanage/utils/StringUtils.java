@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.os.Environment;
 import android.util.Log;
 
+import com.yh.filesmanage.diagnose.FileInfo;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.MessageDigest;
@@ -359,5 +361,11 @@ public class StringUtils {
                 break;
         }
         return state;
+    }
+
+    public static String getShelfNo(FileInfo info, String s) {
+        String shelfNo = "";
+        shelfNo = info.getHouseSNo() + info.getAreaNO() + info.getCabinetNo() + info.getFaceNo() + info.getClassNo() + info.getLayerNo() + s;
+        return shelfNo;
     }
 }

@@ -1,6 +1,11 @@
 package com.yh.filesmanage.utils;
 
 
+import com.yh.filesmanage.base.BaseEvent;
+import com.yh.filesmanage.base.Constants;
+
+import org.greenrobot.eventbus.EventBus;
+
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -36,7 +41,33 @@ public class CRC16 {
 
     public static void main(String args[]) {
         //测试数据
-        byte[] bytes = new byte[]{ (byte) 0x00, (byte) 0x06, (byte) 0x00, (byte) 0x01, (byte) 0x90, (byte) 0x00, (byte) 0x01, (byte) 0x02};
+//        byte[] bytes = new byte[]{ (byte) 0x1B, (byte) 0x00, (byte) 0x40, (byte) 0x00, (byte) 0x01, (byte) 0x80, (byte) 0x05
+//                , (byte) 0x01
+//                , (byte) 0x01
+//                , (byte) 0x01, (byte) 0x83
+//                , (byte) 0x02, (byte) 0x83
+//                , (byte) 0x03, (byte) 0x83
+//                , (byte) 0x04, (byte) 0x83
+//                , (byte) 0x05, (byte) 0x83
+//                , (byte) 0x06, (byte) 0x83
+//                , (byte) 0x07, (byte) 0x83
+//                , (byte) 0x08, (byte) 0xE0, (byte) 0x04, (byte) 0x01, (byte) 0x50, (byte) 0xDC, (byte) 0x8B, (byte) 0x65, (byte) 0xCB
+//                , (byte) 0x09, (byte) 0x83
+//                , (byte) 0x0A, (byte) 0x83
+//                , (byte) 0x0B, (byte) 0x83
+//                , (byte) 0x0C, (byte) 0xE0, (byte) 0x04, (byte) 0x01, (byte) 0x50, (byte) 0xDC, (byte) 0x63, (byte) 0x47, (byte) 0xCF
+//                , (byte) 0x0D, (byte) 0xE0, (byte) 0x04, (byte) 0x01, (byte) 0x50, (byte) 0xDC, (byte) 0x63, (byte) 0x47, (byte) 0xCF
+//                , (byte) 0x0E, (byte) 0x83
+//                , (byte) 0x0F, (byte) 0xE0, (byte) 0x04, (byte) 0x01, (byte) 0x50, (byte) 0xDC, (byte) 0x63, (byte) 0xAA, (byte) 0x8F
+//                , (byte) 0xEE, (byte) 0xE3};
+
+        byte[] bytes = new byte[]{ (byte) 0xAC, (byte) 0x01, (byte) 0x01, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
+                , (byte) 0x1A
+                , (byte) 0x46
+                , (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00
+                , (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x00, (byte) 0x9E};
+
+
 //        byte[] bytes = new byte[]{ (byte)0xAA,(byte)0x0C ,(byte)0x01 ,(byte)0x00 ,(byte)0x01 ,(byte)0x00 ,(byte)0x00 ,(byte)0x04 ,(byte)0x05 ,(byte)0x17 ,(byte)0x05 ,(byte)0x01 ,(byte)0xA0 ,(byte)0x86 ,(byte)0x01 ,(byte)0x00};
 //        byte[] socketBytes = HexUtil.getSocketBytes(bytes);
 //        int i1 = CRC16.CRC16_CCITT(bytes);
@@ -81,6 +112,53 @@ public class CRC16 {
             e.printStackTrace();
         }
 
+        String backString = "";
+//        for (int i = 0; i < size; i++) {
+//            LogUtils.e("接收到串口回调=" + bytes[i]);
+//            backString = backString + HexUtil.byteToHexString(bytes[i]);
+//        }
+        //接受到命令后解析
+        if(!("AC").equals(HexUtil.byteToHexString(bytes[0])) || !("9E").equals(HexUtil.byteToHexString(bytes[bytes.length - 1]))) {
+            ToastUtils.showShort("命令不完整");
+            return;
+        }
+        if(bytes.length < 26) {
+            ToastUtils.showShort("命令不完整");
+            return;
+        }
+        String hightState = HexUtil.byteToHexString(bytes[3]);
+        //发送状态码
+        BaseEvent.CommonEvent event = BaseEvent.CommonEvent.UPDATE_STATE;
+        event.setObject(hightState);
+        EventBus.getDefault().post(event);
+        String hightAddress = HexUtil.byteToHexString(bytes[4]);
+        String lowState = HexUtil.byteToHexString(bytes[5]);
+        String lowAddress = HexUtil.byteToHexString(bytes[6]);
+        String fixedTemperature = HexUtil.byteToHexString(bytes[7]);
+        String fixedHumidity = HexUtil.byteToHexString(bytes[8]);
+        String pm25 = HexUtil.byte2HexStrNoSpace(new byte[]{bytes[9],bytes[10]});
+        String tvoc = HexUtil.byte2HexStrNoSpace(new byte[]{bytes[11],bytes[12]});
+        String co2 = HexUtil.byte2HexStrNoSpace(new byte[]{bytes[13],bytes[14]});
+        String hightErrorLayer = HexUtil.byteToHexString(bytes[15]);
+        String lowErrorLayer = HexUtil.byteToHexString(bytes[16]);
+//                String reportCode = HexUtil.byteToHexString(bytes[17]);
+
+        //判断报警位
+//        checkReportCode(bytes[17]);
+        //温度
+        int temperature = HexUtil.getIntForHexString(HexUtil.byte2HexStrNoSpace(new byte[]{bytes[18],bytes[19]}));
+//                temperature = HexUtil.getIntForHexString(backString.substring(37,41));
+//        LogUtils.e("接受到的命令：temperature " + temperature);
+        //湿度
+        int humidity = HexUtil.getIntForHexString(HexUtil.byte2HexStrNoSpace(new byte[]{bytes[20],bytes[21]}));
+//                humidity = HexUtil.getIntForHexString(backString.substring(41,45));
+//        LogUtils.e("接受到的命令：humidity " + humidity);
+        String checkCab = HexUtil.byteToHexString(bytes[22]);
+        //甲醛
+        String forma = HexUtil.byte2HexStrNoSpace(new byte[]{bytes[23],bytes[24]});
+
+        String layer = HexUtil.byteToHexString(bytes[25]);
+        int layerNo = HexUtil.getIntForHexString(layer);
     }
 
     /**

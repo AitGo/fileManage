@@ -7,23 +7,29 @@ import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.lzy.okgo.OkGo;
+import com.lzy.okgo.callback.StringCallback;
 import com.qmuiteam.qmui.layout.QMUIButton;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.yh.filesmanage.R;
+import com.yh.filesmanage.adapter.CWAdapter;
 import com.yh.filesmanage.adapter.LayerAdapter;
 import com.yh.filesmanage.adapter.LayerChooseAdapter;
+import com.yh.filesmanage.adapter.QSAdapter;
 import com.yh.filesmanage.base.BaseEvent;
 import com.yh.filesmanage.base.BaseFragment;
 import com.yh.filesmanage.base.Constants;
+import com.yh.filesmanage.diagnose.FileInfo;
 import com.yh.filesmanage.diagnose.LayerEntity;
-import com.yh.filesmanage.socket.FastSocketClient;
-import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
-import com.yh.filesmanage.utils.CRC16;
+import com.yh.filesmanage.diagnose.Response;
+import com.yh.filesmanage.diagnose.ResponseList;
+import com.yh.filesmanage.utils.DBUtils;
+import com.yh.filesmanage.utils.FileUtils;
+import com.yh.filesmanage.utils.GsonUtils;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
 import com.yh.filesmanage.utils.SPUtils;
@@ -36,13 +42,9 @@ import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
-import java.util.concurrent.ExecutorService;
+import java.util.Map;
 
 import androidx.annotation.Nullable;
 import androidx.core.content.ContextCompat;
@@ -90,16 +92,30 @@ public class StateFragment extends BaseFragment {
     TextView tvStateLayerNo;
     @BindView(R.id.tv_state_cabinet_no)
     TextView tvStateCabinetNo;
+    @BindView(R.id.ll_kw)
+    LinearLayout llKw;
+    @BindView(R.id.ll_zw)
+    LinearLayout llZw;
+    @BindView(R.id.ll_qs)
+    LinearLayout llQs;
+    @BindView(R.id.ll_cw)
+    LinearLayout llCw;
+    @BindView(R.id.ll_wzl)
+    LinearLayout llWzl;
+    @BindView(R.id.ll_dpd)
+    LinearLayout llDpd;
 
     private List<LayerEntity> layers = new ArrayList<>();
     private LayerAdapter adapter;
-    private QMUIPopup popup;
+    private QMUIPopup popup,cwpop,qspop;
 
     private int areaNo = 1;//区号
     private int layerNo = 1;//层数
     private int cabinetNo = 1;//柜号
 
     private LayerChooseAdapter chooseAdapter;
+    private QSAdapter qsAdapter;
+    private CWAdapter cwAdapter;
     private AdapterView.OnItemClickListener onItemClickListener;
     private MainActivity activity;
     private Context mContext;
@@ -118,8 +134,8 @@ public class StateFragment extends BaseFragment {
             @Override
             public void onItemClick(BaseQuickAdapter baseQuickAdapter, View view, int position) {
                 adapter.setPositionBg(layers.get(position));
-                int index = layers.get(position).getIndex();
-                tvStateLayerNo.setText(StringUtils.getNumber(index));
+                String index = layers.get(position).getIndex();
+                tvStateLayerNo.setText(index);
                 adapter.notifyDataSetChanged();
             }
         });
@@ -128,34 +144,30 @@ public class StateFragment extends BaseFragment {
         divider.setDrawable(ContextCompat.getDrawable(getContext(), R.drawable.bg_custom_layer));
         rvStateLayer.addItemDecoration(divider);
 
-        //初始化数据
-        adapter.setPositionBg(layers.get(0));
-        tvStateLayerNo.setText(StringUtils.getNumber(layers.get(0).getIndex()));
+        initLayerData();
+        layers.addAll(DBUtils.selectLayerNoList());
+        if (layers.size() > 0) {
+            //初始化数据
+            adapter.setPositionBg(layers.get(0));
+            tvStateLayerNo.setText(layers.get(0).getIndex());
+        }
 
+        byte[] startRead = {
+                (byte) 0x00, (byte) 0x06,
+                (byte) 0x00, (byte) 0x01,//硬件地址
+                (byte) 0x00, (byte) 0x05,//读取单层命令
+                (byte) 0x01,
+                (byte) cabinetNo//ID，与柜号一致
+        };
+        activity.sendSocketData(HexUtil.getSocketBytes(startRead), Constants.VALUE_CHECK);
     }
 
     @Override
     protected void initData() {
         activity = (MainActivity) getActivity();
         mContext = getContext();
-        Random rand = new Random();
-        for (int i = 0; i < 20; i++) {
-            LayerEntity entity = new LayerEntity();
-            entity.setIndex(i + 1);
-            entity.setState(0);
-            List<LayerEntity.Item> items = new ArrayList<>();
-            for (int j = 0; j < 15; j++) {
-                LayerEntity.Item item = new LayerEntity.Item();
-                item.setIndex(j + 1);
-                int randNum = rand.nextInt(6);
-                item.setState(randNum);
-                items.add(item);
-            }
-            entity.setItems(items);
-            layers.add(entity);
-        }
 
-        int layerSize = (int) SPUtils.getParam(getContext(),Constants.SP_SIZE_LAYER,10);
+        int layerSize = (int) SPUtils.getParam(getContext(), Constants.SP_SIZE_LAYER, 10);
         List<String> list = new ArrayList<>();
         for (int i = 0; i < layerSize; i++) {
             list.add(i + 1 + "");
@@ -166,12 +178,28 @@ public class StateFragment extends BaseFragment {
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 layerNo = position + 1;
                 StateChooseLayer.setTextValue("第" + list.get(position) + "层");
-                SPUtils.setParam(mContext,Constants.SP_NO_LAYER,layerNo);
+                SPUtils.setParam(mContext, Constants.SP_NO_LAYER, layerNo);
                 if (popup != null) {
                     popup.dismiss();
                 }
             }
         };
+//        String qsState = "";
+//        List<FileInfo> qsLists = DBUtils.selectFileInfoByState(qsState);
+        String s = FileUtils.ReadAssetsFile(getContext(), "fileInfos.json");
+        Response<Object> objectResponse = GsonUtils.fromJsonArray(s, ResponseList.class);
+        ResponseList<Map<String,Object>> fileInfoResponseList = (ResponseList<Map<String,Object>>) objectResponse.getData();
+        List<FileInfo> fileInfos = GsonUtils.map2List(fileInfoResponseList);
+
+        FileInfo head = new FileInfo();
+        head.setBarcode("条码");
+        head.setMaintitle("题名");
+        head.setShelf_no("当前架位");
+        head.setRev1("正确架位");
+        fileInfos.add(0,head);
+        qsAdapter = new QSAdapter(getContext(), fileInfos);
+
+        cwAdapter = new CWAdapter(getContext(), fileInfos);
     }
 
     @Subscribe(threadMode = ThreadMode.MAIN)
@@ -186,19 +214,28 @@ public class StateFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden) {
-            areaNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_AREA,1);
-            cabinetNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET,1);
-            layerNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_LAYER,1);
+        if (!hidden) {
+            areaNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_AREA, 1);
+            cabinetNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET, 1);
+            layerNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_LAYER, 1);
             StateChooseLayer.setTextValue("第" + StringUtils.getNumber(layerNo) + "层");
             tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
+            //设置状态数据
+            int boxSize = (int) SPUtils.getParam(getContext(), Constants.SP_SIZE_BOX, 1);
+            int layerSize = (int) SPUtils.getParam(getContext(), Constants.SP_SIZE_LAYER, 1);
+            int count = layerSize * boxSize;
+            tvStatePlaceNum.setText(count + "");
+            int useSize = 0;
+            tvStateUseNum.setText(useSize + "");
+            tvStateUselessNum.setText((count - useSize) + "");
         }
     }
 
     @OnClick({R.id.btn_state_check, R.id.btn_state_up, R.id.btn_state_open,
             R.id.btn_state_close, R.id.btn_state_stop, R.id.btn_state_forward,
             R.id.btn_state_reverse, R.id.btn_state_open_layer, R.id.state_choose_layer,
-            R.id.btn_state_back, R.id.btn_state_next})
+            R.id.btn_state_back, R.id.btn_state_next, R.id.ll_kw,
+            R.id.ll_zw, R.id.ll_qs, R.id.ll_cw, R.id.ll_wzl, R.id.ll_dpd})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_state_check:
@@ -210,23 +247,37 @@ public class StateFragment extends BaseFragment {
                         (byte) layerNo,//层号
                         (byte) 0x9E});
                 //RFID开始检卡
+//                byte[] startRead = {
+//                        (byte) 0x00, (byte) 0x06,
+//                        (byte) 0x00, (byte) 0x01,//硬件地址
+//                        (byte) 0x00, (byte) 0x03,
+//                        (byte) 0x01,
+//                        (byte) 0x01};
                 byte[] startRead = {
                         (byte) 0x00, (byte) 0x06,
                         (byte) 0x00, (byte) 0x01,//硬件地址
-                        (byte) 0x00, (byte) 0x03,
+                        (byte) 0x00, (byte) 0x05,//读取单层命令
                         (byte) 0x01,
-                        (byte) 0x01};
+                        (byte) cabinetNo//ID，与柜号一致
+                };
                 activity.sendSocketData(HexUtil.getSocketBytes(startRead), Constants.VALUE_CHECK);
                 break;
             case R.id.btn_state_up:
                 //上架
                 //RFID开始检卡
+//                byte[] startUp = {
+//                        (byte) 0x00, (byte) 0x06,
+//                        (byte) 0x00, (byte) 0x01,//硬件地址
+//                        (byte) 0x00, (byte) 0x03,
+//                        (byte) 0x01,
+//                        (byte) 0x01};
                 byte[] startUp = {
                         (byte) 0x00, (byte) 0x06,
                         (byte) 0x00, (byte) 0x01,//硬件地址
-                        (byte) 0x00, (byte) 0x03,
+                        (byte) 0x00, (byte) 0x05,//读取单层命令
                         (byte) 0x01,
-                        (byte) 0x01};
+                        (byte) cabinetNo//ID，与柜号一致
+                };
                 activity.sendSocketData(HexUtil.getSocketBytes(startUp), Constants.VALUE_UP);
                 break;
             case R.id.btn_state_open:
@@ -267,17 +318,17 @@ public class StateFragment extends BaseFragment {
             case R.id.btn_state_open_layer:
                 //0xac 区号 0x07 打开的柜号 01 层号 盒号 00 01 档案名称 0x9e
                 //工控机打开时盒号为0，档案名称不填
-                    activity.sendSeriportData(new byte[]{(byte) 0xAC,
-                            (byte) areaNo,//区号
-                            (byte) 0x07,
-                            (byte) cabinetNo,//柜号
-                            (byte) 0x01,
-                            (byte) layerNo,//层号
-                            (byte) 0x00,//盒号
-                            (byte) 0x00,
-                            (byte) 0x01,
-                            (byte) 0x00,//档案名称
-                            (byte) 0x9E});
+                activity.sendSeriportData(new byte[]{(byte) 0xAC,
+                        (byte) areaNo,//区号
+                        (byte) 0x07,
+                        (byte) cabinetNo,//柜号
+                        (byte) 0x01,
+                        (byte) layerNo,//层号
+                        (byte) 0x00,//盒号
+                        (byte) 0x00,
+                        (byte) 0x01,
+                        (byte) 0x00,//档案名称
+                        (byte) 0x9E});
 //                    //控制RFID对应层灯闪烁
 //                    byte[] bytes = {(byte) 0x1B,
 //                            (byte) 0x00,
@@ -311,28 +362,130 @@ public class StateFragment extends BaseFragment {
                         .show(StateChooseLayer);
                 break;
             case R.id.btn_state_back:
-                int cabinetMin = (int) SPUtils.getParam(getContext(),Constants.SP_NO_CABINET_MIN,1);
-                if(cabinetNo != cabinetMin) {
+                int cabinetMin = (int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_MIN, 1);
+                if (cabinetNo != cabinetMin) {
                     cabinetNo--;
-                    SPUtils.setParam(mContext,Constants.SP_NO_CABINET,cabinetNo);
+                    SPUtils.setParam(mContext, Constants.SP_NO_CABINET, cabinetNo);
                     tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
-                }else {
+                } else {
                     ToastUtils.showShort("没有更小的柜号");
                 }
                 break;
             case R.id.btn_state_next:
-                int cabinetMax = (int) SPUtils.getParam(getContext(),Constants.SP_NO_CABINET_MAX,5);
-                if(cabinetNo != cabinetMax) {
+                int cabinetMax = (int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_MAX, 5);
+                if (cabinetNo != cabinetMax) {
                     cabinetNo++;
-                    SPUtils.setParam(mContext,Constants.SP_NO_CABINET,cabinetNo);
+                    SPUtils.setParam(mContext, Constants.SP_NO_CABINET, cabinetNo);
                     tvStateCabinetNo.setText(StringUtils.getNumber(cabinetNo));
-                }else {
+                } else {
                     ToastUtils.showShort("没有更大的柜号");
                 }
+                break;
+            case R.id.ll_kw://空位
+
+                break;
+            case R.id.ll_zw://在位
+
+                break;
+            case R.id.ll_qs://缺失
+                qspop = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 400),
+                        QMUIDisplayHelper.dp2px(getContext(), 300),
+                        qsAdapter, null)
+                        .preferredDirection(QMUIPopup.DIRECTION_CENTER_IN_SCREEN)
+                        .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
+                        .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
+                        .shadow(true)
+                        .arrow(true)
+                        .animStyle(QMUIPopup.ANIM_AUTO)
+                        .show(rvStateLayer);
+                break;
+            case R.id.ll_cw://错位
+                cwpop = QMUIPopups.listPopup(getContext(), QMUIDisplayHelper.dp2px(getContext(), 500),
+                        QMUIDisplayHelper.dp2px(getContext(), 300),
+                        cwAdapter, null)
+                        .preferredDirection(QMUIPopup.DIRECTION_CENTER_IN_SCREEN)
+                        .edgeProtection(QMUIDisplayHelper.dp2px(getContext(), 20))
+                        .offsetX(QMUIDisplayHelper.dp2px(getContext(), 0))
+                        .offsetYIfBottom(QMUIDisplayHelper.dp2px(getContext(), 5))
+                        .shadow(true)
+                        .arrow(true)
+                        .animStyle(QMUIPopup.ANIM_AUTO)
+                        .show(rvStateLayer);
+                break;
+            case R.id.ll_wzl://未著录
+
+                break;
+            case R.id.ll_dpd://待盘点
+
                 break;
         }
     }
 
+    private void initLayerData() {
+        OkGo.<String>post(Constants.ipAddress + "/get_archive4shelf")
+                .tag(this)
+                .params("shelf_no", cabinetNo)
+                .execute(new StringCallback() {
+                    @Override
+                    public void onSuccess(com.lzy.okgo.model.Response<String> response) {
+                        LogUtils.e(response.body());
+                        Response<Object> objectResponse = GsonUtils.fromJsonArray(response.body(), ResponseList.class);
+                        if (!objectResponse.isSuccess()) {
+                            ToastUtils.showShort("柜号获取档案信息失败：" + objectResponse.getMessage());
+                            return;
+                        }
+                        ResponseList<Map<String,Object>> fileInfoResponseList = (ResponseList<Map<String,Object>>) objectResponse.getData();
+                        List<FileInfo> fileInfos = GsonUtils.map2List(fileInfoResponseList);
+                        //解析架位条码shelf_no
+                        analyShelfNo(fileInfos);
+                    }
+
+                    @Override
+                    public void onError(com.lzy.okgo.model.Response<String> response) {
+                        super.onError(response);
+                        LogUtils.e(response.getException().getMessage());
+                        ToastUtils.showShort("柜号获取档案信息错误：" + response.getException().getMessage());
+                    }
+
+                });
+    }
+
+    /**
+     * 解析架位条码shelf_no
+     *
+     * @param list
+     */
+    private void analyShelfNo(List<FileInfo> list) {
+        for (FileInfo info : list) {
+            /**
+             * 密集架架位地址
+             * 01       02  03   2                   03    04   01
+             * 库房号   区  列   面（1左2右）         节    层    本
+             */
+            String shelf_no = info.getShelf_no();
+            if (shelf_no.length() < 13) {
+                ToastUtils.showShort("价位条码解析错误：长度=" + shelf_no.length());
+                return;
+            }
+            String houseNo = shelf_no.substring(0, 2);
+            String areaNo = shelf_no.substring(2, 4);
+            String cabinetNo = shelf_no.substring(4, 6);
+            String faceNo = shelf_no.substring(6, 7);
+            String classNo = shelf_no.substring(7, 9);
+            String layerNo = shelf_no.substring(9, 11);
+            String boxNo = shelf_no.substring(11, 13);
+
+            info.setHouseSNo(houseNo);
+            info.setAreaNO(areaNo);
+            info.setCabinetNo(cabinetNo);
+            info.setFaceNo(faceNo);
+            info.setClassNo(classNo);
+            info.setLayerNo(layerNo);
+            info.setBoxNo(boxNo);
+            DBUtils.insertOrReplaceFileInfo(info);
+        }
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

@@ -9,6 +9,7 @@ import android.view.View;
 
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
 import com.yh.filesmanage.R;
+import com.yh.filesmanage.diagnose.FileInfo;
 import com.yh.filesmanage.diagnose.LayerEntity;
 import com.yh.filesmanage.utils.DensityUtils;
 import com.yh.filesmanage.utils.LogUtils;
@@ -73,29 +74,31 @@ public class LayerView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-        List<LayerEntity.Item> items = item.getItems();
+        List<FileInfo> items = item.getItems();
         for(int i = 0; i < items.size(); i++) {
-            switch (items.get(i).getState()) {
-                case 0:
+            switch (items.get(i).getStatus()) {
+                case "0"://空位
                     paint.setColor(mContext.getResources().getColor(R.color.gray_dark));
                     break;
-                case 1:
+                case "1"://在位
                     paint.setColor(mContext.getResources().getColor(R.color.green));
                     break;
-                case 2:
+                case "2"://缺失
                     paint.setColor(mContext.getResources().getColor(R.color.red));
                     break;
-                case 3:
+                case "3"://错位
                     paint.setColor(mContext.getResources().getColor(R.color.yellow));
                     break;
-                case 4:
+                case "4"://待盘点
                     paint.setColor(mContext.getResources().getColor(R.color.gray_light));
                     break;
-                case 5:
+                case "5"://未著录
                     paint.setColor(mContext.getResources().getColor(R.color.white));
                     break;
             }
-
+//            itemWidth = getWidth();
+//            int itemSizeCount = itemWidth - (items.size() + 1) * itemBgWidth;
+//            itemSize = itemSizeCount / items.size();
             canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,itemBgWidth + i*itemSize),
                     QMUIDisplayHelper.dp2px(mContext,itemBgHight),
                     QMUIDisplayHelper.dp2px(mContext,itemSize - itemBgWidth + i*itemSize),
@@ -108,8 +111,8 @@ public class LayerView extends View {
             if(isDrawBg) {
                 canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,0),
                         QMUIDisplayHelper.dp2px(mContext,0),
-                        QMUIDisplayHelper.dp2px(mContext,250),
-                        QMUIDisplayHelper.dp2px(mContext,150), positionBg);
+                        QMUIDisplayHelper.dp2px(mContext,getWidth()),
+                        QMUIDisplayHelper.dp2px(mContext,getHeight()), positionBg);
             }
         }
     }

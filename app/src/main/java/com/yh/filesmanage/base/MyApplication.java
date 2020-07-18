@@ -75,7 +75,7 @@ public class MyApplication extends Application {
     /**
      * 初始化GreenDao,直接在Application中进行初始化操作
      */
-    private void initGreenDao() {
+    private static void initGreenDao() {
 //        DaoMaster.DevOpenHelper helper = new DaoMaster.DevOpenHelper(new GreenDaoContext(mContext), "filesManage.db");
         DBHelper helper = new DBHelper(new GreenDaoContext(mContext),"filesManage.db");
         SQLiteDatabase db = helper.getWritableDatabase();
@@ -83,7 +83,11 @@ public class MyApplication extends Application {
         daoSession = daoMaster.newSession();
     }
 
-    private DaoSession daoSession;
+    private static DaoSession daoSession;
+
+    public static DaoSession getDaoSession() {
+        return daoSession;
+    }
 
     private void initCrash() {
         //捕获错误日志

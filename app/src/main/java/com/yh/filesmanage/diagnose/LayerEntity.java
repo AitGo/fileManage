@@ -4,52 +4,23 @@ import java.util.List;
 
 public class LayerEntity {
 
-    private int index;
-    private int state;
-    private List<Item> items;
+    private String index;
+    private String state;
+    private List<FileInfo> items;
 
-    public int getIndex() {
+    public String getIndex() {
         return index;
     }
 
-    public void setIndex(int index) {
+    public void setIndex(String index) {
         this.index = index;
     }
 
-    public int getState() {
-        return state;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    public List<Item> getItems() {
+    public List<FileInfo> getItems() {
         return items;
     }
 
-    public void setItems(List<Item> items) {
+    public void setItems(List<FileInfo> items) {
         this.items = items;
-    }
-
-    public static class Item {
-        private int index;
-        private int state;
-
-        public int getIndex() {
-            return index;
-        }
-
-        public void setIndex(int index) {
-            this.index = index;
-        }
-
-        public int getState() {
-            return state;
-        }
-
-        public void setState(int state) {
-            this.state = state;
-        }
     }
 }

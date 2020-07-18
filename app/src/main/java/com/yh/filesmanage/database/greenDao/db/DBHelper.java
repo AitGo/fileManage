@@ -21,6 +21,6 @@ public class DBHelper extends DaoMaster.DevOpenHelper {
     @Override
     public void onUpgrade(Database db, int oldVersion, int newVersion) {
         Log.i("greenDAO", "Upgrading schema from version " + oldVersion + " to " + newVersion + " by dropping all tables");
-        DBMigrationHelper.getInstance().migrate(db, TestEntityDao.class);
+        DBMigrationHelper.getInstance().migrate(db, FileInfoDao.class);
     }
 }

@@ -22,9 +22,11 @@ import com.yh.filesmanage.R;
 import com.yh.filesmanage.base.BaseEvent;
 import com.yh.filesmanage.base.BaseFragmentActivity;
 import com.yh.filesmanage.base.Constants;
+import com.yh.filesmanage.diagnose.FileInfo;
 import com.yh.filesmanage.diagnose.ResponseList;
 import com.yh.filesmanage.socket.FastSocketClient;
 import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
+import com.yh.filesmanage.utils.DBUtils;
 import com.yh.filesmanage.utils.GsonUtils;
 import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.LogUtils;
@@ -44,6 +46,7 @@ import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -200,51 +203,27 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
             @Override
             public void onSocketReadResponse(byte[] bytes) {
                 //接收命令
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ToastUtils.showShort("onSocketReadResponse " +  HexUtil.ByteToString(bytes));
+//                    }
+//                });
                 readSocketResponse(bytes);
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtils.showShort("onSocketReadResponse " +  HexUtil.ByteToString(bytes));
-                    }
-                });
             }
 
             @Override
             public void onSocketWriteResponse(byte[] bytes) {
                 LogUtils.e("Write" + bytes.toString());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        ToastUtils.showShort("onSocketWriteResponse " + HexUtil.ByteToString(bytes));
-                    }
-                });
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        ToastUtils.showShort("onSocketWriteResponse " + HexUtil.ByteToString(bytes));
+//                    }
+//                });
             }
         });
         fastSocketClient.connect();
-
-        OkGo.<String>post( Constants.ipAddress + "/set_wsd_history")
-                .tag(this)
-                .params("house_no",SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "")
-                .params("area_no",(int) SPUtils.getParam(mContext, Constants.SP_NO_AREA, 1) + "")
-                .params("temp",(double)26.8)
-                .params("humi",(double)70.2)
-                .execute(new StringCallback() {
-                    @Override
-                    public void onSuccess(Response<String> response) {
-                        LogUtils.e(response.body());
-                        com.yh.filesmanage.diagnose.Response<Object> jsonObject = GsonUtils.fromJsonObject(response.body(), String.class);
-                        if(!jsonObject.isSuccess()) {
-                            ToastUtils.showShort("提交温湿度日志失败：" + jsonObject.getMessage());
-                        }
-                    }
-
-                    @Override
-                    public void onError(Response<String> response) {
-                        super.onError(response);
-                        LogUtils.e(response.getException().getMessage());
-                        ToastUtils.showShort("提交温湿度日志错误：" + response.getException().getMessage());
-                    }
-                });
     }
 
     @Override
@@ -340,12 +319,12 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                     serialport_baudrate, 0);
             mInputStream = serialPort.getInputStream();
             mOutputStream = serialPort.getOutputStream();
-            handler.postDelayed(runnable, 1000);//每两秒执行一次runnable.
+            handler.postDelayed(runnable, 500);
 //            getSeriportData();
         } catch (Exception e) {
             e.printStackTrace();
             LogUtils.e("打开串口失败");
-            ToastUtils.showShort("打开串口失败");
+            ToastUtils.showShort("打开串口失败: " + e.getMessage());
         }
     }
 
@@ -441,37 +420,44 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 String layer = HexUtil.byteToHexString(bytes[25]);
                 int layerNo = HexUtil.getIntForHexString(layer);
                 SPUtils.setParam(mContext,Constants.SP_NO_LAYER,layerNo);
-
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvMainTemperature.setText(temperature/10 + "");
-                        tvMainHumidity.setText(humidity/10 + "");
-                        OkGo.<String>post( Constants.ipAddress + "/set_wsd_history")
-                                .tag(this)
-                                .params("house_no",SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "")
-                                .params("area_no",(int) SPUtils.getParam(mContext, Constants.SP_NO_AREA, 1) + "")
-                                .params("temp",Double.valueOf(temperature/(double)10))
-                                .params("humi",Double.valueOf(humidity/(double)10))
-                                .execute(new StringCallback() {
-                                    @Override
-                                    public void onSuccess(Response<String> response) {
-                                        LogUtils.e(response.body());
-                                        com.yh.filesmanage.diagnose.Response<Object> jsonObject = GsonUtils.fromJsonObject(response.body(), String.class);
-                                        if(!jsonObject.isSuccess()) {
-                                            ToastUtils.showShort("提交温湿度日志失败：" + jsonObject.getMessage());
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Response<String> response) {
-                                        super.onError(response);
-                                        LogUtils.e(response.getException().getMessage());
-                                        ToastUtils.showShort("提交温湿度日志错误：" + response.getException().getMessage());
-                                    }
-                                });
+                        tvMainHumidity.setText(humidity/10 + "%RH");
+                        tvMainTemperature.setText(temperature/10 + "℃");
                     }
                 });
+
+//                runOnUiThread(new Runnable() {
+//                    @Override
+//                    public void run() {
+//                        tvMainTemperature.setText(temperature/10 + "");
+//                        tvMainHumidity.setText(humidity/10 + "");
+//                        OkGo.<String>post( Constants.ipAddress + "/set_wsd_history")
+//                                .tag(this)
+//                                .params("house_no",SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "")
+//                                .params("area_no",(int) SPUtils.getParam(mContext, Constants.SP_NO_AREA, 1) + "")
+//                                .params("temp",Double.valueOf(temperature/(double)10))
+//                                .params("humi",Double.valueOf(humidity/(double)10))
+//                                .execute(new StringCallback() {
+//                                    @Override
+//                                    public void onSuccess(Response<String> response) {
+//                                        LogUtils.e(response.body());
+//                                        com.yh.filesmanage.diagnose.Response<Object> jsonObject = GsonUtils.fromJsonObject(response.body(), String.class);
+//                                        if(!jsonObject.isSuccess()) {
+//                                            ToastUtils.showShort("提交温湿度日志失败：" + jsonObject.getMessage());
+//                                        }
+//                                    }
+//
+//                                    @Override
+//                                    public void onError(Response<String> response) {
+//                                        super.onError(response);
+//                                        LogUtils.e(response.getException().getMessage());
+//                                        ToastUtils.showShort("提交温湿度日志错误：" + response.getException().getMessage());
+//                                    }
+//                                });
+//                    }
+//                });
             }
         }
     }
@@ -580,18 +566,50 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 case "05":
                     //读取单层UID
                     if("80".equals(HexUtil.byteToHexString(bytes[5]))) {
-                        int index = 8;
-                        while(index < bytes.length) {
-                            if(!"83".equals(HexUtil.byteToHexString(bytes[index + 1]))) {
-                                int id = HexUtil.getIntForHexString(HexUtil.byteToHexString(bytes[index]));
+                        List<FileInfo> fileInfos = new ArrayList<>();
+                        List<FileInfo> cwInfos = new ArrayList<>();
+                        int index = 9;
+                        while (index < bytes.length - 2) {
+                            if (!"83".equals(HexUtil.byteToHexString(bytes[index + 1]))) {
+                                String s = HexUtil.byteToHexString(bytes[index]);
+                                int id = HexUtil.getIntForHexString(s);
                                 byte[] destBytes = new byte[8];
                                 System.arraycopy(bytes, index + 1, destBytes, 0, 8);
                                 String uid = HexUtil.byte2HexStrNoSpace(destBytes);
-                                index += 8;
+                                index += 9;
                                 //保存id和uid
-                                LogUtils.e("index:" + index + "   id:" + id + "   uid:" + uid);
-                            }else {
-                                index += 1;
+                                LogUtils.e("index:" + index + "   boxNo:" + id + "   uid:" + uid);
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        ToastUtils.showLong("boxNo:" + s + "   uid:" + uid);
+                                        //查询数据库，对比数据
+                                        FileInfo info = new FileInfo();
+                                        info.setHouseSNo(SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "");
+                                        info.setAreaNO(SPUtils.getParam(mContext, Constants.SP_NO_AREA,1) + "");
+                                        info.setCabinetNo(SPUtils.getParam(mContext, Constants.SP_NO_CABINET,1) + "");
+                                        info.setFaceNo("1");
+                                        info.setClassNo("1");
+                                        info.setLayerNo(SPUtils.getParam(mContext, Constants.SP_NO_LAYER, 1) + "");
+                                        List<FileInfo> infos = DBUtils.selectFileInfo(info, s,uid);
+                                        if(infos.size() > 0) {
+                                            fileInfos.addAll(infos);
+                                        }else {
+                                            List<FileInfo> fileInfos1 = DBUtils.selectFileInfo(info, s);
+                                            if(fileInfos1.size() > 0) {
+                                                for(FileInfo info1 : fileInfos1) {
+                                                    String shelfNo = StringUtils.getShelfNo(info, s);
+                                                    info1.setRev1(shelfNo);
+                                                    DBUtils.insertOrReplaceFileInfo(info1);
+                                                    cwInfos.add(info);
+                                                }
+                                            }
+                                        }
+                                    }
+                                });
+
+                            } else {
+                                index += 2;
                             }
                         }
                         //判断上架或盘点
@@ -599,29 +617,45 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
 
                         }else if(readType == Constants.VALUE_UP) {
 //                            OkGo.<String>post( Constants.ipAddress + "/on_shelf")
-//                                    .tag(this)
-//                                    .params("Barcode",)
-//                                    .params("HouseNo",SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "")
-//                                    .params("ShelfNo",)
-//                                    .execute(new StringCallback() {
-//                                        @Override
-//                                        public void onSuccess(Response<String> response) {
-//                                            LogUtils.e(response.body());
-//                                            com.yh.filesmanage.diagnose.Response<Object> jsonObject = GsonUtils.fromJsonArray(response.body(), String.class);
-//                                            if(!jsonObject.isSuccess()) {
-//                                                ToastUtils.showShort("提交温湿度日志失败：" + jsonObject.getMessage());
-//                                            }
-//                                        }
-//
-//                                        @Override
-//                                        public void onError(Response<String> response) {
-//                                            super.onError(response);
-//                                            LogUtils.e(response.getException().getMessage());
-//                                            ToastUtils.showShort("提交温湿度日志错误：" + response.getException().getMessage());
-//                                        }
-//                                    });
+////                                    .tag(this)
+////                                    .params("Barcode",)
+////                                    .params("HouseNo",SPUtils.getParam(mContext, Constants.SP_NO_HOUSE,1) + "")
+////                                    .params("ShelfNo",)
+////                                    .execute(new StringCallback() {
+////                                        @Override
+////                                        public void onSuccess(Response<String> response) {
+////                                            LogUtils.e(response.body());
+////                                            com.yh.filesmanage.diagnose.Response<Object> jsonObject = GsonUtils.fromJsonArray(response.body(), String.class);
+////                                            if(!jsonObject.isSuccess()) {
+////                                                ToastUtils.showShort("提交温湿度日志失败：" + jsonObject.getMessage());
+////                                            }
+////                                        }
+////
+////                                        @Override
+////                                        public void onError(Response<String> response) {
+////                                            super.onError(response);
+////                                            LogUtils.e(response.getException().getMessage());
+////                                            ToastUtils.showShort("提交温湿度日志错误：" + response.getException().getMessage());
+////                                        }
+////                                    });
                         }
+
                     }
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            //检卡成功，读取单层UID
+                            int cabinetNo = (int) SPUtils.getParam(mContext,Constants.SP_NO_CABINET,1);
+                            byte[] resdUid = {
+                                    (byte) 0x00, (byte) 0x06,
+                                    (byte) 0x00, (byte) 0x01,//硬件地址
+                                    (byte) 0x00, (byte) 0x05,//读取单层命令
+                                    (byte) 0x01,
+                                    (byte) cabinetNo//ID，与柜号一致
+                            };
+                            sendSocketData(HexUtil.getSocketBytes(resdUid));
+                        }
+                    });
                     break;
                 case "07":
                     //指示灯闪烁
@@ -772,7 +806,8 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 }
             });
         }else {
-            ToastUtils.showShort("串口未打开");
+//            ToastUtils.showShort("串口未打开");
+            initSerialPort();
         }
     }
 

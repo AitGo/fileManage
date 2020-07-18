@@ -3,10 +3,15 @@ package com.yh.filesmanage.socket;
 import android.os.SystemClock;
 
 
+import com.yh.filesmanage.base.BaseEvent;
 import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.base.MyApplication;
 import com.yh.filesmanage.socket.interfaces.OnSocketClientCallBackList;
+import com.yh.filesmanage.utils.HexUtil;
 import com.yh.filesmanage.utils.SPUtils;
+import com.yh.filesmanage.utils.ToastUtils;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.io.DataInputStream;
 import java.io.IOException;
@@ -126,6 +131,9 @@ public class FastSocketClient {
                             onSocketClientCallBackList.onSocketWriteResponse(datas);
                     }
                 } catch (Exception e) {
+                    BaseEvent.CommonEvent event = BaseEvent.CommonEvent.UPDATE_STATE;
+                    event.setObject("send error: " + e.getMessage());
+                    EventBus.getDefault().post(event);
                     //出现异常说明Socker已经断开连接 断线重连
                     if (!neverReconnect) connect();
                     if (onSocketClientCallBackList != null)

@@ -339,7 +339,7 @@
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_state_layer"
-                        android:layout_width="300dp"
+                        android:layout_width="500dp"
                         android:layout_height="match_parent"
                         android:layout_centerInParent="true"
                         android:background="@color/white" />
@@ -365,6 +365,7 @@
                     style="@style/mainTextSubStyle"/>
 
                     <TextView
+                        android:id="@+id/tvUseNum"
                         style="@style/mainTextSubStyle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -379,54 +380,73 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal">
-                        <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="22dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/bg_state_gray"/>
-                        <TextView
+                        <LinearLayout
+                            android:id="@+id/ll_kw"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="空位"
-                            style="@style/mainTextSubStyle"/>
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="22dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/bg_state_gray"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="空位"
+                                style="@style/mainTextSubStyle"/>
+                        </LinearLayout>
 
-                        <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="22dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/bg_state_green"/>
-                        <TextView
+                        <LinearLayout
+                            android:id="@+id/ll_zw"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="在位"
-                            style="@style/mainTextSubStyle"/>
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="22dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/bg_state_green"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="在位"
+                                style="@style/mainTextSubStyle"/>
 
-                        <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="22dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/bg_state_red"/>
-                        <TextView
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_qs"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="缺失"
-                            style="@style/mainTextSubStyle"/>
-
-                        <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="22dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/bg_state_yellow"/>
-                        <TextView
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="22dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/bg_state_red"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="缺失"
+                                style="@style/mainTextSubStyle"/>
+                        </LinearLayout>
+                        <LinearLayout
+                            android:id="@+id/ll_cw"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="错位"
-                            style="@style/mainTextSubStyle"/>
-
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="22dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/bg_state_yellow"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="错位"
+                                style="@style/mainTextSubStyle"/>
+                        </LinearLayout>
 
 
                     </LinearLayout>
@@ -441,6 +461,7 @@
                             android:text="  剩   余:    "
                             style="@style/mainTextSubStyle"/>
                         <TextView
+                            android:id="@+id/tvUselessNum"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="30"
@@ -454,29 +475,41 @@
                         android:layout_marginRight="10dp"
                         android:layout_alignParentRight="true">
 
-                        <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="22dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/bg_state_white"/>
-                        <TextView
+                        <LinearLayout
+                            android:id="@+id/ll_wzl"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="未著录"
-                            style="@style/mainTextSubStyle"/>
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="22dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/bg_state_white"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="未著录"
+                                style="@style/mainTextSubStyle"/>
 
-                        <ImageView
-                            android:layout_width="10dp"
-                            android:layout_height="22dp"
-                            android:layout_marginLeft="10dp"
-                            android:background="@drawable/bg_state_gray_light"/>
-                        <TextView
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:id="@+id/ll_dpd"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_marginLeft="5dp"
-                            android:text="待盘点"
-                            style="@style/mainTextSubStyle"/>
+                            android:layout_height="wrap_content">
+                            <ImageView
+                                android:layout_width="10dp"
+                                android:layout_height="22dp"
+                                android:layout_marginLeft="10dp"
+                                android:background="@drawable/bg_state_gray_light"/>
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginLeft="5dp"
+                                android:text="待盘点"
+                                style="@style/mainTextSubStyle"/>
+
+                        </LinearLayout>
 
                         <ImageView
                             android:layout_width="70dp"
