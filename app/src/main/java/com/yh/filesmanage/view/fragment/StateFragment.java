@@ -240,7 +240,15 @@ public class StateFragment extends BaseFragment {
                 List<FileInfo> fileInfos1 = DBUtils.selectFileInfoByNotState(Constants.VALUE_STATE_KW);
                 for (FileInfo fileInfo : fileInfos1) {
                     fileInfo.setStatus(Constants.VALUE_STATE_DPD);
+                    DBUtils.insertOrReplaceFileInfo(fileInfo);
                 }
+//                List<FileInfo> fileInfos2 = DBUtils.selectFileInfoByState(Constants.VALUE_STATE_ZW);
+//                for(FileInfo info : fileInfos2) {
+//                    if(StringUtils.checkString(info.getRev1())) {
+//                        info.setStatus(Constants.VALUE_STATE_CW);
+//                        DBUtils.insertOrReplaceFileInfo(info);
+//                    }
+//                }
                 layers.clear();
                 layers.addAll(DBUtils.selectLayerNoList());
                 adapter.notifyDataSetChanged();
@@ -266,9 +274,10 @@ public class StateFragment extends BaseFragment {
                 //修改错误信息
                 List<FileInfo> fileInfos = DBUtils.selectFileInfoByState(Constants.VALUE_STATE_CW);
                 for (FileInfo info : fileInfos) {
-                    String rev1 = info.getRev1();
-                    info.setRev1("");
-                    info.setShelf_no(rev1);
+//                    String rev1 = info.getRev1();
+//                    info.setRev1("");
+                    String shelfNo = StringUtils.getShelfNo(info, info.getBoxNo());
+                    info.setShelf_no(shelfNo);
                     info.setStatus(Constants.VALUE_STATE_ZW);
                     DBUtils.insertOrReplaceFileInfo(info);
                 }

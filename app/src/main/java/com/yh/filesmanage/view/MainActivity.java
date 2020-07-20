@@ -441,8 +441,8 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvMainTemperature.setText(intFixedTemperature/10 + "℃");
-                        tvMainHumidity.setText(intFixedHumidity/10 + "%RH");
+                        tvMainTemperature.setText(intFixedTemperature + "℃");
+                        tvMainHumidity.setText(intFixedHumidity + "%RH");
                     }
                 });
 
