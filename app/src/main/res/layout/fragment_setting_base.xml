@@ -182,6 +182,24 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginLeft="20dp"
+                android:text="速度:"
+                style="@style/selectTextStyle"/>
+
+            <EditText
+                android:id="@+id/et_setting_speed"
+                android:layout_width="80dp"
+                android:layout_height="40dp"
+                android:layout_marginLeft="20dp"
+                android:paddingLeft="3dp"
+                android:textColor="@color/black"
+                style="@style/selectTextStyle"
+                android:background="@color/white"
+                android:inputType="number|numberDecimal"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="30dp"
                 android:text="串口:"
                 style="@style/selectTextStyle"/>
@@ -198,7 +216,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="20dp"
                 android:text="波特率:"
                 style="@style/selectTextStyle"/>
 
@@ -216,7 +234,7 @@
                 android:id="@+id/btn_setting_seriaport"
                 android:layout_width="wrap_content"
                 android:layout_height="40dp"
-                android:layout_marginLeft="40dp"
+                android:layout_marginLeft="20dp"
                 android:text="设置串口"
                 style="@style/selectTextStyle"
                 android:background="@drawable/bg_btn_select"/>

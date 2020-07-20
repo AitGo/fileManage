@@ -4,7 +4,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Toast;
 
 import com.aill.androidserialport.SerialPortFinder;
 import com.qmuiteam.qmui.util.QMUIDisplayHelper;
@@ -12,7 +11,6 @@ import com.qmuiteam.qmui.widget.popup.QMUIPopup;
 import com.qmuiteam.qmui.widget.popup.QMUIPopups;
 import com.yh.filesmanage.R;
 import com.yh.filesmanage.adapter.ChooseViewAdapter;
-import com.yh.filesmanage.base.BaseEvent;
 import com.yh.filesmanage.base.BaseFragment;
 import com.yh.filesmanage.base.Constants;
 import com.yh.filesmanage.utils.SPUtils;
@@ -20,8 +18,6 @@ import com.yh.filesmanage.utils.StringUtils;
 import com.yh.filesmanage.utils.ToastUtils;
 import com.yh.filesmanage.view.MainActivity;
 import com.yh.filesmanage.widget.ChooseView;
-
-import org.greenrobot.eventbus.EventBus;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -77,6 +73,8 @@ public class Setting_baseFragment extends BaseFragment {
     Button btnSettingUse;
     @BindView(R.id.btn_setting_seriaport)
     Button btnSettingSeriaport;
+    @BindView(R.id.et_setting_speed)
+    EditText etSettingSpeed;
 
     private MainActivity activity;
     private QMUIPopup popup;
@@ -134,6 +132,8 @@ public class Setting_baseFragment extends BaseFragment {
 
         int areaNo = (int) SPUtils.getParam(getContext(), Constants.SP_NO_AREA, 1);
         etSettingArea.setText(areaNo + "");
+        int speed = (int) SPUtils.getParam(getContext(), Constants.SP_SPEED, 1);
+        etSettingSpeed.setText(speed + "");
     }
 
     @Override
@@ -162,13 +162,14 @@ public class Setting_baseFragment extends BaseFragment {
         super.onHiddenChanged(hidden);
         if (!hidden) {
             etSettingArea.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_AREA, 1) + "");
+            etSettingSpeed.setText((int) SPUtils.getParam(getContext(), Constants.SP_SPEED, 1) + "");
             etSettingMin.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_MIN, 1) + "");
             etSettingMax.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_MAX, 1) + "");
             etSettingFixed.setText((int) SPUtils.getParam(getContext(), Constants.SP_NO_CABINET_FIXED, 1) + "");
             etSettingClassSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_CLASS, 1) + "");
             etSettingLayerSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_LAYER, 1) + "");
             etSettingBoxSize.setText((int) SPUtils.getParam(getContext(), Constants.SP_SIZE_BOX, 1) + "");
-            etSettingHouseNo.setText(SPUtils.getParam(getContext(), Constants.SP_NO_HOUSE,1) + "");
+            etSettingHouseNo.setText(SPUtils.getParam(getContext(), Constants.SP_NO_HOUSE, 1) + "");
         }
     }
 
@@ -202,8 +203,8 @@ public class Setting_baseFragment extends BaseFragment {
                         .show(settingChooseBt);
                 break;
             case R.id.btn_setting_seriaport:
-                SPUtils.setParam(getContext(),Constants.SP_SERIALPORT_NO,serialport);
-                SPUtils.setParam(getContext(),Constants.SP_SERIALPORT_BAUDRATE,seriaport_bt);
+                SPUtils.setParam(getContext(), Constants.SP_SERIALPORT_NO, serialport);
+                SPUtils.setParam(getContext(), Constants.SP_SERIALPORT_BAUDRATE, seriaport_bt);
                 activity.closeSerialPort();
                 activity.initSerialPort();
                 break;
@@ -218,6 +219,7 @@ public class Setting_baseFragment extends BaseFragment {
                 String layerSizeString = etSettingLayerSize.getText().toString().trim();
                 String boxSizeString = etSettingBoxSize.getText().toString().trim();
                 String areaNoString = etSettingArea.getText().toString().trim();
+                String speedString = etSettingSpeed.getText().toString().trim();
                 String houseNoString = etSettingHouseNo.getText().toString().trim();
 
                 if (!StringUtils.checkString(cabinetMinString)) {
@@ -271,6 +273,7 @@ public class Setting_baseFragment extends BaseFragment {
                 layer_size = Integer.valueOf(layerSizeString);
                 box_size = Integer.valueOf(boxSizeString);
                 area_no = Integer.valueOf(areaNoString);
+                int speed = Integer.valueOf(speedString);
                 house_no = Integer.valueOf(houseNoString);
                 //设置命令
                 activity.sendSeriportData(new byte[]{(byte) 0xAC,
@@ -283,6 +286,7 @@ public class Setting_baseFragment extends BaseFragment {
                         (byte) class_size,//设节数
                         (byte) layer_size,//设层数
                         (byte) box_size,//设盒数
+                        (byte) speed,//设速度
                         (byte) 0x9E});
                 //设置sp
                 SPUtils.setParam(getContext(), Constants.SP_NO_AREA, area_no);
@@ -291,6 +295,7 @@ public class Setting_baseFragment extends BaseFragment {
                 SPUtils.setParam(getContext(), Constants.SP_SIZE_BOX, box_size);
                 SPUtils.setParam(getContext(), Constants.SP_SIZE_CABINET, cabinet_max - cabinet_min + 1);
                 SPUtils.setParam(getContext(), Constants.SP_NO_HOUSE, house_no);
+                SPUtils.setParam(getContext(), Constants.SP_SPEED, speed);
                 break;
         }
     }

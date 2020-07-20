@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 public class LayerView extends View {
 
     private Context mContext;
-    private int itemSize = 25;
+    private int itemSize = 30;
     private int itemBgWidth = 2;
     private int itemBgHight = 4;
     private int itemHeight;
@@ -94,7 +94,7 @@ public class LayerView extends View {
 //            itemWidth = getWidth();
 //            int itemSizeCount = itemWidth - (items.size() + 1) * itemBgWidth;
 //            itemSize = itemSizeCount / items.size();
-            canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,itemBgWidth + i*itemSize),
+            canvas.drawRect(QMUIDisplayHelper.dp2px(mContext,itemBgWidth + 4 + i*itemSize),
                     QMUIDisplayHelper.dp2px(mContext,itemBgHight),
                     QMUIDisplayHelper.dp2px(mContext,itemSize - itemBgWidth + i*itemSize),
                     QMUIDisplayHelper.dp2px(mContext,95), paint);

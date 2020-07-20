@@ -37,6 +37,7 @@ public class Constants {
     public static String SP_SOCKET_PORT = "SOCKET_PORT";
     public static String SP_SOCKET_Pulse = "SOCKET_Pulse";
     public static String SP_NO_AREA = "area_no";//区号
+    public static String SP_SPEED = "speed";//区号
     public static String SP_NO_LAYER = "layer_no";//层数
     public static String SP_NO_CABINET = "cabinet_no";//柜号
     public static String SP_NO_BOX = "box_no";//盒号

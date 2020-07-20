@@ -435,12 +435,14 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 String layer = HexUtil.byteToHexString(bytes[25]);
                 int layerNo = HexUtil.getIntForHexString(layer);
                 SPUtils.setParam(mContext,Constants.SP_NO_LAYER,layerNo);
+
+                int intFixedTemperature = HexUtil.getIntForHexString(fixedTemperature);
+                int intFixedHumidity = HexUtil.getIntForHexString(fixedHumidity);
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        tvMainHumidity.setText(humidity/10 + "%RH");
-                        tvMainTemperature.setText(temperature/10 + "℃");
-
+                        tvMainTemperature.setText(intFixedTemperature/10 + "℃");
+                        tvMainHumidity.setText(intFixedHumidity/10 + "%RH");
                     }
                 });
 
@@ -582,104 +584,104 @@ public class MainActivity extends BaseFragmentActivity implements EasyPermission
                 case "05":
                     //读取单层UID
                     if("80".equals(HexUtil.byteToHexString(bytes[5]))) {
-                        List<FileInfo> fileInfos = new ArrayList<>();
-                        List<FileInfo> cwInfos = new ArrayList<>();
-                        int index = 9;
-                        while (index < bytes.length - 2) {
-                            FileInfo info = new FileInfo();
-                            info.setHouseSNo(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_HOUSE, 1)));
-                            info.setAreaNO(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_AREA, 1)));
-                            info.setCabinetNo(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_CABINET, 1)));
-                            info.setFaceNo("2");
-                            info.setClassNo("01");
-//                            info.setLayerNo(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_LAYER, 1)));
-                            info.setLayerNo("01");
+                        //判断是否需要读取uid
+                        if(readType == 0) {
+                            int index = 9;
+                            while (index < bytes.length - 2) {
+                                FileInfo info = new FileInfo();
+                                info.setHouseSNo(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_HOUSE, 1)));
+                                info.setAreaNO(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_AREA, 1)));
+                                info.setCabinetNo(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_CABINET, 1)));
+                                info.setFaceNo("2");
+                                info.setClassNo("01");
+                                //                            info.setLayerNo(StringUtils.getNumber((Integer) SPUtils.getParam(mContext, Constants.SP_NO_LAYER, 1)));
+                                info.setLayerNo("01");
 
-                            if (!"83".equals(HexUtil.byteToHexString(bytes[index + 1]))) {
-                                String s = HexUtil.byteToHexString(bytes[index]);
-                                int intForHexString = HexUtil.getIntForHexString(s);
-                                s = StringUtils.getNumber(intForHexString);
-                                byte[] destBytes = new byte[8];
-                                System.arraycopy(bytes, index + 1, destBytes, 0, 8);
-                                String uid = HexUtil.byte2HexStrNoSpace(destBytes);
-                                index += 9;
-                                //保存id和uid
-                                LogUtils.e("index:" + index + "   boxNo:" + s + "   uid:" + uid);
-                                String finalS = s;
-                                runOnUiThread(new Runnable() {
-                                    @Override
-                                    public void run() {
-//                                        ToastUtils.showShort("boxNo:" + finalS + "   uid:" + uid);
-                                        //查询数据库，对比数据
-                                        List<FileInfo> barcodeList = DBUtils.selectFileInfoByBarcode(uid);
-                                        if(barcodeList.size() == 0) {
-                                            //未著录
-                                            List<FileInfo> fileInfos1 = DBUtils.selectFileInfo(info, finalS);
-//                                            ToastUtils.showShort("未著录 fileInfos1 size:" + fileInfos1.size());
-                                            for(FileInfo info1 : fileInfos1) {
-                                                info1.setStatus(Constants.VALUE_STATE_WZL);
-                                                info1.setBarcode(uid);
-                                                DBUtils.insertOrReplaceFileInfo(info1);
-                                            }
-                                        }else {
-                                            //判断架位条码是否一致，不一致为错位
-                                            for(FileInfo info1 : barcodeList) {
-                                                //搜索架位
+                                if (!"83".equals(HexUtil.byteToHexString(bytes[index + 1]))) {
+                                    String s = HexUtil.byteToHexString(bytes[index]);
+                                    int intForHexString = HexUtil.getIntForHexString(s);
+                                    s = StringUtils.getNumber(intForHexString);
+                                    byte[] destBytes = new byte[8];
+                                    System.arraycopy(bytes, index + 1, destBytes, 0, 8);
+                                    String uid = HexUtil.byte2HexStrNoSpace(destBytes);
+                                    index += 9;
+                                    //保存id和uid
+                                    LogUtils.e("index:" + index + "   boxNo:" + s + "   uid:" + uid);
+                                    String finalS = s;
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            //                                        ToastUtils.showShort("boxNo:" + finalS + "   uid:" + uid);
+                                            //查询数据库，对比数据
+                                            List<FileInfo> barcodeList = DBUtils.selectFileInfoByBarcode(uid);
+                                            if (barcodeList.size() == 0) {
+                                                //未著录
                                                 List<FileInfo> fileInfos1 = DBUtils.selectFileInfo(info, finalS);
-                                                if(fileInfos1.size() > 0) {
-                                                    for(FileInfo info11 : fileInfos1) {
-                                                        if(!info1.getShelf_no().equals(info11.getShelf_no())) {
-                                                            //错位
-                                                            info11.setStatus(Constants.VALUE_STATE_CW);
-                                                            info11.setRev1(uid);
-                                                            DBUtils.insertOrReplaceFileInfo(info11);
-                                                        }else {
-                                                            if(!info11.getStatus().equals(Constants.VALUE_STATE_WZL)) {
-                                                                //在位
-                                                                info11.setStatus(Constants.VALUE_STATE_ZW);
+                                                //                                            ToastUtils.showShort("未著录 fileInfos1 size:" + fileInfos1.size());
+                                                for (FileInfo info1 : fileInfos1) {
+                                                    info1.setStatus(Constants.VALUE_STATE_WZL);
+                                                    info1.setBarcode(uid);
+                                                    DBUtils.insertOrReplaceFileInfo(info1);
+                                                }
+                                            } else {
+                                                //判断架位条码是否一致，不一致为错位
+                                                for (FileInfo info1 : barcodeList) {
+                                                    //搜索架位
+                                                    List<FileInfo> fileInfos1 = DBUtils.selectFileInfo(info, finalS);
+                                                    if (fileInfos1.size() > 0) {
+                                                        for (FileInfo info11 : fileInfos1) {
+                                                            if (!info1.getShelf_no().equals(info11.getShelf_no())) {
+                                                                //错位
+                                                                info11.setStatus(Constants.VALUE_STATE_CW);
+                                                                info11.setRev1(uid);
                                                                 DBUtils.insertOrReplaceFileInfo(info11);
+                                                            } else {
+                                                                if (!info11.getStatus().equals(Constants.VALUE_STATE_WZL)) {
+                                                                    //在位
+                                                                    info11.setStatus(Constants.VALUE_STATE_ZW);
+                                                                    DBUtils.insertOrReplaceFileInfo(info11);
+                                                                }
                                                             }
                                                         }
                                                     }
                                                 }
                                             }
                                         }
-                                    }
-                                });
+                                    });
 
-                            } else {
-                                String s = HexUtil.byteToHexString(bytes[index]);
-                                int intForHexString = HexUtil.getIntForHexString(s);
-                                s = StringUtils.getNumber(intForHexString);
-                                List<FileInfo> fileInfos1 = DBUtils.selectFileInfo(info, s);
-                                if(fileInfos1.size() > 0) {
-                                    //缺失
-                                    for(FileInfo info1 : fileInfos1) {
-                                        info1.setStatus(Constants.VALUE_STATE_QS);
-                                        DBUtils.insertOrReplaceFileInfo(info1);
+                                } else {
+                                    String s = HexUtil.byteToHexString(bytes[index]);
+                                    int intForHexString = HexUtil.getIntForHexString(s);
+                                    s = StringUtils.getNumber(intForHexString);
+                                    List<FileInfo> fileInfos1 = DBUtils.selectFileInfo(info, s);
+                                    if (fileInfos1.size() > 0) {
+                                        //缺失
+                                        for (FileInfo info1 : fileInfos1) {
+                                            info1.setStatus(Constants.VALUE_STATE_QS);
+                                            DBUtils.insertOrReplaceFileInfo(info1);
+                                        }
                                     }
+                                    index += 2;
                                 }
-                                index += 2;
                             }
                         }
                         runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                //更新界面
-                                mStateFragment.updateLayerList();
-                                //判断是否需要读取uid
                                 if(readType == 0) {
-                                    //检卡成功，读取单层UID
-                                    int cabinetNo = (int) SPUtils.getParam(mContext,Constants.SP_NO_CABINET,1);
-                                    byte[] resdUid = {
-                                            (byte) 0x00, (byte) 0x06,
-                                            (byte) 0x00, (byte) 0x01,//硬件地址
-                                            (byte) 0x00, (byte) 0x05,//读取单层命令
-                                            (byte) 0x01,
-                                            (byte) cabinetNo//ID，与柜号一致
-                                    };
-                                    sendSocketData(HexUtil.getSocketBytes(resdUid));
+                                    //更新界面
+                                    mStateFragment.updateLayerList();
                                 }
+                                //检卡成功，读取单层UID
+                                int cabinetNo = (int) SPUtils.getParam(mContext,Constants.SP_NO_CABINET,1);
+                                byte[] resdUid = {
+                                        (byte) 0x00, (byte) 0x06,
+                                        (byte) 0x00, (byte) 0x01,//硬件地址
+                                        (byte) 0x00, (byte) 0x05,//读取单层命令
+                                        (byte) 0x01,
+                                        (byte) cabinetNo//ID，与柜号一致
+                                };
+                                sendSocketData(HexUtil.getSocketBytes(resdUid));
                             }
                         });
                         //判断上架或盘点
